@@ -1,42 +1,34 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Главное окно
+// Диалоговое окно "О программе"
 ////////////////////////////////////////////////////////////////
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#ifndef DIALOG_ABOUT_PROG_H
+#define DIALOG_ABOUT_PROG_H
 
 //==============================================================
-#include <QMainWindow>
+#include <QDialog>
 
 //==============================================================
-QT_BEGIN_NAMESPACE
 namespace Ui
 {
-    class MainWindow;
+    class DialogAboutProg;
 }
-QT_END_NAMESPACE
 
 //==============================================================
-// Главное окно
+// Диалоговое окно "О программе"
 //==============================================================
-class MainWindow : public QMainWindow
+class DialogAboutProg : public QDialog
 {
     Q_OBJECT
 public:
     // Конструктор с параметром
-    MainWindow(QWidget *parent = nullptr);
+    explicit DialogAboutProg(QWidget *parent = nullptr);
     // Деструктор
-    ~MainWindow() override;
-private slots:
-    // Функция вызывается при выборе пункта главного меню "О программе"
-    void slotShowAboutProg();
+    ~DialogAboutProg() override;
 private:
-    // Задание соединений
-    void setConnections();
-
     // Интерфейс пользователя
-    Ui::MainWindow *ui_{nullptr};
+    Ui::DialogAboutProg *ui_{nullptr};
 };
 
 //==============================================================
-#endif // MAIN_WINDOW_H
+#endif // DIALOG_ABOUT_PROG_H

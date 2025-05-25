@@ -317,10 +317,10 @@
   </action>
   <action name="actAboutProg_">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>About programm...</string>
+    <string>About program...</string>
    </property>
   </action>
  </widget>

@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////
 #include "main_window.h"
 #include "ui_main_window.h"
+#include "dialog_about_prog.h"
 
 //==============================================================
 // Конструктор с параметром
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
     // Показ версии в заголовке окна
     const QString version = QString{"%1 %2"}.arg("ByteMachine", APP_VERSION);
     setWindowTitle(version);
+
+    setConnections();
 }
 
 //==============================================================
@@ -24,4 +27,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
 MainWindow::~MainWindow()
 {
     delete ui_;
+}
+
+//==============================================================
+// Функция вызывается при выборе пункта главного меню "О программе"
+//==============================================================
+void MainWindow::slotShowAboutProg()
+{
+    DialogAboutProg dlg{this};
+    dlg.exec();
+}
+
+//==============================================================
+// Задание соединений
+//==============================================================
+void MainWindow::setConnections()
+{
+    connect(ui_->actAboutProg_, &QAction::triggered,
+        this, &MainWindow::slotShowAboutProg);
 }

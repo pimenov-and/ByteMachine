@@ -20,5 +20,6 @@
         <file>images/save.png</file>
         <file>images/copy.png</file>
         <file>images/cut.png</file>
+        <file>images/logo.png</file>
     </qresource>
 </RCC>
