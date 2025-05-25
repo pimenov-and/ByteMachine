@@ -26,9 +26,265 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile_">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actNew_"/>
+    <addaction name="actOpen_"/>
+    <addaction name="actAdd_"/>
+    <addaction name="actSave_"/>
+    <addaction name="actSaveAs_"/>
+    <addaction name="separator"/>
+    <addaction name="actExit_"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit_">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actUndo_"/>
+    <addaction name="actRedo_"/>
+    <addaction name="separator"/>
+    <addaction name="actCut_"/>
+    <addaction name="actCopy_"/>
+    <addaction name="actPaste_"/>
+   </widget>
+   <widget class="QMenu" name="menuTools_">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actApplicationOutput_"/>
+    <addaction name="actScriptIde_"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings_">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actVisibleNodesPanel_"/>
+    <addaction name="actVisibleSettingsPanel_"/>
+    <addaction name="actVisibleDesignerGrid_"/>
+    <addaction name="actVisibleNodeComments_"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp_">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actHelp_"/>
+    <addaction name="actHelpfullLinks_"/>
+    <addaction name="actAboutProg_"/>
+   </widget>
+   <addaction name="menuFile_"/>
+   <addaction name="menuEdit_"/>
+   <addaction name="menuTools_"/>
+   <addaction name="menuSettings_"/>
+   <addaction name="menuHelp_"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actNew_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actOpen_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Open...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actAdd_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Add...</string>
+   </property>
+  </action>
+  <action name="actSave_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actSaveAs_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save as...</string>
+   </property>
+  </action>
+  <action name="actExit_">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actUndo_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actRedo_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actCut_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actCopy_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actPaste_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actApplicationOutput_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Application output...</string>
+   </property>
+  </action>
+  <action name="actScriptIde_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Script IDE...</string>
+   </property>
+  </action>
+  <action name="actVisibleNodesPanel_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Visible nodes panel</string>
+   </property>
+  </action>
+  <action name="actVisibleSettingsPanel_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Visible settings panel</string>
+   </property>
+  </action>
+  <action name="actVisibleDesignerGrid_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Visible designer grid</string>
+   </property>
+  </action>
+  <action name="actVisibleNodeComments_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Visible node comments</string>
+   </property>
+  </action>
+  <action name="actHelp_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actHelpfullLinks_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Helpfull links...</string>
+   </property>
+  </action>
+  <action name="actAboutProg_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>About programm...</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actExit_</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
