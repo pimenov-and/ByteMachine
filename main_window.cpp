@@ -12,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
     ui_{new Ui::MainWindow{}}
 {
     ui_->setupUi(this);
+
+    // Показ версии в заголовке окна
+    const QString version = QString{"%1 %2"}.arg("ByteMachine", APP_VERSION);
+    setWindowTitle(version);
 }
 
 //==============================================================
