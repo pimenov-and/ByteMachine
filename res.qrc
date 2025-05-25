@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/res_images">
+        <file>images/new.png</file>
+        <file>images/open.png</file>
+        <file>images/add.png</file>
+        <file>images/drag_node_en.png</file>
+        <file>images/drag_node_ru.png</file>
+        <file>images/reset_value.png</file>
+        <file>images/standart_node.png</file>
+        <file>images/user.png</file>
+        <file>images/paint_mode.png</file>
+        <file>images/visible_node_comments.png</file>
+        <file>images/visible_nodes_panel.png</file>
+        <file>images/visible_settings_panel.png</file>
+        <file>images/undo.png</file>
+        <file>images/redo.png</file>
+        <file>images/visible_designer_grid.png</file>
+        <file>images/paste.png</file>
+        <file>images/help.png</file>
+        <file>images/save.png</file>
+        <file>images/copy.png</file>
+        <file>images/cut.png</file>
+    </qresource>
+</RCC>

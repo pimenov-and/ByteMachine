@@ -84,6 +84,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/new.png</normaloff>:/res_images/images/new.png</iconset>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
@@ -94,6 +98,10 @@
   <action name="actOpen_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/open.png</normaloff>:/res_images/images/open.png</iconset>
    </property>
    <property name="text">
     <string>Open...</string>
@@ -106,6 +114,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/add.png</normaloff>:/res_images/images/add.png</iconset>
+   </property>
    <property name="text">
     <string>Add...</string>
    </property>
@@ -113,6 +125,10 @@
   <action name="actSave_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/save.png</normaloff>:/res_images/images/save.png</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -141,6 +157,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/undo.png</normaloff>:/res_images/images/undo.png</iconset>
+   </property>
    <property name="text">
     <string>Undo</string>
    </property>
@@ -151,6 +171,10 @@
   <action name="actRedo_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/redo.png</normaloff>:/res_images/images/redo.png</iconset>
    </property>
    <property name="text">
     <string>Redo</string>
@@ -163,6 +187,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/cut.png</normaloff>:/res_images/images/cut.png</iconset>
+   </property>
    <property name="text">
     <string>Cut</string>
    </property>
@@ -174,6 +202,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/copy.png</normaloff>:/res_images/images/copy.png</iconset>
+   </property>
    <property name="text">
     <string>Copy</string>
    </property>
@@ -184,6 +216,10 @@
   <action name="actPaste_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/paste.png</normaloff>:/res_images/images/paste.png</iconset>
    </property>
    <property name="text">
     <string>Paste</string>
@@ -212,6 +248,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/visible_nodes_panel.png</normaloff>:/res_images/images/visible_nodes_panel.png</iconset>
+   </property>
    <property name="text">
     <string>Visible nodes panel</string>
    </property>
@@ -219,6 +259,10 @@
   <action name="actVisibleSettingsPanel_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/visible_settings_panel.png</normaloff>:/res_images/images/visible_settings_panel.png</iconset>
    </property>
    <property name="text">
     <string>Visible settings panel</string>
@@ -228,6 +272,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/visible_designer_grid.png</normaloff>:/res_images/images/visible_designer_grid.png</iconset>
+   </property>
    <property name="text">
     <string>Visible designer grid</string>
    </property>
@@ -236,6 +284,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/visible_node_comments.png</normaloff>:/res_images/images/visible_node_comments.png</iconset>
+   </property>
    <property name="text">
     <string>Visible node comments</string>
    </property>
@@ -243,6 +295,10 @@
   <action name="actHelp_">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/help.png</normaloff>:/res_images/images/help.png</iconset>
    </property>
    <property name="text">
     <string>Help</string>
@@ -268,7 +324,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actExit_</sender>
