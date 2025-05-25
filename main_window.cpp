@@ -1,14 +1,23 @@
+////////////////////////////////////////////////////////////////
+// ByteMachine
+// Главное окно
+////////////////////////////////////////////////////////////////
 #include "main_window.h"
 #include "ui_main_window.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+//==============================================================
+// Конструктор с параметром
+//==============================================================
+MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
+    ui_{new Ui::MainWindow{}}
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 }
 
+//==============================================================
+// Деструктор
+//==============================================================
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete ui_;
 }

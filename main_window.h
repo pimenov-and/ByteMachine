@@ -1,23 +1,36 @@
+////////////////////////////////////////////////////////////////
+// ByteMachine
+// Главное окно
+////////////////////////////////////////////////////////////////
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+//==============================================================
 #include <QMainWindow>
 
+//==============================================================
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
+//==============================================================
+// Главное окно
+//==============================================================
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
+    // Конструктор с параметром
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
+    // Деструктор
+    ~MainWindow() override;
 private:
-    Ui::MainWindow *ui;
+    // Интерфейс пользователя
+    Ui::MainWindow *ui_{nullptr};
 };
+
+//==============================================================
 #endif // MAIN_WINDOW_H

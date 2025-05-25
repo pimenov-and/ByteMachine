@@ -10,8 +10,11 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ByteMachine</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">

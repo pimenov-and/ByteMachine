@@ -1,11 +1,18 @@
+////////////////////////////////////////////////////////////////
+// ByteMachine
+// Главный файл
+////////////////////////////////////////////////////////////////
 #include "main_window.h"
-
 #include <QApplication>
 
-int main(int argc, char *argv[])
+//==============================================================
+// Главная функция
+//==============================================================
+int main(int argc, char **argv)
 {
-    QApplication a(argc, argv);
+    QApplication a{argc, argv};
     MainWindow w;
-    w.show();
+    w.showMaximized();
+
     return a.exec();
 }
