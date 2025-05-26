@@ -17,7 +17,7 @@
    <string>ByteMachine</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menu_">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -48,6 +48,8 @@
     <addaction name="actCut_"/>
     <addaction name="actCopy_"/>
     <addaction name="actPaste_"/>
+    <addaction name="separator"/>
+    <addaction name="actPaintMode_"/>
    </widget>
    <widget class="QMenu" name="menuTools_">
     <property name="title">
@@ -79,7 +81,41 @@
    <addaction name="menuSettings_"/>
    <addaction name="menuHelp_"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusBar_"/>
+  <widget class="QToolBar" name="toolBar_">
+   <property name="windowTitle">
+    <string/>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actNew_"/>
+   <addaction name="actOpen_"/>
+   <addaction name="actAdd_"/>
+   <addaction name="actSave_"/>
+   <addaction name="separator"/>
+   <addaction name="actUndo_"/>
+   <addaction name="actRedo_"/>
+   <addaction name="separator"/>
+   <addaction name="actCut_"/>
+   <addaction name="actCopy_"/>
+   <addaction name="actPaste_"/>
+   <addaction name="separator"/>
+   <addaction name="actPaintMode_"/>
+   <addaction name="separator"/>
+   <addaction name="actVisibleNodesPanel_"/>
+   <addaction name="actVisibleSettingsPanel_"/>
+   <addaction name="actVisibleDesignerGrid_"/>
+   <addaction name="actVisibleNodeComments_"/>
+   <addaction name="separator"/>
+   <addaction name="actHelp_"/>
+  </widget>
   <action name="actNew_">
    <property name="enabled">
     <bool>false</bool>
@@ -321,6 +357,18 @@
    </property>
    <property name="text">
     <string>About program...</string>
+   </property>
+  </action>
+  <action name="actPaintMode_">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res_images/images/paint_mode.png</normaloff>:/res_images/images/paint_mode.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paint mode</string>
    </property>
   </action>
  </widget>
