@@ -4,8 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += APP_VERSION=\\\"0.003\\\" \
-    APP_BUILD_DATE=\\\"27.05.2025\\\"
+DEFINES += APP_VERSION=\\\"0.004\\\" \
+    APP_BUILD_DATE=\\\"28.05.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -13,13 +13,16 @@ DEFINES += APP_VERSION=\\\"0.003\\\" \
 
 SOURCES += main.cpp \
     dialog_about_prog.cpp \
+    form_designer.cpp \
     main_window.cpp
 
 HEADERS += main_window.h \
-    dialog_about_prog.h
+    dialog_about_prog.h \
+    form_designer.h
 
 FORMS += main_window.ui \
-    dialog_about_prog.ui
+    dialog_about_prog.ui \
+    form_designer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
