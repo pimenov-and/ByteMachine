@@ -28,6 +28,11 @@ public:
     // Деструктор
     ~MainWindow() override;
 private slots:
+    // Функция вызывается при изменении видимости панели узлов
+    void slotNodesPanelVisibleChanged(bool visible);
+    // Функция вызывается при изменении видимости панели свойств
+    void slotSettingsPanelVisibleChanged(bool visible);
+
     // Функция вызывается при выборе пункта главного меню "О программе"
     void slotShowAboutProg();
 private:

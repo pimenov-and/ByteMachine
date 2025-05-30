@@ -30,6 +30,22 @@ MainWindow::~MainWindow()
 }
 
 //==============================================================
+// Функция вызывается при изменении видимости панели узлов
+//==============================================================
+void MainWindow::slotNodesPanelVisibleChanged(bool visible)
+{
+    ui_->groupBoxNodes_->setVisible(visible);
+}
+
+//==============================================================
+// Функция вызывается при изменении видимости панели свойств
+//==============================================================
+void MainWindow::slotSettingsPanelVisibleChanged(bool visible)
+{
+    ui_->groupBoxSettings_->setVisible(visible);
+}
+
+//==============================================================
 // Функция вызывается при выборе пункта главного меню "О программе"
 //==============================================================
 void MainWindow::slotShowAboutProg()
@@ -43,6 +59,19 @@ void MainWindow::slotShowAboutProg()
 //==============================================================
 void MainWindow::setConnections()
 {
+    // Меню "File"
+
+    // Меню "Edit"
+
+    // Меню "Settings"
+    connect(ui_->actVisibleNodesPanel_, &QAction::triggered,
+        this, &MainWindow::slotNodesPanelVisibleChanged);
+    connect(ui_->actVisibleSettingsPanel_, &QAction::triggered,
+        this, &MainWindow::slotSettingsPanelVisibleChanged);
+
+    // Меню "Tools"
+
+    // Меню "Help"
     connect(ui_->actAboutProg_, &QAction::triggered,
         this, &MainWindow::slotShowAboutProg);
 }
