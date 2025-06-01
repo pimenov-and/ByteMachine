@@ -6,7 +6,7 @@
 #define MAIN_WINDOW_H
 
 //==============================================================
-#include <QMainWindow>
+#include <QtWidgets>
 
 //==============================================================
 QT_BEGIN_NAMESPACE

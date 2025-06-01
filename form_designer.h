@@ -6,7 +6,7 @@
 #define FORM_DESIGNER_H
 
 //==============================================================
-#include <QWidget>
+#include <QtWidgets>
 
 //==============================================================
 namespace Ui
@@ -28,6 +28,8 @@ public:
 private slots:
     // Функция вызывается при перерисовке
     void paintEvent(QPaintEvent *event) override;
+    // Функция вызывается при показе контекстного меню
+    void contextMenuEvent(QContextMenuEvent *event) override;
 private:
     // Задание соединений
     void setConnections();
@@ -35,6 +37,25 @@ private:
     void fillBackgound(QPainter *painter, const QRect &clipRect) const;
     // Вывод сетки
     void drawGrid(QPainter *painter) const;
+
+    // Создание контекстного меню
+    [[nodiscard]]
+    QMenu* createContextMenu() const;
+    // Создание контекстного меню узлов "Standart"
+    [[nodiscard]]
+    QMenu* createStandartNodesContextMenu() const;
+    // Создание контекстного меню узлов "Visualization"
+    [[nodiscard]]
+    QMenu* createVisualizationNodesContextMenu() const;
+    // Создание контекстного меню узлов "Script"
+    [[nodiscard]]
+    QMenu* createScriptNodesContextMenu() const;
+    // Создание контекстного меню узлов "Other"
+    [[nodiscard]]
+    QMenu* createOtherNodesContextMenu() const;
+    // Создание контекстного меню узла
+    [[nodiscard]]
+    QMenu* createNodeContextMenu() const;
 
     // Интерфейс пользователя
     Ui::FormDesigner *ui_{nullptr};

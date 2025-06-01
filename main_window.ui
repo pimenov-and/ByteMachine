@@ -16,12 +16,31 @@
   <property name="windowTitle">
    <string>ByteMachine</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QGroupBox {
+    border: 1px solid gray;
+    margin-top: 0.5em;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 3px 0 3px;
+}
+
+QScrollArea::scrollAreaDesigner_ {
+	border: 1px solid gray;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
       </property>
       <widget class="QGroupBox" name="groupBoxNodes_">
        <property name="title">
@@ -34,6 +53,9 @@
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
        </property>
        <property name="widgetResizable">
         <bool>true</bool>
@@ -77,6 +99,42 @@
        <property name="title">
         <string>Settings</string>
        </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBox">
+          <property name="font">
+           <font>
+            <bold>true</bold>
+           </font>
+          </property>
+          <item>
+           <property name="text">
+            <string>Project</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="scrollAreaSettings_">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>69</width>
+             <height>449</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -146,7 +204,7 @@
    <addaction name="menuSettings_"/>
    <addaction name="menuHelp_"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar_"/>
+  <widget class="StatusBar" name="statusBar_"/>
   <widget class="QToolBar" name="toolBar_">
    <property name="windowTitle">
     <string/>
@@ -455,6 +513,11 @@
    <extends>QWidget</extends>
    <header>form_designer.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>status_bar.h</header>
   </customwidget>
  </customwidgets>
  <resources>
