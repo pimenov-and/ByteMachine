@@ -129,11 +129,21 @@ QMenu* FormDesigner::createStandartNodesContextMenu() const
     actSkip->setIcon(QIcon{":/res_images/images/standart_node.png"});
     actSkip->setEnabled(false);
 
+    QAction *const actReverse = menu->addAction("Reverse");
+    actReverse->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actReverse->setEnabled(false);
+
+    QAction *const actMerge = menu->addAction("Merge");
+    actMerge->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actMerge->setEnabled(false);
+
     QAction *const actOutFile = menu->addAction("OutFile");
     actOutFile->setIcon(QIcon{":/res_images/images/standart_node.png"});
     actOutFile->setEnabled(false);
-    // connect(actOutFile, &QAction::triggered,
-    //     this, &FormDesigner::slotAddNodeFromContextMenu);
+
+    QAction *const actPaintOp = menu->addAction("PaintOp");
+    actPaintOp->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actPaintOp->setEnabled(false);
 
     return menu;
 }
@@ -148,20 +158,22 @@ QMenu* FormDesigner::createVisualizationNodesContextMenu() const
     QAction *const actSize = menu->addAction("Size");
     actSize->setIcon(QIcon{":/res_images/images/standart_node.png"});
     actSize->setEnabled(false);
-    // connect(actSize, &QAction::triggered,
-    //     this, &FormDesigner::slotAddNodeFromContextMenu);
 
     QAction *const actDump = menu->addAction("Dump");
     actDump->setIcon(QIcon{":/res_images/images/standart_node.png"});
     actDump->setEnabled(false);
-    // connect(actDump, &QAction::triggered,
-    //     this, &FormDesigner::slotAddNodeFromContextMenu);
 
     QAction *const actStruct = menu->addAction("Struct");
     actStruct->setIcon(QIcon{":/res_images/images/standart_node.png"});
     actStruct->setEnabled(false);
-    // connect(actDump, &QAction::triggered,
-    //     this, &FormDesigner::slotAddNodeFromContextMenu);
+
+    QAction *const actGraph = menu->addAction("Graph");
+    actGraph->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actGraph->setEnabled(false);
+
+    QAction *const actPaint = menu->addAction("Paint");
+    actPaint->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actPaint->setEnabled(false);
 
     return menu;
 }
@@ -173,6 +185,22 @@ QMenu* FormDesigner::createScriptNodesContextMenu() const
 {
     const auto menu = new QMenu(tr("Script"));
 
+    QAction *const actSIn = menu->addAction("SIn");
+    actSIn->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actSIn->setEnabled(false);
+
+    QAction *const actSChange = menu->addAction("SChange");
+    actSChange->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actSChange->setEnabled(false);
+
+    QAction *const actSMerge = menu->addAction("SMerge");
+    actSMerge->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actSMerge->setEnabled(false);
+
+    QAction *const actSOut = menu->addAction("SOut");
+    actSOut->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actSOut->setEnabled(false);
+
     return menu;
 }
 
@@ -182,6 +210,14 @@ QMenu* FormDesigner::createScriptNodesContextMenu() const
 QMenu* FormDesigner::createOtherNodesContextMenu() const
 {
     const auto menu = new QMenu(tr("Other"));
+
+    QAction *const actBlock = menu->addAction("Block");
+    actBlock->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actBlock->setEnabled(false);
+
+    QAction *const actNon = menu->addAction("Non");
+    actNon->setIcon(QIcon{":/res_images/images/standart_node.png"});
+    actNon->setEnabled(false);
 
     return menu;
 }

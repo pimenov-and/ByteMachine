@@ -11,12 +11,6 @@
 //==============================================================
 StatusBar::StatusBar(QWidget *parent) : QStatusBar{parent}
 {
-#ifdef Q_OS_WASM
-    QFont font{"Segoe UI", 10};
-    setFont(font);
-#endif // Q_OS_WASM
-
-    setConnections();
 }
 
 //==============================================================
@@ -43,10 +37,6 @@ void StatusBar::paintEvent(QPaintEvent*)
 //==============================================================
 void StatusBar::setConnections()
 {
-    /* connect(project(), SIGNAL(sigCreateNew()),
-        this, SLOT(update()));
-    connect(project(), SIGNAL(sigAddNode(ShPtrBaseNode)),
-        this, SLOT(update())); */
 }
 
 //==============================================================

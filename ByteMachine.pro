@@ -4,8 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += APP_VERSION=\\\"0.007\\\" \
-    APP_BUILD_DATE=\\\"01.06.2025\\\"
+DEFINES += APP_VERSION=\\\"0.008\\\" \
+    APP_BUILD_DATE=\\\"03.06.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
