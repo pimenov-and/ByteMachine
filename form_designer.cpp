@@ -28,6 +28,18 @@ FormDesigner::~FormDesigner()
 }
 
 //==============================================================
+// Задание видимости сетки
+//==============================================================
+void FormDesigner::setGridVisible(bool visible)
+{
+    if (isGridVisible_ != visible)
+    {
+        isGridVisible_ = visible;
+        update();
+    }
+}
+
+//==============================================================
 // Функция вызывается при перерисовке
 //==============================================================
 void FormDesigner::paintEvent(QPaintEvent *event)
@@ -69,6 +81,11 @@ void FormDesigner::fillBackgound(QPainter *painter, const QRect &clipRect) const
 //==============================================================
 void FormDesigner::drawGrid(QPainter *painter) const
 {
+    if (!isGridVisible_)
+    {
+        return;
+    }
+
     const QColor color{225, 225, 225};
     painter->setPen(color);
 

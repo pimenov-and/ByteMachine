@@ -46,6 +46,14 @@ void MainWindow::slotSettingsPanelVisibleChanged(bool visible)
 }
 
 //==============================================================
+// Функция вызывается при изменении видимости сетки дизайнера
+//==============================================================
+void MainWindow::slotDesignerGridVisible(bool visible)
+{
+    ui_->widgetDesigner_->setGridVisible(visible);
+}
+
+//==============================================================
 // Функция вызывается при выборе пункта главного меню "О программе"
 //==============================================================
 void MainWindow::slotShowAboutProg()
@@ -68,6 +76,8 @@ void MainWindow::setConnections()
         this, &MainWindow::slotNodesPanelVisibleChanged);
     connect(ui_->actVisibleSettingsPanel_, &QAction::triggered,
         this, &MainWindow::slotSettingsPanelVisibleChanged);
+    connect(ui_->actVisibleDesignerGrid_, &QAction::triggered,
+            this, &MainWindow::slotDesignerGridVisible);
 
     // Меню "Tools"
 

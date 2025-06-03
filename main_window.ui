@@ -507,8 +507,14 @@ QScrollArea::scrollAreaDesigner_ {
    </property>
   </action>
   <action name="actVisibleDesignerGrid_">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">

@@ -25,6 +25,11 @@ public:
     explicit FormDesigner(QWidget *parent = nullptr);
     // Деструктор
     ~FormDesigner() override;
+
+    // Получение видимости сетки
+    bool isGridVisible() const { return isGridVisible_; }
+    // Задание видимости сетки
+    void setGridVisible(bool visible);
 private slots:
     // Функция вызывается при перерисовке
     void paintEvent(QPaintEvent *event) override;
@@ -59,6 +64,8 @@ private:
 
     // Интерфейс пользователя
     Ui::FormDesigner *ui_{nullptr};
+    // Видимость сетки
+    bool isGridVisible_{true};
 };
 
 //==============================================================

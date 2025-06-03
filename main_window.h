@@ -32,6 +32,8 @@ private slots:
     void slotNodesPanelVisibleChanged(bool visible);
     // Функция вызывается при изменении видимости панели свойств
     void slotSettingsPanelVisibleChanged(bool visible);
+    // Функция вызывается при изменении видимости сетки дизайнера
+    void slotDesignerGridVisible(bool visible);
 
     // Функция вызывается при выборе пункта главного меню "О программе"
     void slotShowAboutProg();
