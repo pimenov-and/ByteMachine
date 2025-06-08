@@ -16,12 +16,14 @@ SOURCES += main.cpp \
     form_designer.cpp \
     form_node_panel_item.cpp \
     main_window.cpp \
+    project.cpp \
     status_bar.cpp
 
 HEADERS += main_window.h \
     dialog_about_prog.h \
     form_designer.h \
     form_node_panel_item.h \
+    project.h \
     status_bar.h
 
 FORMS += main_window.ui \
