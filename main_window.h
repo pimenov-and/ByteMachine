@@ -40,6 +40,16 @@ private slots:
 private:
     // Задание соединений
     void setConnections();
+    // Инициализация панели с узлами
+    void initNodesPanel();
+    // Создание вкладки Standart для панели Nodes
+    QWidget* createStandartPage();
+    // Создание вкладки Visualization для панели Nodes
+    QWidget* createVisualizationPage();
+    // Создание вкладки Script для панели Nodes
+    QWidget* createScriptPage();
+    // Создание вкладки Other для панели Nodes
+    QWidget* createOtherPage();
 
     // Интерфейс пользователя
     Ui::MainWindow *ui_{nullptr};

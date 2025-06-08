@@ -21,5 +21,7 @@
         <file>images/copy.png</file>
         <file>images/cut.png</file>
         <file>images/logo.png</file>
+        <file>images/collapse_arrow_light.png</file>
+        <file>images/standart_node_disable.png</file>
     </qresource>
 </RCC>
