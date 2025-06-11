@@ -28,6 +28,9 @@ public:
     // Деструктор
     ~MainWindow() override;
 private slots:
+    // Сохранить проект как...
+    void slotSaveProjectAs();
+
     // Функция вызывается при изменении видимости панели узлов
     void slotNodesPanelVisibleChanged(bool visible);
     // Функция вызывается при изменении видимости панели свойств

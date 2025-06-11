@@ -3,9 +3,12 @@
 // Главное окно
 ////////////////////////////////////////////////////////////////
 #include "main_window.h"
+// #include "project.h"
 #include "ui_main_window.h"
 #include "dialog_about_prog.h"
 #include "form_node_panel_item.h"
+#include <QFileDialog>
+#include <QDebug>
 
 //==============================================================
 // Конструктор с параметром
@@ -29,6 +32,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
 MainWindow::~MainWindow()
 {
     delete ui_;
+}
+
+//==============================================================
+// Сохранить проект как...
+//==============================================================
+void MainWindow::slotSaveProjectAs()
+{
+    const QString caption = tr("Save project as");
+    const QString filter = "Project (*.bm)";
+    const QString dir = "Project";
+    const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);
+    if (!path.isEmpty())
+    {
+    }
 }
 
 //==============================================================
@@ -70,6 +87,8 @@ void MainWindow::slotShowAboutProg()
 void MainWindow::setConnections()
 {
     // Меню "File"
+    connect(ui_->actSaveAs_, &QAction::triggered,
+        this, &MainWindow::slotSaveProjectAs);
 
     // Меню "Edit"
 
@@ -79,7 +98,7 @@ void MainWindow::setConnections()
     connect(ui_->actVisibleSettingsPanel_, &QAction::triggered,
         this, &MainWindow::slotSettingsPanelVisibleChanged);
     connect(ui_->actVisibleDesignerGrid_, &QAction::triggered,
-            this, &MainWindow::slotDesignerGridVisible);
+        this, &MainWindow::slotDesignerGridVisible);
 
     // Меню "Tools"
 

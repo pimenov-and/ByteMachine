@@ -430,7 +430,7 @@ QScrollArea::scrollAreaDesigner_ {
   </action>
   <action name="actSaveAs_">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Save as...</string>
