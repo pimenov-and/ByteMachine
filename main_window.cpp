@@ -39,7 +39,7 @@ MainWindow::~MainWindow()
 //==============================================================
 void MainWindow::slotSaveProjectAs()
 {
-    const QString caption = tr("Save project as");
+    const QString caption = tr("Save as");
     const QString filter = "Project (*.bm)";
     const QString dir = "Project";
     const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);

@@ -45,10 +45,17 @@ void FormNodePanelItem::paintEvent(QPaintEvent *)
 //==============================================================
 // Функция вызывается при заходе мыши на виджет
 //==============================================================
-void FormNodePanelItem::enterEvent(QEvent *)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+void FormNodePanelItem::enterEvent(QEvent*)
 {
     update();
 }
+#else
+void FormNodePanelItem::enterEvent(QEnterEvent*)
+{
+    update();
+}
+#endif // QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
 //==============================================================
 // Функция вызывается при покидании виджета мышью

@@ -4,14 +4,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += APP_VERSION=\\\"0.013\\\" \
-    APP_BUILD_DATE=\\\"11.06.2025\\\"
+DEFINES += APP_VERSION=\\\"0.014\\\" \
+    APP_BUILD_DATE=\\\"12.06.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
+    base_node.cpp \
     dialog_about_prog.cpp \
     form_designer.cpp \
     form_node_panel_item.cpp \
@@ -20,6 +21,7 @@ SOURCES += main.cpp \
     status_bar.cpp
 
 HEADERS += main_window.h \
+    base_node.h \
     dialog_about_prog.h \
     form_designer.h \
     form_node_panel_item.h \

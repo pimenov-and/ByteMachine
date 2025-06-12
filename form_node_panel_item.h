@@ -24,7 +24,11 @@ private:
     // Функция перерисовки
     void paintEvent(QPaintEvent*) override;
     // Функция вызывается при заходе мыши на виджет
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent(QEvent*) override;
+#else
+    void enterEvent(QEnterEvent*) override;
+#endif // QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     // Функция вызывается при покидании виджета мышью
     void leaveEvent(QEvent*) override;
 
