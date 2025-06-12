@@ -1,31 +1,25 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Базовый класс узла
+// Узел "Generate"
 ////////////////////////////////////////////////////////////////
-#ifndef BASE_NODE_H
-#define BASE_NODE_H
+#ifndef GENERATE_NODE_H
+#define GENERATE_NODE_H
 
 //==============================================================
-#include <QObject>
-#include <QSharedPointer>
-#include "i_xml.h"
+#include "base_node.h"
 
 //==============================================================
-// Базовый класс узла
+// Узел "Generate"
 //==============================================================
-class BaseNode : public QObject, public IXml
+class GenerateNode : public BaseNode
 {
 public:
     // Конструктор с параметром
-    explicit BaseNode(QObject *parent = nullptr);
+    explicit GenerateNode(QObject *parent = nullptr);
     // Деструктор
-    ~BaseNode() override;
+    ~GenerateNode() override;
 private:
 };
 
 //==============================================================
-using ShPtrBaseNode = QSharedPointer<BaseNode>;
-using ShPtrConstBaseNode = QSharedPointer<const BaseNode>;
-
-//==============================================================
-#endif // BASE_NODE_H
+#endif // GENERATE_NODE_H

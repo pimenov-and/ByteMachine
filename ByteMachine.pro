@@ -1,4 +1,4 @@
-QT += core gui
+QT += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,6 +16,7 @@ SOURCES += main.cpp \
     dialog_about_prog.cpp \
     form_designer.cpp \
     form_node_panel_item.cpp \
+    generate_node.cpp \
     main_window.cpp \
     project.cpp \
     status_bar.cpp
@@ -25,6 +26,8 @@ HEADERS += main_window.h \
     dialog_about_prog.h \
     form_designer.h \
     form_node_panel_item.h \
+    generate_node.h \
+    i_xml.h \
     project.h \
     status_bar.h
 
