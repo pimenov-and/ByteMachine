@@ -9,6 +9,8 @@
 #include "form_node_panel_item.h"
 #include "form_project_settings.h"
 #include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 #include <QDebug>
 
 //==============================================================
@@ -48,6 +50,7 @@ void MainWindow::slotSaveProjectAs()
     const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);
     if (!path.isEmpty())
     {
+        // QFile file(path);
     }
 }
 

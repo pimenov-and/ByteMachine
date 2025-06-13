@@ -9,11 +9,12 @@
 #include <QObject>
 #include <QSharedPointer>
 #include "i_xml.h"
+#include "i_to_str.h"
 
 //==============================================================
 // Базовый класс узла
 //==============================================================
-class BaseNode : public QObject, public IXml
+class BaseNode : public QObject, public IXml, public IToStr
 {
 public:
     // Конструктор с параметром
