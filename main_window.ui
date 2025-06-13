@@ -43,6 +43,12 @@ QScrollArea::scrollAreaDesigner_ {
        <bool>false</bool>
       </property>
       <widget class="QGroupBox" name="groupBoxNodes_">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Nodes</string>
        </property>
@@ -112,7 +118,7 @@ QScrollArea::scrollAreaDesigner_ {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>169</width>
+             <width>180</width>
              <height>322</height>
             </rect>
            </property>
@@ -129,7 +135,7 @@ QScrollArea::scrollAreaDesigner_ {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>169</width>
+             <width>180</width>
              <height>322</height>
             </rect>
            </property>
@@ -146,7 +152,7 @@ QScrollArea::scrollAreaDesigner_ {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>169</width>
+             <width>180</width>
              <height>322</height>
             </rect>
            </property>
@@ -163,7 +169,7 @@ QScrollArea::scrollAreaDesigner_ {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>169</width>
+             <width>180</width>
              <height>322</height>
             </rect>
            </property>
@@ -228,6 +234,12 @@ QScrollArea::scrollAreaDesigner_ {
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBoxSettings_">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Settings</string>
        </property>
@@ -259,7 +271,7 @@ QScrollArea::scrollAreaDesigner_ {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>69</width>
+             <width>180</width>
              <height>449</height>
             </rect>
            </property>

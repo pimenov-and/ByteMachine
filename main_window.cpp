@@ -7,6 +7,7 @@
 #include "ui_main_window.h"
 #include "dialog_about_prog.h"
 #include "form_node_panel_item.h"
+#include "form_project_settings.h"
 #include <QFileDialog>
 #include <QDebug>
 
@@ -20,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
 
     initNodesPanel();
     setConnections();
+
+    ui_->scrollAreaSettings_->setWidget(new FormProjectSettings{});
 
     // Показ версии в заголовке окна
     const QString version = QString{"%1 %2"}.arg("ByteMachine", APP_VERSION);
