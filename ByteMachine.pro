@@ -32,7 +32,6 @@ HEADERS += main_window.h \
     form_node_panel_item.h \
     form_project_settings.h \
     generate_node.h \
-    i_project_settings.h \
     i_to_str.h \
     i_xml.h \
     node_types.h \

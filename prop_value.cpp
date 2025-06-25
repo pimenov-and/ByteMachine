@@ -15,5 +15,4 @@ PropValue::PropValue(const QString &name, const QVariant &value,
     this->name = name;
     this->value = value;
     this->oldValue = oldValue;
-    // this->isUndo = isUndo;
 }

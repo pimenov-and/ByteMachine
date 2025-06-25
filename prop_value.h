@@ -30,8 +30,6 @@ struct PropValue : public IToStr
     QVariant value{};
     // Старое значение
     QVariant oldValue{};
-    // Признак необходимости регистрации в механизме отмены
-    // bool isUndo{true};
 };
 
 //==============================================================
