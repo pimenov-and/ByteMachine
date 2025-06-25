@@ -4,8 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += APP_VERSION=\\\"0.015\\\" \
-    APP_BUILD_DATE=\\\"13.06.2025\\\"
+DEFINES += APP_VERSION=\\\"0.024\\\" \
+    APP_BUILD_DATE=\\\"25.06.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -19,8 +19,11 @@ SOURCES += main.cpp \
     form_project_settings.cpp \
     generate_node.cpp \
     main_window.cpp \
+    node_types.cpp \
     project.cpp \
-    status_bar.cpp
+    prop_value.cpp \
+    status_bar.cpp \
+    undo_change_object_prop_value.cpp
 
 HEADERS += main_window.h \
     base_node.h \
@@ -29,10 +32,14 @@ HEADERS += main_window.h \
     form_node_panel_item.h \
     form_project_settings.h \
     generate_node.h \
+    i_project_settings.h \
     i_to_str.h \
     i_xml.h \
+    node_types.h \
     project.h \
-    status_bar.h
+    prop_value.h \
+    status_bar.h \
+    undo_change_object_prop_value.h
 
 FORMS += main_window.ui \
     dialog_about_prog.ui \

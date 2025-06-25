@@ -9,7 +9,6 @@
 //==============================================================
 GenerateNode::GenerateNode(QObject *parent) : BaseNode{parent}
 {
-
 }
 
 //==============================================================
@@ -17,5 +16,4 @@ GenerateNode::GenerateNode(QObject *parent) : BaseNode{parent}
 //==============================================================
 GenerateNode::~GenerateNode()
 {
-
 }

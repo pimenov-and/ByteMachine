@@ -63,11 +63,17 @@ QScrollArea::scrollAreaDesigner_ {
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="contextMenuPolicy">
+             <enum>Qt::NoContextMenu</enum>
+            </property>
             <property name="styleSheet">
              <string notr="true">color: gray;</string>
             </property>
             <property name="text">
              <string>Filter</string>
+            </property>
+            <property name="maxLength">
+             <number>64</number>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -400,7 +406,7 @@ QScrollArea::scrollAreaDesigner_ {
   </action>
   <action name="actOpen_">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">

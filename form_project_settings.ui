@@ -38,7 +38,13 @@
      <item>
       <widget class="QLineEdit" name="lineEditName_">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="maxLength">
+        <number>32</number>
        </property>
       </widget>
      </item>
@@ -60,7 +66,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Reset Value</string>
+        <string>Reset value</string>
        </property>
        <property name="text">
         <string/>
@@ -100,7 +106,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Reset Value</string>
+        <string>Reset value</string>
        </property>
        <property name="text">
         <string/>
@@ -116,7 +122,7 @@
    <item>
     <widget class="QPlainTextEdit" name="plainTextEditComment_">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="minimumSize">
       <size>
@@ -129,6 +135,9 @@
        <width>16777215</width>
        <height>90</height>
       </size>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
      </property>
     </widget>
    </item>

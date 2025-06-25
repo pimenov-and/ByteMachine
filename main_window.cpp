@@ -24,11 +24,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
     initNodesPanel();
     setConnections();
 
-    ui_->scrollAreaSettings_->setWidget(new FormProjectSettings{});
+    ui_->scrollAreaSettings_->setWidget(new FormProjectSettings{project()});
 
     // Показ версии в заголовке окна
     const QString version = QString{"%1 %2"}.arg("ByteMachine", APP_VERSION);
     setWindowTitle(version);
+
+    // Добавление действий Undo/Redo в меню Edit
+    QAction *const actUndo = project()->createActionUndo();
+    QAction *const actRedo = project()->createActionRedo();
+    ui_->menuEdit_->insertActions(ui_->actUndo_, {actUndo, actRedo});
+    ui_->toolBar_->insertActions(ui_->actUndo_, {actUndo, actRedo});
+    delete ui_->actUndo_;
+    delete ui_->actRedo_;
 }
 
 //==============================================================
@@ -40,17 +48,34 @@ MainWindow::~MainWindow()
 }
 
 //==============================================================
+// Открыть проект
+//==============================================================
+void MainWindow::slotOpenProject()
+{
+    const QString caption = "Open project";
+    const QString filter = "Project (*.bm)";
+    const QString dir{};
+    const QString path = QFileDialog::getOpenFileName(this, caption, dir, filter);
+    if (!path.isEmpty())
+    {
+    }
+}
+
+//==============================================================
 // Сохранить проект как...
 //==============================================================
 void MainWindow::slotSaveProjectAs()
 {
-    const QString caption = tr("Save as");
+    const QString caption = "Save project as";
     const QString filter = "Project (*.bm)";
     const QString dir = "Project";
     const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);
     if (!path.isEmpty())
     {
-        // QFile file(path);
+        QFile file{path};
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+        }
     }
 }
 
@@ -93,6 +118,8 @@ void MainWindow::slotShowAboutProg()
 void MainWindow::setConnections()
 {
     // Меню "File"
+    connect(ui_->actOpen_, &QAction::triggered,
+        this, &MainWindow::slotOpenProject);
     connect(ui_->actSaveAs_, &QAction::triggered,
         this, &MainWindow::slotSaveProjectAs);
 

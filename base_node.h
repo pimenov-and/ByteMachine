@@ -10,6 +10,10 @@
 #include <QSharedPointer>
 #include "i_xml.h"
 #include "i_to_str.h"
+// #include "prop_value.h"
+
+//==============================================================
+class QPainter;
 
 //==============================================================
 // Базовый класс узла
@@ -21,6 +25,10 @@ public:
     explicit BaseNode(QObject *parent = nullptr);
     // Деструктор
     ~BaseNode() override;
+signals:
+protected:
+    // Имя
+    QString name_{};
 private:
 };
 
