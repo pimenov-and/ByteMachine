@@ -7,7 +7,6 @@
 
 //==============================================================
 #include <QString>
-#include <QVector>
 #include <QMetaType>
 
 //==============================================================
@@ -22,16 +21,18 @@ enum class NodeTypes
     Skip,
     Reverse,
     Merge,
-    Struct,
-    Dump,
-    Paint,
-    Size,
     OutFile,
-    Non,
+    PaintOp,
+    Size,
+    Dump,
+    Struct,
+    Graph,
     SIn,
     SChange,
     SMerge,
     SOut,
+    Block,
+    Non,
     Count
 };
 
@@ -41,6 +42,10 @@ Q_DECLARE_METATYPE(NodeTypes);
 //==============================================================
 // Прототипы функций
 //==============================================================
+// Конвертация типа узла в строку
+QString nodeTypeToStr(NodeTypes type);
+// Конвертация строки в тип узла
+NodeTypes strToNodeType(const QString &str);
 
 //==============================================================
 #endif // NODE_TYPES_H
