@@ -11,7 +11,7 @@
 //==============================================================
 // Виджет узла на панели узлов
 //==============================================================
-class FormNodePanelItem : public QWidget
+class FormNodePanelItem final : public QWidget
 {
     Q_OBJECT
 public:

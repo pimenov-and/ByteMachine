@@ -23,5 +23,6 @@
         <file>images/logo.png</file>
         <file>images/collapse_arrow_light.png</file>
         <file>images/standart_node_disable.png</file>
+        <file>images/expand_arrow_light.png</file>
     </qresource>
 </RCC>

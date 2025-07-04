@@ -1,25 +1,25 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Функция отмены для операции задания имени проекта
+// Функция отмены добавления узла
 ////////////////////////////////////////////////////////////////
-#ifndef UNDO_CHANGE_OBJECT_PROP_VALUE_H
-#define UNDO_CHANGE_OBJECT_PROP_VALUE_H
+#ifndef UNDO_ADD_NODE_H
+#define UNDO_ADD_NODE_H
 
 //==============================================================
 #include <QUndoCommand>
-#include <QVariant>
+
+//==============================================================
+class Project;
 
 //==============================================================
 // Функция отмены для операции задания имени проекта
 //==============================================================
-class UndoChangeObjectPropValue : public QUndoCommand
+class UndoAddNode : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
-    UndoChangeObjectPropValue(QObject *object, const QString &propName,
-        const QVariant &propValue, const QVariant &oldPropValue);
     // Деструктор
-    ~UndoChangeObjectPropValue();
+    ~UndoAddNode();
 
     // Функция отмены
     void undo() override;
@@ -27,14 +27,8 @@ public:
     void redo() override;
 private:
     // Проект
-    QObject *object_{nullptr};
-    // Имя свойства
-    QString propName_{};
-    // Значение свойства
-    QVariant propValue_{};
-    // Старое значение свойства
-    QVariant oldPropValue_{};
+    Project *project_{nullptr};
 };
 
 //==============================================================
-#endif // UNDO_CHANGE_OBJECT_PROP_VALUE_H
+#endif // UNDO_ADD_NODE_H

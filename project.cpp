@@ -33,18 +33,25 @@ void Project::setName(const QString &name)
 
     if (name_ != n)
     {
-        const QString oldName = name_;
-        name_ = n;
-
-        if (!isUndo_)
+        if (!n.isEmpty())
         {
-            const auto undoCmd = new UndoChangeObjectPropValue{this,
-                "name", name_, oldName};
-            undoStack_.push(undoCmd);
-        }
+            if (!isUndo_)
+            {
+                const QString oldName = name_;
+                const auto undoCmd = new UndoChangeObjectPropValue{this,
+                    "name", n, oldName};
+                undoStack_.push(undoCmd);
+            }
 
-        const PropValue value{"name", name_, oldName};
-        emit sigChangedProp(value);
+            name_ = n;
+            const PropValue value{"name", name_};
+            emit sigChangedProp(value);
+        }
+        else
+        {
+            const PropValue value{"name", name_};
+            emit sigChangedProp(value);
+        }
     }
 }
 
@@ -63,17 +70,16 @@ void Project::setComment(const QString &comment)
 {
     if (comment_ != comment)
     {
-        const QString oldComment = comment_;
-        comment_ = comment;
-
         if (!isUndo_)
         {
+            const QString oldComment = comment_;
             const auto undoCmd = new UndoChangeObjectPropValue{this,
                 "comment", comment_, oldComment};
             undoStack_.push(undoCmd);
         }
 
-        const PropValue value{"comment", comment, oldComment};
+        comment_ = comment;
+        const PropValue value{"comment", comment};
         emit sigChangedProp(value);
     }
 }

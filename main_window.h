@@ -42,6 +42,9 @@ private slots:
 
     // Функция вызывается при выборе пункта главного меню "О программе"
     void slotShowAboutProg();
+private slots:
+    // Функция вызывается при изменении страницы панели с узлами
+    void slotNodesPageChanged(int index);
 private:
     // Задание соединений
     void setConnections();

@@ -9,14 +9,13 @@
 #include <QObject>
 #include <QVector>
 #include <QUndoStack>
-#include "i_project_settings.h"
 #include "base_node.h"
 #include "prop_value.h"
 
 //==============================================================
 // Класс проекта
 //==============================================================
-class Project : public QObject, public IProjectSettings
+class Project : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY_MOVE(Project)
@@ -28,21 +27,21 @@ public:
     static Project* instance();
 
     // Получение имени
-    QString name() const override { return name_; }
+    QString name() const { return name_; }
     // Задание имени
-    void setName(const QString &name) override;
+    void setName(const QString &name);
     // Сброс имени
-    void resetName() override;
+    void resetName();
     // Получение признака изменения имени
-    bool isNameChanged() const override { return name_ != "Project"; }
+    bool isNameChanged() const { return name_ != "Project"; }
     // Получение комментария
-    QString comment() const override { return comment_; }
+    QString comment() const { return comment_; }
     // Задание комментария
-    void setComment(const QString &comment) override;
+    void setComment(const QString &comment);
     // Сброс комментария
-    void resetComment() override;
+    void resetComment();
     // Получение признака изменения комментария
-    bool isCommentChanged() const override { return !comment_.isEmpty(); }
+    bool isCommentChanged() const { return !comment_.isEmpty(); }
 
     // Получение признака режима отмены
     bool isUndo() const { return isUndo_; }

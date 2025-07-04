@@ -40,6 +40,7 @@ void FormProjectSettings::slotSettingsChanged(PropValue value)
     {
         const QString projectName = project_->name();
         ui_.lineEditName_->setText(projectName);
+        ui_.lineEditName_->setToolTip(projectName);
         emit ui_.lineEditName_->returnPressed();
         const bool isProjectNameChanged = project_->isNameChanged();
         ui_.pushBtnResetName_->setEnabled(isProjectNameChanged);

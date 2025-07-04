@@ -21,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
 {
     ui_->setupUi(this);
 
-    initNodesPanel();
     setConnections();
+    initNodesPanel();
 
     ui_->scrollAreaSettings_->setWidget(new FormProjectSettings{project()});
 
@@ -113,6 +113,24 @@ void MainWindow::slotShowAboutProg()
 }
 
 //==============================================================
+// Функция вызывается при изменении страницы панели с узлами
+//==============================================================
+void MainWindow::slotNodesPageChanged(int index)
+{
+    if (index == -1)
+    {
+        return;
+    }
+
+    for (int i = 0; i < ui_->toolBoxNodes_->count(); ++i)
+    {
+        ui_->toolBoxNodes_->setItemIcon(i, QIcon{":/res_images/images/collapse_arrow_light.png"});
+    }
+
+    ui_->toolBoxNodes_->setItemIcon(index, QIcon{":/res_images/images/expand_arrow_light.png"});
+}
+
+//==============================================================
 // Задание соединений
 //==============================================================
 void MainWindow::setConnections()
@@ -138,6 +156,10 @@ void MainWindow::setConnections()
     // Меню "Help"
     connect(ui_->actAboutProg_, &QAction::triggered,
         this, &MainWindow::slotShowAboutProg);
+
+    // Панель с узлами
+    connect(ui_->toolBoxNodes_, &QToolBox::currentChanged,
+        this, &MainWindow::slotNodesPageChanged);
 }
 
 //==============================================================
@@ -180,7 +202,6 @@ QWidget* MainWindow::createStandartPage()
     pageLayout->setSpacing(0);
 
     const auto generateItem = new FormNodePanelItem{"Generate"};
-    generateItem->setEnabled(false);
     pageLayout->addWidget(generateItem);
 
     const auto inFileItem = new FormNodePanelItem{"InFile"};
@@ -244,6 +265,11 @@ QWidget* MainWindow::createVisualizationPage()
     const auto graphItem = new FormNodePanelItem{"Graph"};
     graphItem->setEnabled(false);
     pageLayout->addWidget(graphItem);
+
+    const auto paintItem = new FormNodePanelItem{"Paint"};
+    paintItem->setEnabled(false);
+    pageLayout->addWidget(paintItem);
+
 
     auto spacer = new QSpacerItem{20, 40, QSizePolicy::Minimum,
         QSizePolicy::Expanding};

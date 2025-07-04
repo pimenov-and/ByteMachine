@@ -18,8 +18,7 @@ struct PropValue : public IToStr
     // Конструктор по умолчанию
     PropValue() = default;
     // Конструктор с параметрами
-    PropValue(const QString &name, const QVariant &value,
-        const QVariant &oldValue);
+    PropValue(const QString &name, const QVariant &value);
 
     // Получение представления в виде строки
     QString toStr() const override { return name; }
@@ -28,8 +27,6 @@ struct PropValue : public IToStr
     QString name{};
     // Значение
     QVariant value{};
-    // Старое значение
-    QVariant oldValue{};
 };
 
 //==============================================================

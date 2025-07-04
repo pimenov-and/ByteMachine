@@ -1,16 +1,18 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Описание значения свойства
+// Базовый класс пина
 ////////////////////////////////////////////////////////////////
-#include "prop_value.h"
+#include "base_pin.h"
+#include <QDebug>
 
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-PropValue::PropValue(const QString &name, const QVariant &value)
+BasePin::BasePin(BaseNode *parentNode, int index)
 {
-    Q_ASSERT(!name.isEmpty());
+    Q_ASSERT(parentNode != nullptr);
+    Q_ASSERT_X(index >= 0, "Check index", qPrintable(QString::number(index)));
 
-    this->name = name;
-    this->value = value;
+    parentNode_ = parentNode;
+    index_ = index;
 }

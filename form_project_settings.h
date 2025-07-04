@@ -20,7 +20,7 @@ class ProjectSettings;
 //==============================================================
 // Виджет с настроеками проекта
 //==============================================================
-class FormProjectSettings : public QWidget
+class FormProjectSettings final : public QWidget
 {
     Q_OBJECT
 public:

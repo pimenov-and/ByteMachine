@@ -130,7 +130,6 @@ QMenu* FormDesigner::createStandartNodesContextMenu() const
 
     QAction *const actGenerate = menu->addAction("Generate");
     actGenerate->setIcon(QIcon{":/res_images/images/standart_node.png"});
-    actGenerate->setEnabled(false);
     // connect(actGenerate, &QAction::triggered,
     //     this, &FormDesigner::slotAddNodeFromContextMenu);
 

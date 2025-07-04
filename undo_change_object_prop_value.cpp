@@ -21,6 +21,13 @@ UndoChangeObjectPropValue::UndoChangeObjectPropValue(QObject *object,
 }
 
 //==============================================================
+// Деструктор
+//==============================================================
+UndoChangeObjectPropValue::~UndoChangeObjectPropValue()
+{
+}
+
+//==============================================================
 // Функция отмены
 //==============================================================
 void UndoChangeObjectPropValue::undo()

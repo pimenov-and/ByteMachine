@@ -56,11 +56,11 @@ void StatusBar::drawNumberOfNodes(QPainter *painter) const
 {
     Q_ASSERT(painter != nullptr);
 
-    /* painter->setPen(Qt::white);
+    painter->setPen(Qt::white);
     constexpr int textFlags = Qt::AlignLeft | Qt::AlignVCenter;
-    const QString text = QString{"%1: %2"}.arg(tr("Number of nodes")).arg(project()->nodeCount());
+    const QString text = QString{"%1: 0"}.arg(tr("Number of nodes"));
     const QRect textRect{5, 0, width() - 8, height()};
-    painter->drawText(textRect, textFlags, text); */
+    painter->drawText(textRect, textFlags, text);
 }
 
 //==============================================================

@@ -27,6 +27,7 @@ public:
     ~FormDesigner() override;
 
     // Получение видимости сетки
+    [[nodiscard]]
     bool isGridVisible() const { return isGridVisible_; }
     // Задание видимости сетки
     void setGridVisible(bool visible);
