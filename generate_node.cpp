@@ -57,7 +57,10 @@ void GenerateNode::draw(QPainter *painter) const
 //==============================================================
 QSharedPointer<BaseNode> GenerateNode::clone() const
 {
-    return nullptr;
+    const auto cloneNode = ShPtrGenerateNode::create(undoStack());
+    cloneNode->setGenerateType(generateType());
+
+    return cloneNode;
 }
 
 //==============================================================
@@ -128,8 +131,62 @@ void GenerateNode::resetGenerateType()
 }
 
 //==============================================================
+// Задание количества байтов
+//==============================================================
+void GenerateNode::setByteCount(qint32 count)
+{
+    Q_ASSERT_X(count >= 0, "Check byte count", qPrintable(QString::number(count)));
+}
+
+//==============================================================
+// Сброс количества байтов
+//==============================================================
+void GenerateNode::resetByteCount()
+{
+    setByteCount(0);
+}
+
+//==============================================================
 // Создание выходного пина
 //==============================================================
 void GenerateNode::createOutputPin()
 {
+}
+
+//==============================================================
+// Чтение типа значения из XML
+//==============================================================
+GenerateTypes GenerateNode::readGenerateTypeFromXml(const QDomElement &elem) const
+{
+    Q_UNUSED(elem);
+
+    return GenerateTypes::Unknown;
+}
+
+//==============================================================
+// Чтение значения из XML в зависимости от текущего типа генерации
+//==============================================================
+QVariant GenerateNode::readValueFromXml(const QDomElement &elem) const
+{
+    Q_UNUSED(elem);
+
+    return QString{};
+}
+
+//==============================================================
+// Запись типа генерации в XML
+//==============================================================
+void GenerateNode::writeGenerateTypeToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_UNUSED(doc);
+    Q_UNUSED(elem);
+}
+
+//==============================================================
+// Запись количества генерируемых байт в XML
+//==============================================================
+void GenerateNode::writeByteCountToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_UNUSED(doc);
+    Q_UNUSED(elem);
 }

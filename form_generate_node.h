@@ -7,6 +7,7 @@
 
 //==============================================================
 #include <QWidget>
+#include "ui_form_generate_node.h"
 #include "prop_value.h"
 
 //==============================================================
@@ -33,18 +34,22 @@ private slots:
     void slotChangedNodeProp(PropValue value);
     // Функция вызывается при завершении редактирования имени
     void slotEditingFinishedName();
+    // Функция вызывается при изменении типа генерации
+    void slotChangedGenerateType(int index);
+    // Сброс типа генерации
+    void slotResetGenerateType();
     // Функция вызывается при завершении редактирования комментария
     void slotEditingFinishedComment();
     // Сброс комментария
     void slotResetComment();
 private:
-    // Задание соединений
-    void setConnections();
     // Задание узла
     void setNode(GenerateNode *node);
+    // Задание соединений
+    void setConnections();
 
     // Интерфейс пользователя
-    Ui::FormGenerateNode *ui_{nullptr};
+    Ui::FormGenerateNode ui_{};
     // Узел
     GenerateNode *node_{nullptr};
 };

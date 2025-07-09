@@ -18,7 +18,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QGroupBox {
-    border: 1px solid gray;
+    border: 1px solid rgb(160, 160, 160);
     margin-top: 0.5em;
 }
 
@@ -28,8 +28,8 @@ QGroupBox::title {
     padding: 0 3px 0 3px;
 }
 
-QScrollArea::scrollAreaDesigner_ {
-	border: 1px solid gray;
+#scrollAreaDesigner_ {
+	border: 1px solid rgb(160, 160, 160);
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -67,7 +67,10 @@ QScrollArea::scrollAreaDesigner_ {
              <enum>Qt::NoContextMenu</enum>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: gray;</string>
+             <string notr="true">border: 1px solid rgb(160, 160, 160);
+padding: 1px;
+color: rgb(160, 160, 160);
+</string>
             </property>
             <property name="text">
              <string>Filter</string>
@@ -116,8 +119,13 @@ QScrollArea::scrollAreaDesigner_ {
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QToolBox::tab {
+	border: 1px solid rgb(160, 160, 160);
+}</string>
+          </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageStandartNodes_">
            <property name="geometry">
@@ -197,6 +205,9 @@ QScrollArea::scrollAreaDesigner_ {
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>

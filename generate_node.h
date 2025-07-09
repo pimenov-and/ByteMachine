@@ -17,6 +17,7 @@ class GenerateNode final : public BaseNode
 {
     Q_OBJECT
     Q_PROPERTY(GenerateTypes generateType READ generateType WRITE setGenerateType RESET resetGenerateType)
+    Q_PROPERTY(qint32 byteCount READ byteCount WRITE setByteCount RESET resetByteCount)
 public:
     // Конструктор с параметром
     explicit GenerateNode(QUndoStack *undoStack, QObject *parent = nullptr);
@@ -60,6 +61,16 @@ public:
     // Получение признака изменения типа генерации
     [[nodiscard]]
     bool isGenerateTypeChanged() const { return !isUsual(generateType_); }
+    // Получение количества байтов
+    [[nodiscard]]
+    qint32 byteCount() const { return byteCount_; }
+    // Задание количества байтов
+    void setByteCount(qint32 count);
+    // Сброс количества байтов
+    void resetByteCount();
+    // Получение признака изменения количества байтов
+    [[nodiscard]]
+    bool isByteCountChanged() const { return byteCount_ != 0; }
 private slots:
 private:
     // Создание выходного пина
@@ -68,6 +79,20 @@ private:
     //----------------------------------------------------------
     // Чтение значений из XML
     //----------------------------------------------------------
+    // Чтение типа значения из XML
+    [[nodiscard]]
+    GenerateTypes readGenerateTypeFromXml(const QDomElement &elem) const;
+    // Чтение значения из XML в зависимости от текущего типа генерации
+    [[nodiscard]]
+    QVariant readValueFromXml(const QDomElement &elem) const;
+
+    //----------------------------------------------------------
+    // Запись значений в XML
+    //----------------------------------------------------------
+    // Запись типа генерации в XML
+    void writeGenerateTypeToXml(QDomDocument &doc, QDomElement &elem) const;
+    // Запись количества генерируемых байт в XML
+    void writeByteCountToXml(QDomDocument &doc, QDomElement &elem) const;
 
     //----------------------------------------------------------
     // Генерируемые значения

@@ -4,14 +4,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-DEFINES += APP_VERSION=\\\"0.031\\\" \
-    APP_BUILD_DATE=\\\"04.07.2025\\\"
+DEFINES += APP_VERSION=\\\"0.034\\\" \
+    APP_BUILD_DATE=\\\"07.07.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
+    base_exception.cpp \
     base_node.cpp \
     base_pin.cpp \
     byte_widths.cpp \
@@ -23,11 +24,14 @@ SOURCES += main.cpp \
     form_project_settings.cpp \
     generate_node.cpp \
     generate_types.cpp \
+    input_pin.cpp \
     main_window.cpp \
     node_name_manager.cpp \
     node_state_info.cpp \
     node_states.cpp \
     node_types.cpp \
+    output_pin.cpp \
+    pin_connection.cpp \
     project.cpp \
     prop_value.cpp \
     qt_helper.cpp \
@@ -37,6 +41,7 @@ SOURCES += main.cpp \
     undo_remove_node.cpp
 
 HEADERS += main_window.h \
+    base_exception.h \
     base_node.h \
     base_pin.h \
     byte_widths.h \
@@ -51,10 +56,13 @@ HEADERS += main_window.h \
     i_data.h \
     i_to_str.h \
     i_xml.h \
+    input_pin.h \
     node_name_manager.h \
     node_state_info.h \
     node_states.h \
     node_types.h \
+    output_pin.h \
+    pin_connection.h \
     project.h \
     prop_value.h \
     qt_helper.h \

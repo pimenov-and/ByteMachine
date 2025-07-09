@@ -3,19 +3,17 @@
 // Виджет для настройки узла "Generate"
 ////////////////////////////////////////////////////////////////
 #include "form_generate_node.h"
-#include "ui_form_generate_node.h"
 #include "generate_node.h"
 
 //==============================================================
 // Конструктор с параметром
 //==============================================================
 FormGenerateNode::FormGenerateNode(GenerateNode *node, QWidget *parent) :
-    QWidget{parent},
-    ui_{new Ui::FormGenerateNode{}}
+    QWidget{parent}
 {
     Q_ASSERT(node != nullptr);
 
-    ui_->setupUi(this);
+    ui_.setupUi(this);
 
     setNode(node);
     setConnections();
@@ -26,7 +24,6 @@ FormGenerateNode::FormGenerateNode(GenerateNode *node, QWidget *parent) :
 //==============================================================
 FormGenerateNode::~FormGenerateNode()
 {
-    delete ui_;
 }
 
 //==============================================================
@@ -52,11 +49,29 @@ void FormGenerateNode::slotEditingFinishedName()
 }
 
 //==============================================================
+// Функция вызывается при изменении типа генерации
+//==============================================================
+void FormGenerateNode::slotChangedGenerateType(int index)
+{
+    if (index == -1)
+    {
+        return;
+    }
+}
+
+//==============================================================
+// Сброс типа генерации
+//==============================================================
+void FormGenerateNode::slotResetGenerateType()
+{
+}
+
+//==============================================================
 // Функция вызывается при завершении редактирования комментария
 //==============================================================
 void FormGenerateNode::slotEditingFinishedComment()
 {
-    const QString comment = ui_->lineEditComment_->text();
+    const QString comment = ui_.lineEditComment_->text();
     node_->setComment(comment);
 }
 
@@ -67,7 +82,7 @@ void FormGenerateNode::slotResetComment()
 {
     node_->resetComment();
 
-    ui_->lineEditComment_->setFocus();
+    ui_.lineEditComment_->setFocus();
 }
 
 //==============================================================
@@ -75,6 +90,16 @@ void FormGenerateNode::slotResetComment()
 //==============================================================
 void FormGenerateNode::setConnections()
 {
+    connect(node_, &BaseNode::sigChangedProp,
+        this, &FormGenerateNode::slotChangedNodeProp);
+
+    connect(ui_.lineEditName_, &QLineEdit::editingFinished,
+        this, &FormGenerateNode::slotEditingFinishedName);
+
+    connect(ui_.lineEditComment_, &QLineEdit::editingFinished,
+        this, &FormGenerateNode::slotEditingFinishedComment);
+    connect(ui_.pushBtnResetComment_, &QPushButton::clicked,
+        this, &FormGenerateNode::slotResetComment);
 }
 
 //==============================================================
