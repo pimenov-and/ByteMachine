@@ -10,11 +10,3 @@
 BaseException::BaseException(const QString &msg) : msg_{msg}
 {
 }
-
-//==============================================================
-// Получение сообщения
-//==============================================================
-QString BaseException::msg() const
-{
-    return msg_;
-}

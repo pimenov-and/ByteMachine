@@ -3,8 +3,7 @@
 // Менеджер по управлению именами узлов
 ////////////////////////////////////////////////////////////////
 #include "node_name_manager.h"
-#include <QDebug>
-#include <numeric>
+// #include <QDebug>
 
 //==============================================================
 using std::numeric_limits;
@@ -37,7 +36,7 @@ QString NodeNameManager::addName(const QString &name)
     }
     else
     {
-        for (int i = 1; i < numeric_limits<int>::max(); ++i)
+        for (int i = 2; i < numeric_limits<int>::max(); ++i)
         {
             const QString strNum = QString::number(i);
             if (correctName.length() + strNum.length() > maxNameLen_)

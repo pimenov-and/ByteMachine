@@ -7,6 +7,7 @@
 
 //==============================================================
 #include <QUndoCommand>
+#include "base_node.h"
 
 //==============================================================
 class Project;
@@ -18,6 +19,7 @@ class UndoAddNode : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
+    explicit UndoAddNode(Project *project, const ShPtrBaseNode &node);
     // Деструктор
     ~UndoAddNode();
 
@@ -28,6 +30,8 @@ public:
 private:
     // Проект
     Project *project_{nullptr};
+    // Узел
+    ShPtrBaseNode node_{nullptr};
 };
 
 //==============================================================

@@ -172,7 +172,11 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_11">
      <item>
-      <widget class="QSpinBox" name="spinBoxByteCount_"/>
+      <widget class="QSpinBox" name="spinBoxByteCount_">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushBtnResetByteCount_">
@@ -256,6 +260,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_13">
      <item>
       <widget class="QSpinBox" name="spinBoxIntValue_">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
        <property name="maximum">
         <number>255</number>
        </property>
@@ -296,6 +303,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_14">
      <item>
       <widget class="QDoubleSpinBox" name="doubleSpinBoxDoubleValue_">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
        <property name="decimals">
         <number>3</number>
        </property>
@@ -376,7 +386,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="widgetColorValue_" native="true"/>
+    <widget class="FormAdvColor" name="widgetColorValue_" native="true"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -432,6 +442,12 @@
        <height>90</height>
       </size>
      </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid rgb(160, 160, 160);</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -445,6 +461,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_17">
      <item>
       <widget class="QSpinBox" name="spinBoxFilledByte_">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
        <property name="prefix">
         <string>0x</string>
        </property>
@@ -498,6 +517,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_18">
      <item>
       <widget class="QLineEdit" name="lineEditComment_">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
        <property name="maxLength">
         <number>64</number>
        </property>
@@ -582,6 +604,9 @@
        <disabled/>
       </palette>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid rgb(160, 160, 160);</string>
+     </property>
      <property name="undoRedoEnabled">
       <bool>false</bool>
      </property>
@@ -605,6 +630,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FormAdvColor</class>
+   <extends>QWidget</extends>
+   <header>form_adv_color.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="res.qrc"/>
  </resources>

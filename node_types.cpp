@@ -24,6 +24,7 @@ QString nodeTypeToStr(NodeTypes type)
         {NodeTypes::Dump, "Dump"},
         {NodeTypes::Struct, "Struct"},
         {NodeTypes::Graph, "Graph"},
+        {NodeTypes::Paint, "Paint"},
         {NodeTypes::SIn, "SIn"},
         {NodeTypes::SChange, "SChange"},
         {NodeTypes::SMerge, "SMerge"},
@@ -54,6 +55,7 @@ NodeTypes strToNodeType(const QString &str)
         {"Dump", NodeTypes::Dump},
         {"Struct", NodeTypes::Struct},
         {"Graph", NodeTypes::Graph},
+        {"Paint", NodeTypes::Paint},
         {"SIn", NodeTypes::SIn},
         {"SChange", NodeTypes::SChange},
         {"SMerge", NodeTypes::SMerge},
@@ -63,4 +65,42 @@ NodeTypes strToNodeType(const QString &str)
     };
 
     return map.value(str, NodeTypes::Unknown);
+}
+
+//==============================================================
+// Получение значений состояний подключения
+//==============================================================
+QVector<NodeTypes> nodeTypes()
+{
+    return QVector<NodeTypes>
+    {
+        NodeTypes::Generate,
+        NodeTypes::InFile,
+        NodeTypes::Take,
+        NodeTypes::Skip,
+        NodeTypes::Reverse,
+        NodeTypes::Merge,
+        NodeTypes::OutFile,
+        NodeTypes::PaintOp,
+        NodeTypes::Size,
+        NodeTypes::Dump,
+        NodeTypes::Struct,
+        NodeTypes::Graph,
+        NodeTypes::Paint,
+        NodeTypes::SIn,
+        NodeTypes::SChange,
+        NodeTypes::SMerge,
+        NodeTypes::SOut,
+        NodeTypes::Block,
+        NodeTypes::Non,
+        NodeTypes::Count
+    };
+}
+
+//==============================================================
+// Проверка корректности типа узлов
+//==============================================================
+bool isCorrect(NodeTypes type)
+{
+    return nodeTypes().contains(type);
 }

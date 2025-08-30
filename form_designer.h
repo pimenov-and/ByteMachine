@@ -7,6 +7,9 @@
 
 //==============================================================
 #include <QtWidgets>
+#include <QPoint>
+#include "base_node.h"
+#include "ui_form_designer.h"
 
 //==============================================================
 namespace Ui
@@ -32,17 +35,34 @@ public:
     // Задание видимости сетки
     void setGridVisible(bool visible);
 private slots:
+    // Добавление узла через контекстное меню
+    void slotAddNodeFromContextMenu();
+    // Удаление узла через контекстное меню
+    void slotRemoveNodeFromContextMenu();
+private:
     // Функция вызывается при перерисовке
     void paintEvent(QPaintEvent *event) override;
+    // Функция вызывается при нажатии мыши
+    void mousePressEvent(QMouseEvent *event) override;
+    // Функция вызвается при перемещении мыши
+    void mouseMoveEvent(QMouseEvent *event) override;
+    // Функция вызывается при отпускании мыши
+    void mouseReleaseEvent(QMouseEvent *event) override;
     // Функция вызывается при показе контекстного меню
     void contextMenuEvent(QContextMenuEvent *event) override;
-private:
+    // Функция вызывается при приёме перетаскиваемого узла
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    // Функция вызывается при отпускании перетаскиваемого узла
+    void dropEvent(QDropEvent *event) override;
+
     // Задание соединений
     void setConnections();
     // Заливка фона
     void fillBackgound(QPainter *painter, const QRect &clipRect) const;
     // Вывод сетки
     void drawGrid(QPainter *painter) const;
+    // Вывод узлов
+    void drawNodes(QPainter *painter) const;
 
     // Создание контекстного меню
     [[nodiscard]]
@@ -64,9 +84,20 @@ private:
     QMenu* createNodeContextMenu() const;
 
     // Интерфейс пользователя
-    Ui::FormDesigner *ui_{nullptr};
+    Ui::FormDesigner ui_{};
+    // Перемещаемый узел
+    ShPtrBaseNode movingNode_{};
+    // Смещение при захвате перетаскиваемого узла
+    QPoint movingDragOffsetNode_{};
     // Видимость сетки
     bool isGridVisible_{true};
+    // Положение меню
+    QPoint menuPos_{};
+
+    // Признак перетаскивания узла
+    bool isDragNode_{false};
+    // Позиция перетаскиваемого узла
+    QPoint dragNodePos_{};
 };
 
 //==============================================================

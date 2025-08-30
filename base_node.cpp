@@ -3,17 +3,25 @@
 // Базовый класс узла
 ////////////////////////////////////////////////////////////////
 #include "base_node.h"
+#include "node_name_manager.h"
 #include "undo_change_object_prop_value.h"
+#include "colors.h"
+#include "xml_helper.h"
+#include "qt_helper.h"
+#include "base_exception.h"
 #include <QUndoStack>
 #include <QColor>
 #include <QPen>
 #include <QPainter>
+#include <QDomDocument>
 #include <QDebug>
 #include <algorithm>
+#include <optional>
 
 //==============================================================
 using std::find;
 using std::distance;
+using std::optional;
 
 ////////////////////////////////////////////////////////////////
 // Реализация класса BaseNode
@@ -50,18 +58,27 @@ void BaseNode::setName(const QString &name)
 {
     if (name_ != name)
     {
-        if (!isUndo_)
+        QString newName = name;
+        if (name.isEmpty())
         {
-            Q_ASSERT(undoStack_ != nullptr);
-            const QString oldName = name_;
-            const auto undoCmd = new UndoChangeObjectPropValue{this,
-                "name", name, oldName};
-            undoStack_->push(undoCmd);
+            newName = name_;
         }
 
-        name_ = name;
+        nodeNameManager()->removeName(name_);
+        newName = nodeNameManager()->addName(newName);
+
+        const QString oldName = name_;
+        name_ = newName;
         const PropValue value{"name", name_};
         emit sigChangedProp(value);
+
+        if (!isUndo_ && (oldName != newName))
+        {
+            Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "name", newName, oldName};
+            undoStack_->push(undoCmd);
+        }
     }
 }
 
@@ -72,18 +89,18 @@ void BaseNode::setComment(const QString &comment)
 {
     if (comment_ != comment)
     {
+        const QString oldComment = comment_;
+        comment_ = comment;
+        const PropValue value{"comment", comment_};
+        emit sigChangedProp(value);
+
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
-            const QString oldComment = comment_;
             const auto undoCmd = new UndoChangeObjectPropValue{this,
                 "comment", comment, oldComment};
             undoStack_->push(undoCmd);
         }
-
-        comment_ = comment;
-        const PropValue value{"comment", comment_};
-        emit sigChangedProp(value);
     }
 }
 
@@ -140,20 +157,25 @@ void BaseNode::resetUndo()
 //==============================================================
 void BaseNode::setLeft(qint32 left) noexcept
 {
+    if (left < gridSize())
+    {
+        left = gridSize();
+    }
+
     if (left_ != left)
     {
+        const int oldLeft = left_;
+        left_ = left;
+        const PropValue value{"left", left_};
+        emit sigChangedProp(value);
+
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
-            const int oldLeft = left_;
             const auto undoCmd = new UndoChangeObjectPropValue{this,
                 "left", left, oldLeft};
             undoStack_->push(undoCmd);
         }
-
-        left_ = left;
-        const PropValue value{"left", left_};
-        emit sigChangedProp(value);
     }
 }
 
@@ -162,20 +184,25 @@ void BaseNode::setLeft(qint32 left) noexcept
 //==============================================================
 void BaseNode::setTop(qint32 top) noexcept
 {
+    if (top < gridSize())
+    {
+        top = gridSize();
+    }
+
     if (top_ != top)
     {
+        const int oldTop = top_;
+        top_ = top;
+        const PropValue value{"top", top_};
+        emit sigChangedProp(value);
+
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
-            const int oldTop = top_;
             const auto undoCmd = new UndoChangeObjectPropValue{this,
                 "top", top, oldTop};
             undoStack_->push(undoCmd);
         }
-
-        top_ = top;
-        const PropValue value{"top", top_};
-        emit sigChangedProp(value);
     }
 }
 
@@ -186,14 +213,18 @@ void BaseNode::setWidth(qint32 width)
 {
     if (width_ != width)
     {
-        if (!isUndo_)
-        {
-            Q_ASSERT(undoStack_ != nullptr);
-        }
-
+        const int oldWidth = width_;
         width_ = width;
         const PropValue value{"width", width_};
         emit sigChangedProp(value);
+
+        if (!isUndo_)
+        {
+            Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "width", width, oldWidth};
+            undoStack_->push(undoCmd);
+        }
     }
 }
 
@@ -204,14 +235,18 @@ void BaseNode::setHeight(qint32 height)
 {
     if (height_ != height)
     {
-        if (!isUndo_)
-        {
-            Q_ASSERT(undoStack_ != nullptr);
-        }
-
+        const int oldHeight = height_;
         height_ = height;
         const PropValue value{"height", height_};
         emit sigChangedProp(value);
+
+        if (!isUndo_)
+        {
+            Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "height", height, oldHeight};
+            undoStack_->push(undoCmd);
+        }
     }
 }
 
@@ -226,17 +261,35 @@ QPoint BaseNode::center() const
 //==============================================================
 // Задание левого верхнего угла
 //==============================================================
-void BaseNode::setTopLeft(const QPoint &topLeft)
+void BaseNode::setTopLeft(QPoint topLeft)
 {
+    if (topLeft.x() < gridSize())
+    {
+        topLeft.setX(gridSize());
+    }
+    if (topLeft.y() < gridSize())
+    {
+        topLeft.setY(gridSize());
+    }
+
     if (this->topLeft() != topLeft)
     {
+        const int oldLeft = left_;
+        const int oldTop = top_;
+        left_ = topLeft.x();
+        top_ = topLeft.y();
+
+        const PropValue value{"topLeft", topLeft};
+        emit sigChangedProp(value);
+
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "topLeft", QPoint{left_, top_},
+                QPoint{oldLeft, oldTop}};
+            undoStack_->push(undoCmd);
         }
-
-        setLeft(topLeft.x());
-        setTop(topLeft.y());
     }
 }
 
@@ -247,14 +300,60 @@ void BaseNode::setSize(const QSize &size)
 {
     if (this->size() != size)
     {
+        const int oldWidth = width_;
+        const int oldHeight = height_;
+        width_ = size.width();
+        height_ = size.height();
+
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "size", QPoint{width_, height_},
+                QPoint{oldWidth, oldHeight}};
+            undoStack_->push(undoCmd);
         }
-
-        setWidth(size.width());
-        setHeight(size.height());
     }
+}
+
+//==============================================================
+// Начало перемещения
+//==============================================================
+void BaseNode::beginMove(const QPoint &topLeft)
+{
+    isMoving_ = true;
+    movingBeginPos_ = topLeft;
+}
+
+//==============================================================
+// Функция вызывается при перетаскивании
+//==============================================================
+void BaseNode::move(const QPoint &topLeft)
+{
+    if (!isMoving_)
+    {
+        return;
+    }
+
+    setUndo(true);
+    setTopLeft(topLeft);
+    setUndo(false);
+}
+
+//==============================================================
+// Завершение перемещения
+//==============================================================
+void BaseNode::endMove(const QPoint &topLeft)
+{
+    // Формирование операции отмены
+    Q_ASSERT(undoStack_ != nullptr);
+    const QPoint oldPos = movingBeginPos_;
+    const auto undoCmd = new UndoChangeObjectPropValue{this,
+        "topLeft", topLeft, oldPos};
+    undoStack_->push(undoCmd);
+
+    isMoving_ = false;
+    movingBeginPos_ = QPoint{};
 }
 
 //==============================================================
@@ -541,18 +640,581 @@ int BaseNode::indexOfOutputPin(const OutputPin *pin) const
 }
 
 //==============================================================
+// Задание признака выделения
+//==============================================================
+void BaseNode::setSelected(bool selected)
+{
+    if (isSelected_ != selected)
+    {
+        // const bool oldSelected = isSelected_;
+        isSelected_ = selected;
+        PropValue value{"selected", isSelected_};
+        emit sigChangedProp(value);
+
+        /* if (!isUndo_)
+        {
+            Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "selected", isSelected_, oldSelected};
+            undoStack_->push(undoCmd);
+        } */
+    }
+}
+
+//==============================================================
+// Сброс признака выделения
+//==============================================================
+void BaseNode::resetSelected()
+{
+    setSelected(false);
+}
+
+//==============================================================
+// Получение области маркера изменения размера
+//==============================================================
+QRect BaseNode::resizebleMarkerRect() const
+{
+    if (!isResizeble())
+    {
+        return QRect{};
+    }
+
+    constexpr int size = resizebleMarkerSize_ + 2;
+
+    return QRect{right() - size / 2, bottom() - size / 2, size, size};
+}
+
+//==============================================================
+// Получение области с состоянием
+//==============================================================
+QRect BaseNode::stateAreaRect() const
+{
+    if (stateInfo().isSuccess())
+    {
+        return QRect{};
+    }
+
+    return QRect{right() - 8, top() - 8, 16, 16};
+}
+
+//==============================================================
 // Рисование примитивной основы
 //==============================================================
 void BaseNode::drawSimpleBody(QPainter *painter) const
 {
     Q_ASSERT(painter != nullptr);
 
-    const QColor color{110, 110, 110};
-    QPen pen{color, 2};
+    // Вывод основы
+    QPen pen{currentBorderColor(), 2};
+    pen.setJoinStyle(Qt::MiterJoin);
+    painter->setPen(pen);
+    painter->setBrush(Colors::nodeBack());
+    painter->drawRect(rect());
+
+    // Вывод типа
+    painter->setPen(Colors::nodeText());
+    painter->drawText(rect(), Qt::AlignCenter, strType());
+}
+
+//==============================================================
+// Рисование входных пинов
+//==============================================================
+void BaseNode::drawInputPins(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    const QVector<ShPtrConstInputPin> pins = inputPins();
+    for (const ShPtrConstInputPin &pin: pins)
+    {
+        drawPin(painter, pin);
+    }
+}
+
+//==============================================================
+// Рисование выходных пинов
+//==============================================================
+void BaseNode::drawOutputPins(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    const QVector<ShPtrConstOutputPin> pins = outputPins();
+    for (const ShPtrConstOutputPin &pin: pins)
+    {
+        drawPin(painter, pin);
+    }
+}
+
+//==============================================================
+// Получение текущего цвета границы
+//==============================================================
+QColor BaseNode::currentBorderColor() const
+{
+    return !isSelected_ ? Colors::nodeBorder() : Colors::nodeSelectBorder();
+}
+
+//==============================================================
+// Рисование пина
+//==============================================================
+void BaseNode::drawPin(QPainter *painter, const ShPtrConstBasePin &pin) const
+{
+    Q_ASSERT(painter != nullptr);
+    Q_ASSERT(pin != nullptr);
+
+    const QRect pinRect = pin->rect();
+    QPen pen{currentBorderColor(), 2};
     pen.setJoinStyle(Qt::MiterJoin);
     painter->setPen(pen);
     painter->setBrush(Qt::white);
-    painter->drawRect(rect());
+    painter->drawRect(pinRect);
+}
+
+//==============================================================
+// Рисование состояния ошибки
+//==============================================================
+void BaseNode::drawErrorStateArea(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    painter->save();
+
+    painter->setRenderHint(QPainter::Antialiasing);
+
+    painter->setPen({Qt::black, 2.0});
+    painter->setBrush(QColor{255, 107, 107});
+    const int centerX = right();
+    const int centerY = top();
+    const int radius = 8;
+    painter->drawEllipse(QPoint{centerX, centerY}, radius, radius);
+
+    // Вывод восклицательного знака
+    painter->setPen(Qt::black);
+    QFont font = painter->font();
+    font.setBold(true);
+    painter->setFont(font);
+    const QRect textRect{centerX - radius, centerY - radius, 2 * radius, 2 * radius};
+    painter->drawText(textRect, Qt::AlignCenter, "!");
+
+    painter->restore();
+}
+
+//==============================================================
+// Рисование состояния предупреждения
+//==============================================================
+void BaseNode::drawWarningStateArea(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    painter->save();
+
+    painter->setRenderHint(QPainter::Antialiasing);
+
+    painter->setPen({Qt::black, 2.0});
+    painter->setBrush(Qt::yellow);
+    const int centerX = right();
+    const int centerY = top();
+    const int radius = 8;
+    painter->drawEllipse(QPoint{centerX, centerY}, radius, radius);
+
+    // Вывод восклицательного знака
+    painter->setPen(Qt::black);
+    QFont font = painter->font();
+    font.setBold(true);
+    painter->setFont(font);
+    const QRect textRect{centerX - radius, centerY - radius, 2 * radius, 2 * radius};
+    painter->drawText(textRect, Qt::AlignCenter, "!");
+
+    painter->restore();
+}
+
+//==============================================================
+// Чтение имени из XML
+//==============================================================
+QString BaseNode::readNameFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "name";
+
+    // Получение узла
+    const QDomElement elemName = elem.firstChildElement(propName);
+    if (elemName.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strName = readValueFromXml(elemName);
+    if (!strName)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    const optional<QString> name = strFromXmlFormat(strName.value());
+    if (!name)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return name.value();
+}
+
+//==============================================================
+// Чтение смещения слева из XML
+//==============================================================
+qint32 BaseNode::readLeftFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "left";
+
+    // Получение узла
+    const QDomElement elemLeft = elem.firstChildElement(propName);
+    if (elemLeft.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strLeft = readValueFromXml(elemLeft);
+    if (!strLeft)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    bool ok = false;
+    const int left = strLeft.value().toInt(&ok);
+    if (!ok)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return left;
+}
+
+//==============================================================
+// Чтение смещения сверху из XML
+//==============================================================
+qint32 BaseNode::readTopFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "top";
+
+    // Получение узла
+    const QDomElement elemTop = elem.firstChildElement(propName);
+    if (elemTop.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strTop = readValueFromXml(elemTop);
+    if (!strTop)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    bool ok = false;
+    const int top = strTop.value().toInt(&ok);
+    if (!ok)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return top;
+}
+
+//==============================================================
+// Чтение ширины из XML
+//==============================================================
+qint32 BaseNode::readWidthFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "width";
+
+    // Получение узла
+    const QDomElement elemWidth = elem.firstChildElement(propName);
+    if (elemWidth.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strWidth = readValueFromXml(elemWidth);
+    if (!strWidth)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    bool ok = false;
+    const int width = strWidth.value().toInt(&ok);
+    if (!ok)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return width;
+}
+
+//==============================================================
+// Чтение высоты из XML
+//==============================================================
+qint32 BaseNode::readHeightFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "height";
+
+    // Получение узла
+    const QDomElement elemHeight = elem.firstChildElement(propName);
+    if (elemHeight.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strHeight = readValueFromXml(elemHeight);
+    if (!strHeight)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    bool ok = false;
+    const int height = strHeight.value().toInt(&ok);
+    if (!ok)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return height;
+}
+
+//==============================================================
+// Чтение признака пропуска из XML
+//==============================================================
+bool BaseNode::readBypassFromXml(const QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    const QString propName = "bypass";
+
+    // Получение узла
+    const QDomElement elemBypass = elem.firstChildElement(propName);
+    if (elemBypass.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of type %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> strBypass = readValueFromXml(elemBypass);
+    if (!strBypass)
+    {
+        const QString msg = QString{"Not read property \"%1\" of type %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    const optional<bool> bypass = strToBool(strBypass.value());
+    if (!bypass)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of type %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return bypass.value();
+}
+
+//==============================================================
+// Чтение комментария из XML
+//==============================================================
+QString BaseNode::readCommentFromXml(const QDomElement &elem) const
+{
+    const QString propName = "comment";
+
+    // Получение узла
+    const QDomElement elemComment = elem.firstChildElement(propName);
+    if (elemComment.isNull())
+    {
+        const QString msg = QString{"Not find property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения в виде строки
+    const optional<QString> xmlComment = readValueFromXml(elemComment);
+    if (!xmlComment)
+    {
+        const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    // Получение значения
+    const optional<QString> comment = strFromXmlFormat(xmlComment.value());
+    if (!comment)
+    {
+        const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
+            arg(propName, strType()).arg(id());
+        throw BaseException{msg};
+    }
+
+    return comment.value();
+}
+
+//==============================================================
+// Запись имени в XML
+//==============================================================
+void BaseNode::writeNameToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemName = doc.createElement("name");
+    const QString strName = strToXmlFormat(name());
+    writeValueToXml(doc, elemName, strName);
+    elem.appendChild(elemName);
+}
+
+//==============================================================
+// Запись типа в XML
+//==============================================================
+void BaseNode::writeTypeToXml(QDomDocument &, QDomElement &elem) const
+{
+    elem.setAttribute("type", strType());
+}
+
+//==============================================================
+// Запись идентификатора в XML
+//==============================================================
+void BaseNode::writeIdToXml(QDomDocument &, QDomElement &elem) const
+{
+    Q_ASSERT(!elem.isNull());
+
+    elem.setAttribute("id", id());
+}
+
+//==============================================================
+// Запись смещения слева в XML
+//==============================================================
+void BaseNode::writeLeftToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemLeft = doc.createElement("left");
+    const QString strLeft = QString::number(left());
+    writeValueToXml(doc, elemLeft, strLeft);
+    elem.appendChild(elemLeft);
+}
+
+//==============================================================
+// Запись смещения сверху в XML
+//==============================================================
+void BaseNode::writeTopToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemTop = doc.createElement("top");
+    const QString strTop = QString::number(top());
+    writeValueToXml(doc, elemTop, strTop);
+    elem.appendChild(elemTop);
+}
+
+//==============================================================
+// Запись ширины в XML
+//==============================================================
+void BaseNode::writeWidthToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemTop = doc.createElement("width");
+    const QString strTop = QString::number(width());
+    writeValueToXml(doc, elemTop, strTop);
+    elem.appendChild(elemTop);
+}
+
+//==============================================================
+// Запись высоты в XML
+//==============================================================
+void BaseNode::writeHeightToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemTop = doc.createElement("height");
+    const QString strTop = QString::number(height());
+    writeValueToXml(doc, elemTop, strTop);
+    elem.appendChild(elemTop);
+}
+
+//==============================================================
+// Запись признака пропуска в XML
+//==============================================================
+void BaseNode::writeBypassToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemBypass = doc.createElement("bypass");
+    const QString strBypass = boolToStr(isBypass_);
+    writeValueToXml(doc, elemBypass, strBypass);
+    elem.appendChild(elemBypass);
+}
+
+//==============================================================
+// Запись комментария в XML
+//==============================================================
+void BaseNode::writeCommentToXml(QDomDocument &doc, QDomElement &elem) const
+{
+    Q_ASSERT(!doc.isNull());
+    Q_ASSERT(!elem.isNull());
+
+    QDomElement elemLeft = doc.createElement("comment");
+    const QString xmlComment = strToXmlFormat(comment_);
+    writeValueToXml(doc, elemLeft, xmlComment);
+    elem.appendChild(elemLeft);
 }
 
 ////////////////////////////////////////////////////////////////

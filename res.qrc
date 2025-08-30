@@ -3,8 +3,7 @@
         <file>images/new.png</file>
         <file>images/open.png</file>
         <file>images/add.png</file>
-        <file>images/drag_node_en.png</file>
-        <file>images/drag_node_ru.png</file>
+        <file>images/drag_node.png</file>
         <file>images/reset_value.png</file>
         <file>images/standart_node.png</file>
         <file>images/user.png</file>
@@ -21,8 +20,8 @@
         <file>images/copy.png</file>
         <file>images/cut.png</file>
         <file>images/logo.png</file>
-        <file>images/collapse_arrow_light.png</file>
+        <file>images/collapse_arrow.png</file>
         <file>images/standart_node_disable.png</file>
-        <file>images/expand_arrow_light.png</file>
+        <file>images/expand_arrow.png</file>
     </qresource>
 </RCC>

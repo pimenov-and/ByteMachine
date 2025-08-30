@@ -3,18 +3,67 @@
 // Вспомогательные функции Qt
 ////////////////////////////////////////////////////////////////
 #include "qt_helper.h"
+#include <QFile>
+#include <QTextStream>
+
+//==============================================================
+using std::optional;
+using std::nullopt;
 
 //==============================================================
 // Сделать заглавную букву строки строчной
 //==============================================================
 QString capitalizeStr(const QString &str)
 {
-    if (!str.isEmpty())
+    if (str.isEmpty())
     {
-        return str.front().toLower() + str.mid(1);
+        return QString{};
+    }
+
+    return str.front().toLower() + str.mid(1);
+}
+
+//==============================================================
+// Конвертация bool в строку
+//==============================================================
+QString boolToStr(bool value)
+{
+    return value ? "True" : "False";
+}
+
+//==============================================================
+// Проверка bool в виде строки
+//==============================================================
+bool checkBoolStr(const QString &str)
+{
+    return (str == "True") || (str == "False");
+}
+
+//==============================================================
+// Получение bool из строки
+//==============================================================
+optional<bool> strToBool(const QString &str)
+{
+    if (checkBoolStr(str))
+    {
+        return str == "True";
     }
     else
     {
-        return str;
+        return nullopt;
     }
+}
+
+//==============================================================
+// Чтение текстового файла
+//==============================================================
+optional<QString> readFileAllLines(const QString &path)
+{
+    QFile file{path};
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return nullopt;
+    }
+
+    return QTextStream{&file}.readAll();
 }

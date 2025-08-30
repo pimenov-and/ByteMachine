@@ -7,6 +7,8 @@
 
 //==============================================================
 #include <QtWidgets>
+#include "base_node.h"
+#include "node_types.h"
 
 //==============================================================
 QT_BEGIN_NAMESPACE
@@ -45,7 +47,26 @@ private slots:
 private slots:
     // Функция вызывается при изменении страницы панели с узлами
     void slotNodesPageChanged(int index);
+    // Функция вызывается при добавлении узла через панель
+    void slotAddNodeByType(NodeTypes nodeType);
+    // Функция вызывается при добавлении узла
+    void slotAddNode(ShPtrBaseNode node);
+    // Функция вызывается при изменении свойства узла
+    void slotChangedNodeProp(ShPtrBaseNode node, PropValue value);
+    // Функция вызывается при удалении узла
+    void slotRemoveNode(ShPtrBaseNode node);
+    // Функция вызывается при изменении индекса текущего объекта
+    // через комбо-бокс объектов
+    void slotChangeCurrentObjectIndex(int index);
+    // Функция вызывается при сбросе выделения со узлов
+    void slotClearSelection();
 private:
+    // Функция вызывается при закрытия окна
+    void closeEvent(QCloseEvent*) override;
+
+    // Создание виджета с настройками узла
+    QWidget* createNodeSettingsWidget(BaseNode *node);
+
     // Задание соединений
     void setConnections();
     // Инициализация панели с узлами

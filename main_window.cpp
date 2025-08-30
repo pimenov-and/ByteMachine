@@ -3,11 +3,15 @@
 // Главное окно
 ////////////////////////////////////////////////////////////////
 #include "main_window.h"
-// #include "project.h"
 #include "ui_main_window.h"
 #include "dialog_about_prog.h"
 #include "form_node_panel_item.h"
 #include "form_project_settings.h"
+#include "form_generate_node.h"
+#include "form_size_node.h"
+#include "node_helper.h"
+#include "generate_node.h"
+#include "icons.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
@@ -124,10 +128,133 @@ void MainWindow::slotNodesPageChanged(int index)
 
     for (int i = 0; i < ui_->toolBoxNodes_->count(); ++i)
     {
-        ui_->toolBoxNodes_->setItemIcon(i, QIcon{":/res_images/images/collapse_arrow_light.png"});
+        ui_->toolBoxNodes_->setItemIcon(i, Icons::collapseArrow());
     }
 
-    ui_->toolBoxNodes_->setItemIcon(index, QIcon{":/res_images/images/expand_arrow_light.png"});
+    ui_->toolBoxNodes_->setItemIcon(index, Icons::expandArrow());
+}
+
+//==============================================================
+// Функция вызывается при добавлении узла через панель
+//==============================================================
+void MainWindow::slotAddNodeByType(NodeTypes nodeType)
+{
+    QUndoStack *undoStack = project()->undoStack();
+    const auto node = createNode(nodeType, undoStack);
+    const auto selNode = project()->selectedNode();
+    if (selNode != nullptr)
+    {
+        selNode->setSelected(false);
+
+        const QPoint selTopLeft = selNode->topLeft();
+        node->setUndo(true);
+        node->setTopLeft(selTopLeft + QPoint{20, 20});
+        node->setUndo(false);
+    }
+
+    project()->addNode(node);
+}
+
+//==============================================================
+// Функция вызывается при добавлении узла
+//==============================================================
+void MainWindow::slotAddNode(ShPtrBaseNode node)
+{
+    const QString nodeDescript = node->toStr();
+    ui_->comboBoxObjects_->addItem(nodeDescript);
+    ui_->comboBoxObjects_->setCurrentText(nodeDescript);
+}
+
+//==============================================================
+// Функция вызывается при изменении свойства узла
+//==============================================================
+void MainWindow::slotChangedNodeProp(ShPtrBaseNode node, PropValue value)
+{
+    if ((value.name == "selected") && (value.value == true))
+    {
+        const QString nodeDescript = node->toStr();
+        ui_->comboBoxObjects_->setCurrentText(nodeDescript);
+    }
+}
+
+//==============================================================
+// Функция вызывается при удалении узла
+//==============================================================
+void MainWindow::slotRemoveNode(ShPtrBaseNode node)
+{
+    Q_UNUSED(node);
+}
+
+//==============================================================
+// Функция вызывается при изменении индекса текущего объекта
+// через комбо-бокс объектов
+//==============================================================
+void MainWindow::slotChangeCurrentObjectIndex(int index)
+{
+    if (index == -1)
+    {
+        return;
+    }
+
+    const QString text = ui_->comboBoxObjects_->currentText();
+    ui_->comboBoxObjects_->setToolTip(text);
+
+    if (text == "Project")
+    {
+        const auto projectWidget = new FormProjectSettings(project());
+        ui_->scrollAreaSettings_->setWidget(projectWidget);
+
+        project()->unselectNodes();
+    }
+    else
+    {
+        const int delimIndex = text.lastIndexOf(":");
+        Q_ASSERT(delimIndex != -1);
+        const QString nodeName = text.left(delimIndex - 1);
+        Q_ASSERT(!nodeName.isEmpty());
+        const ShPtrBaseNode node = project()->findNodeByName(nodeName);
+        QWidget *const nodeWidget = createNodeSettingsWidget(node.get());
+        Q_ASSERT(nodeWidget != nullptr);
+        ui_->scrollAreaSettings_->setWidget(nodeWidget);
+
+        project()->unselectNodes();
+        node->setSelected(true);
+    }
+}
+
+//==============================================================
+// Функция вызывается при сбросе выделения со узлов
+//==============================================================
+void MainWindow::slotClearSelection()
+{
+    ui_->comboBoxObjects_->setCurrentText("Project");
+}
+
+//==============================================================
+// Функция вызывается при закрытия окна
+//==============================================================
+void MainWindow::closeEvent(QCloseEvent*)
+{
+    qDebug() << "MainWindow::closeEvent()";
+}
+
+//==============================================================
+// Создание виджета с настройками узла
+//==============================================================
+QWidget* MainWindow::createNodeSettingsWidget(BaseNode *node)
+{
+    if (const auto generateNode = qobject_cast<GenerateNode*>(node); generateNode != nullptr)
+    {
+        return new FormGenerateNode{generateNode};
+    }
+    else if (const auto sizeNode = qobject_cast<SizeNode*>(node); sizeNode != nullptr)
+    {
+        return new FormSizeNode{sizeNode};
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 //==============================================================
@@ -160,6 +287,18 @@ void MainWindow::setConnections()
     // Панель с узлами
     connect(ui_->toolBoxNodes_, &QToolBox::currentChanged,
         this, &MainWindow::slotNodesPageChanged);
+
+    // Проект
+    connect(project(), &Project::sigAddNode,
+        this, &MainWindow::slotAddNode);
+    connect(project(), &Project::sigChangedNodeProp,
+        this, &MainWindow::slotChangedNodeProp);
+    connect(project(), &Project::sigClearSelection,
+        this, &MainWindow::slotClearSelection);
+
+    // Комбо-бокс объектов
+    connect(ui_->comboBoxObjects_, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(slotChangeCurrentObjectIndex(int)));
 }
 
 //==============================================================
@@ -174,20 +313,20 @@ void MainWindow::initNodesPanel()
     }
 
     const int standartItemIndex = toolBoxNodes->addItem(createStandartPage(),
-        QIcon{":/res_images/images/collapse_arrow_light.png"}, tr("Standart"));
-    toolBoxNodes->setItemToolTip(standartItemIndex, tr("Set for standard nodes"));
+        Icons::collapseArrow(), "Standart");
+    toolBoxNodes->setItemToolTip(standartItemIndex, "Set for standard nodes");
 
     const int visualizationItemIndex = toolBoxNodes->addItem(createVisualizationPage(),
-        QIcon{":/res_images/images/collapse_arrow_light.png"}, tr("Visualization"));
-    toolBoxNodes->setItemToolTip(visualizationItemIndex, tr("Set for visualization nodes"));
+        Icons::collapseArrow(), "Visualization");
+    toolBoxNodes->setItemToolTip(visualizationItemIndex, "Set for visualization nodes");
 
     const int scriptItemIndex = toolBoxNodes->addItem(createScriptPage(),
-        QIcon{":/res_images/images/collapse_arrow_light.png"}, tr("Script"));
-    toolBoxNodes->setItemToolTip(scriptItemIndex, tr("Set for scripting nodes"));
+        Icons::collapseArrow(), "Script");
+    toolBoxNodes->setItemToolTip(scriptItemIndex, "Set for scripting nodes");
 
     const int otherItemIndex = toolBoxNodes->addItem(createOtherPage(),
-        QIcon{":/res_images/images/collapse_arrow_light.png"}, tr("Other"));
-    toolBoxNodes->setItemToolTip(otherItemIndex, tr("Set for other nodes"));
+        Icons::collapseArrow(), "Other");
+    toolBoxNodes->setItemToolTip(otherItemIndex, "Set for other nodes");
 }
 
 //==============================================================
@@ -201,34 +340,48 @@ QWidget* MainWindow::createStandartPage()
     pageLayout->setContentsMargins(QMargins{});
     pageLayout->setSpacing(0);
 
-    const auto generateItem = new FormNodePanelItem{"Generate"};
+    const auto generateItem = new FormNodePanelItem{NodeTypes::Generate};
+    connect(generateItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     pageLayout->addWidget(generateItem);
 
-    const auto inFileItem = new FormNodePanelItem{"InFile"};
+    const auto inFileItem = new FormNodePanelItem{NodeTypes::InFile};
+    connect(inFileItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     inFileItem->setEnabled(false);
     pageLayout->addWidget(inFileItem);
 
-    const auto takeItem = new FormNodePanelItem{"Take"};
+    const auto takeItem = new FormNodePanelItem{NodeTypes::Take};
+    connect(takeItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     takeItem->setEnabled(false);
     pageLayout->addWidget(takeItem);
 
-    const auto skipItem = new FormNodePanelItem{"Skip"};
+    const auto skipItem = new FormNodePanelItem{NodeTypes::Skip};
+    connect(skipItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     skipItem->setEnabled(false);
     pageLayout->addWidget(skipItem);
 
-    const auto reverseItem = new FormNodePanelItem{"Reverse"};
+    const auto reverseItem = new FormNodePanelItem{NodeTypes::Reverse};
+    connect(reverseItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     reverseItem->setEnabled(false);
     pageLayout->addWidget(reverseItem);
 
-    const auto mergeItem = new FormNodePanelItem{"Merge"};
+    const auto mergeItem = new FormNodePanelItem{NodeTypes::Merge};
+    connect(mergeItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     mergeItem->setEnabled(false);
     pageLayout->addWidget(mergeItem);
 
-    const auto outFileItem = new FormNodePanelItem{"OutFile"};
+    const auto outFileItem = new FormNodePanelItem{NodeTypes::OutFile};
+    connect(outFileItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     outFileItem->setEnabled(false);
     pageLayout->addWidget(outFileItem);
 
-    const auto paintOpItem = new FormNodePanelItem{"PaintOp"};
+    const auto paintOpItem = new FormNodePanelItem{NodeTypes::PaintOp};
     paintOpItem->setEnabled(false);
     pageLayout->addWidget(paintOpItem);
 
@@ -250,26 +403,34 @@ QWidget* MainWindow::createVisualizationPage()
     pageLayout->setContentsMargins(QMargins{});
     pageLayout->setSpacing(0);
 
-    const auto sizeItem = new FormNodePanelItem{"Size"};
-    sizeItem->setEnabled(false);
+    const auto sizeItem = new FormNodePanelItem{NodeTypes::Size};
+    connect(sizeItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     pageLayout->addWidget(sizeItem);
 
-    const auto dumpItem = new FormNodePanelItem{"Dump"};
+    const auto dumpItem = new FormNodePanelItem{NodeTypes::Dump};
+    connect(dumpItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     dumpItem->setEnabled(false);
     pageLayout->addWidget(dumpItem);
 
-    const auto structItem = new FormNodePanelItem{"Struct"};
+    const auto structItem = new FormNodePanelItem{NodeTypes::Struct};
+    connect(structItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     structItem->setEnabled(false);
     pageLayout->addWidget(structItem);
 
-    const auto graphItem = new FormNodePanelItem{"Graph"};
+    const auto graphItem = new FormNodePanelItem{NodeTypes::Graph};
+    connect(graphItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     graphItem->setEnabled(false);
     pageLayout->addWidget(graphItem);
 
-    const auto paintItem = new FormNodePanelItem{"Paint"};
+    const auto paintItem = new FormNodePanelItem{NodeTypes::Paint};
+    connect(paintItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     paintItem->setEnabled(false);
     pageLayout->addWidget(paintItem);
-
 
     auto spacer = new QSpacerItem{20, 40, QSizePolicy::Minimum,
         QSizePolicy::Expanding};
@@ -289,19 +450,27 @@ QWidget* MainWindow::createScriptPage()
     pageLayout->setContentsMargins(QMargins{});
     pageLayout->setSpacing(0);
 
-    const auto sinItem = new FormNodePanelItem{"SIn"};
+    const auto sinItem = new FormNodePanelItem{NodeTypes::SIn};
+    connect(sinItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     sinItem->setEnabled(false);
     pageLayout->addWidget(sinItem);
 
-    const auto smergeItem = new FormNodePanelItem{"SMerge"};
+    const auto smergeItem = new FormNodePanelItem{NodeTypes::SMerge};
+    connect(smergeItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     smergeItem->setEnabled(false);
     pageLayout->addWidget(smergeItem);
 
-    const auto schangeItem = new FormNodePanelItem{"SChange"};
+    const auto schangeItem = new FormNodePanelItem{NodeTypes::SChange};
+    connect(schangeItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     schangeItem->setEnabled(false);
     pageLayout->addWidget(schangeItem);
 
-    const auto soutItem = new FormNodePanelItem{"SOut"};
+    const auto soutItem = new FormNodePanelItem{NodeTypes::SOut};
+    connect(soutItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     soutItem->setEnabled(false);
     pageLayout->addWidget(soutItem);
 
@@ -323,13 +492,17 @@ QWidget* MainWindow::createOtherPage()
     pageLayout->setContentsMargins(QMargins{});
     pageLayout->setSpacing(0);
 
-    const auto blockItem = new FormNodePanelItem{"Block"};
+    const auto blockItem = new FormNodePanelItem{NodeTypes::Block};
+    connect(blockItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
     blockItem->setEnabled(false);
     pageLayout->addWidget(blockItem);
 
-    const auto noneItem = new FormNodePanelItem{"None"};
-    noneItem->setEnabled(false);
-    pageLayout->addWidget(noneItem);
+    const auto nonItem = new FormNodePanelItem{NodeTypes::Non};
+    connect(nonItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
+    nonItem->setEnabled(false);
+    pageLayout->addWidget(nonItem);
 
     auto spacer = new QSpacerItem{20, 40, QSizePolicy::Minimum,
         QSizePolicy::Expanding};

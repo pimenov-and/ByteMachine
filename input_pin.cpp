@@ -37,7 +37,7 @@ void InputPin::readFromXml(const QDomElement &elem)
     const QDomElement elemOutputPin = elem.firstChildElement("outputPin");
     if (elemOutputPin.isNull())
     {
-        throw BaseException(tr("Bad input pin"));
+        throw BaseException("Bad input pin");
     }
 
     const QString strNodeId = elemOutputPin.attribute("nodeId");
@@ -45,14 +45,14 @@ void InputPin::readFromXml(const QDomElement &elem)
     const int nodeId = strNodeId.toInt(&ok);
     if (!ok)
     {
-        throw BaseException{tr("Bad node id")};
+        throw BaseException{"Bad node id"};
     }
 
     const QString strIndex = elemOutputPin.attribute("index");
     const int index = strIndex.toInt(&ok);
     if (!ok)
     {
-        throw BaseException{tr("Bad pin index")};
+        throw BaseException{"Bad pin index"};
     }
 
     outputPinConnection_.init(nodeId, index);

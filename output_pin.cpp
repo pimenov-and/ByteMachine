@@ -38,7 +38,7 @@ void OutputPin::readFromXml(const QDomElement &elem)
     const QDomElement elemPins = elem.firstChildElement("inputPins");
     if (elemPins.isNull())
     {
-        throw BaseException{tr("Bad output pin")};
+        throw BaseException{"Bad output pin"};
     }
     QDomElement elemPin = elemPins.firstChildElement("inputPin");
     while (!elemPin.isNull())
@@ -46,24 +46,24 @@ void OutputPin::readFromXml(const QDomElement &elem)
         // Получение идентификатора узла для задания связи
         const QString strNodeId = elemPin.attribute("nodeId");
         if (strNodeId.isEmpty())
-            throw BaseException{tr("Bad node id")};
+            throw BaseException{"Bad node id"};
         bool ok = false;
         const int nodeId = strNodeId.toInt(&ok);
         if (!ok)
         {
-            throw BaseException{tr("Bad node id")};
+            throw BaseException{"Bad node id"};
         }
 
         // Получение индекса пина для задания связи
         const QString strIndex = elemPin.attribute("index");
         if (strIndex.isEmpty())
         {
-            throw BaseException{tr("Bad pin index")};
+            throw BaseException{"Bad pin index"};
         }
         const int index = strIndex.toInt(&ok);
         if (!ok)
         {
-            throw BaseException{tr("Bad pin index")};
+            throw BaseException{"Bad pin index"};
         }
         inputPinConnections_ << PinConnection{nodeId, index};
 

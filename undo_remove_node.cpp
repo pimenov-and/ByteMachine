@@ -3,6 +3,19 @@
 // Функция отмены удаления узла
 ////////////////////////////////////////////////////////////////
 #include "undo_remove_node.h"
+#include "project.h"
+
+//==============================================================
+// Конструктор с параметрами
+//==============================================================
+UndoRemoveNode::UndoRemoveNode(Project *project, const ShPtrBaseNode &node)
+{
+    Q_ASSERT(project != nullptr);
+    Q_ASSERT(node != nullptr);
+
+    project_ = project;
+    node_ = node;
+}
 
 //==============================================================
 // Деструктор
@@ -16,6 +29,9 @@ UndoRemoveNode::~UndoRemoveNode()
 //==============================================================
 void UndoRemoveNode::undo()
 {
+    project_->setProperty("isUndo", true);
+    project_->addNode(node_);
+    project_->setProperty("isUndo", false);
 }
 
 //==============================================================
@@ -23,4 +39,7 @@ void UndoRemoveNode::undo()
 //==============================================================
 void UndoRemoveNode::redo()
 {
+    project_->setProperty("isUndo", true);
+    project_->removeNode(node_);
+    project_->setProperty("isUndo", false);
 }

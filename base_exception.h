@@ -20,7 +20,7 @@ public:
     BaseException(const QString &msg);
 
     // Получение сообщения
-    QString msg() const;
+    QString msg() const { return msg_; }
 private:
     // Сообщение
     QString msg_{};

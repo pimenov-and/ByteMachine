@@ -12,18 +12,18 @@ QString connectStateToStr(ConnectStates state)
 {
     switch (state)
     {
-    case ConnectStates::Connect:
-    {
-        return "Connect";
-    }
-    case ConnectStates::Disconnect:
-    {
-        return "Disconnect";
-    }
-    default:
-    {
-        return "Unknown";
-    }
+        case ConnectStates::Connect:
+        {
+            return "Connect";
+        }
+        case ConnectStates::Disconnect:
+        {
+            return "Disconnect";
+        }
+        default:
+        {
+            return "Unknown";
+        }
     }
 }
 

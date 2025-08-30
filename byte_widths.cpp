@@ -12,18 +12,18 @@ QString byteWidthToStr(ByteWidths width)
 {
     switch (width)
     {
-    case ByteWidths::Width8:
-    {
-        return "Width8";
-    }
-    case ByteWidths::Width16:
-    {
-        return "Width16";
-    }
-    default:
-    {
-        return "Unknown";
-    }
+        case ByteWidths::Width8:
+        {
+            return "Width8";
+        }
+        case ByteWidths::Width16:
+        {
+            return "Width16";
+        }
+        default:
+        {
+            return "Unknown";
+        }
     }
 }
 
@@ -75,18 +75,18 @@ int byteWidthToIndex(ByteWidths width) noexcept
 {
     switch (width)
     {
-    case ByteWidths::Width8:
-    {
-        return 0;
-    }
-    case ByteWidths::Width16:
-    {
-        return 1;
-    }
-    default:
-    {
-        return -1;
-    }
+        case ByteWidths::Width8:
+        {
+            return 0;
+        }
+        case ByteWidths::Width16:
+        {
+            return 1;
+        }
+        default:
+        {
+            return -1;
+        }
     }
 }
 
@@ -97,18 +97,18 @@ ByteWidths indexToByteWidth(int index) noexcept
 {
     switch (index)
     {
-    case 0:
-    {
-        return ByteWidths::Width8;
-    }
-    case 1:
-    {
-        return ByteWidths::Width16;
-    }
-    default:
-    {
-        return ByteWidths::Unknown;
-    }
+        case 0:
+        {
+            return ByteWidths::Width8;
+        }
+        case 1:
+        {
+            return ByteWidths::Width16;
+        }
+        default:
+        {
+            return ByteWidths::Unknown;
+        }
     }
 }
 
