@@ -286,3 +286,6 @@ tmp/
 /*-debug/
 /*-release/
 /out/
+
+#clang
+*.idx
