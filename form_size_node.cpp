@@ -17,6 +17,7 @@ FormSizeNode::FormSizeNode(SizeNode *node, QWidget *parent) :
     ui_->setupUi(this);
 
     setNode(node);
+    setConnections();
 }
 
 //==============================================================
@@ -133,7 +134,8 @@ void FormSizeNode::slotResetBypass()
 //==============================================================
 void FormSizeNode::slotChangedCaching(int state)
 {
-    Q_UNUSED(state);
+    const bool caching = static_cast<bool>(state);
+    node_->setCaching(caching);
 }
 
 //==============================================================
@@ -141,6 +143,9 @@ void FormSizeNode::slotChangedCaching(int state)
 //==============================================================
 void FormSizeNode::slotResetCaching()
 {
+    node_->resetCaching();
+
+    ui_->checkBoxCaching_->setFocus();
 }
 
 //==============================================================
