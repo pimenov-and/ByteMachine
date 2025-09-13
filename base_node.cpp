@@ -332,14 +332,12 @@ void BaseNode::beginMove(const QPoint &topLeft)
 //==============================================================
 void BaseNode::move(const QPoint &topLeft)
 {
-    if (!isMoving_)
+    if (isMoving_)
     {
-        return;
+        setUndo(true);
+        setTopLeft(topLeft);
+        setUndo(false);
     }
-
-    setUndo(true);
-    setTopLeft(topLeft);
-    setUndo(false);
 }
 
 //==============================================================
@@ -347,15 +345,18 @@ void BaseNode::move(const QPoint &topLeft)
 //==============================================================
 void BaseNode::endMove(const QPoint &topLeft)
 {
-    // Формирование операции отмены
-    Q_ASSERT(undoStack_ != nullptr);
-    const QPoint oldPos = movingBeginPos_;
-    const auto undoCmd = new UndoChangeObjectPropValue{this,
-        "topLeft", topLeft, oldPos};
-    undoStack_->push(undoCmd);
+    if (isMoving_)
+    {
+        // Формирование операции отмены
+        Q_ASSERT(undoStack_ != nullptr);
+        const QPoint oldPos = movingBeginPos_;
+        const auto undoCmd = new UndoChangeObjectPropValue{this,
+            "topLeft", topLeft, oldPos};
+        undoStack_->push(undoCmd);
 
-    isMoving_ = false;
-    movingBeginPos_ = QPoint{};
+        isMoving_ = false;
+        movingBeginPos_ = QPoint{};
+    }
 }
 
 //==============================================================

@@ -91,6 +91,8 @@ private:
     ShPtrBaseNode movingNode_{};
     // Смещение при захвате перетаскиваемого узла
     QPoint movingDragOffsetNode_{};
+    // Признак начала перемещения узла
+    // bool isMovingDragNode_{false};
     // Видимость сетки
     bool isGridVisible_{true};
     // Положение меню

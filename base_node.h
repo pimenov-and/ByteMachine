@@ -155,6 +155,12 @@ public:
     // Получение прямоугольника узла
     QRect rect() const { return QRect{topLeft(), size()}; }
 
+    // Получение признака перемещения узла
+    [[nodiscard]]
+    bool isMoving() const { return isMoving_; }
+    // Получение положения при начале перетаскивания узла
+    [[nodiscard]]
+    QPoint movingBeginPos() const { return movingBeginPos_; }
     // Начало перемещения
     void beginMove(const QPoint &topLeft);
     // Функция вызывается при перетаскивании
@@ -255,13 +261,6 @@ public:
     static bool isCommentsVisible() { return isCommentsVisible_; }
     // Задание признака комментариев узлов
     static void setCommentsVisible(bool isVisible);
-
-    // Получение признака перемещения узла
-    [[nodiscard]]
-    bool isMoving() const { return isMoving_; }
-    // Получение положения при начале перетаскивания узла
-    [[nodiscard]]
-    QPoint movingBeginPos() const { return movingBeginPos_; }
 signals:
     // Сигнал возникает при изменении узла
     void sigChangedProp(PropValue value);

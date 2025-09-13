@@ -383,6 +383,7 @@ QPushButton* MainWindow::createUndoViewBtn() const
     btn->setFlat(true);
     btn->setFixedWidth(14);
     btn->setEnabled(false);
+    btn->setToolTip("Show undo view");
 
     return btn;
 }

@@ -157,11 +157,9 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
             // Если клавиша Ctrl не нажата, то перемещается захваченный узел
             if ((event->modifiers() & Qt::ControlModifier) != Qt::ControlModifier)
             {
-                const QPoint movingBeginPos = node->topLeft();
-                node->beginMove(movingBeginPos);
-
                 movingNode_ = node;
                 project()->setSelectedNode(movingNode_);
+                const QPoint movingBeginPos = node->topLeft();
                 movingDragOffsetNode_ = pos - movingBeginPos;
                 project()->bringNodeToFront(movingNode_);
             }
@@ -171,10 +169,8 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
                 const auto cloneNode = node->clone();
                 project()->addNode(cloneNode);
 
-                const QPoint movingBeginPos = cloneNode->topLeft();
-                cloneNode->beginMove(movingBeginPos);
-
                 movingNode_ = cloneNode;
+                const QPoint movingBeginPos = cloneNode->topLeft();
                 project()->setSelectedNode(movingNode_);
                 movingDragOffsetNode_ = pos - movingBeginPos;
             }
@@ -203,10 +199,24 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
     //----------------------------------------------------------
     if (movingNode_ != nullptr)
     {
-        const QPoint topLeft = pos - movingDragOffsetNode_;
-        movingNode_->move(topLeft);
+        // Узел начинает перетаскиваться только при некотором смещении от начального
+        if (!movingNode_->isMoving())
+        {
+            const QPoint topLeft = movingNode_->topLeft();
+            const QPoint newTopLeft = pos - movingDragOffsetNode_;
+            if ((newTopLeft - topLeft).manhattanLength() >= QApplication::startDragDistance())
+            {
+                movingNode_->beginMove(newTopLeft);
+            }
+        }
+        // Перетаскивание узла собственно
+        else
+        {
+            const QPoint topLeft = pos - movingDragOffsetNode_;
+            movingNode_->move(topLeft);
 
-        update();
+            update();
+        }
     }
 }
 
