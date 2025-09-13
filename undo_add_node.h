@@ -19,7 +19,7 @@ class UndoAddNode : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
-    explicit UndoAddNode(Project *project, const ShPtrBaseNode &node,
+    UndoAddNode(Project *project, const ShPtrBaseNode &node,
         const ShPtrBaseNode &prevSelectedObject);
     // Деструктор
     ~UndoAddNode() override;

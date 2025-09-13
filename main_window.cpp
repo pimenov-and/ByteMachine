@@ -9,6 +9,7 @@
 #include "form_project_settings.h"
 #include "form_generate_node.h"
 #include "form_size_node.h"
+#include "widget_undo_view.h"
 #include "node_helper.h"
 #include "generate_node.h"
 #include "icons.h"
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
     ui_{new Ui::MainWindow{}}
 {
     ui_->setupUi(this);
+    pushBtnShowUndoView_ = createUndoViewBtn();
 
     setConnections();
     initNodesPanel();
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow{parent},
     QAction *const actUndo = project()->createActionUndo();
     QAction *const actRedo = project()->createActionRedo();
     ui_->menuEdit_->insertActions(ui_->actUndo_, {actUndo, actRedo});
+    ui_->toolBar_->insertWidget(ui_->actRedo_, pushBtnShowUndoView_);
     ui_->toolBar_->insertActions(ui_->actUndo_, {actUndo, actRedo});
     delete ui_->actUndo_;
     delete ui_->actRedo_;
@@ -220,6 +223,30 @@ void MainWindow::slotChangeSelectedNode(ShPtrBaseNode node)
     isNodesProcessing_ = false;
 }
 
+//==============================================================
+// Функция вызывается при измнения состояния стека отмен
+//==============================================================
+void MainWindow::slotUndoStackChanged()
+{
+    const bool notEmpty = project()->undoStack()->count() != 0;
+    pushBtnShowUndoView_->setEnabled(notEmpty);
+}
+
+//==============================================================
+// Функция вызывается при нажатии на кнопку для показа списка отмен
+// (расположена на тул-баре)
+//==============================================================
+void MainWindow::slotShowUndoView()
+{
+    const QRect geometry = pushBtnShowUndoView_->geometry();
+    const QPoint pos = geometry.bottomLeft();
+    const QPoint globalPos = ui_->toolBar_->mapToGlobal(pos);
+
+    QUndoStack *const undoStack = project()->undoStack();
+    const auto undoView = new WidgetUndoView{undoStack};
+    undoView->move(globalPos);
+    undoView->show();
+}
 
 //==============================================================
 // Функция вызывается при изменении индекса текущего объекта
@@ -333,9 +360,31 @@ void MainWindow::setConnections()
     connect(project(), &Project::sigChangeSelectedNode,
         this, &MainWindow::slotChangeSelectedNode);
 
+    // Отмены
+    connect(project()->undoStack(), &QUndoStack::canRedoChanged,
+        this, &MainWindow::slotUndoStackChanged);
+    connect(project()->undoStack(), &QUndoStack::canUndoChanged,
+        this, &MainWindow::slotUndoStackChanged);
+    connect(pushBtnShowUndoView_, &QPushButton::clicked,
+        this, &MainWindow::slotShowUndoView);
+
     // Комбо-бокс объектов
     connect(ui_->comboBoxObjects_, SIGNAL(currentIndexChanged(int)),
         this, SLOT(slotChangeCurrentObjectIndex(int)));
+}
+
+//==============================================================
+// Создание кнопки для тул-бара для вызова списка отмен
+//==============================================================
+QPushButton* MainWindow::createUndoViewBtn() const
+{
+    const QIcon icon{":/res_images/images/undo_view_arrow.png"};
+    const auto btn = new QPushButton{icon, QString{}};
+    btn->setFlat(true);
+    btn->setFixedWidth(14);
+    btn->setEnabled(false);
+
+    return btn;
 }
 
 //==============================================================

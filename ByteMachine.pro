@@ -52,6 +52,7 @@ SOURCES += main.cpp \
     undo_change_object_prop_value.cpp \
     undo_remove_node.cpp \
     undo_select_object.cpp \
+    widget_undo_view.cpp \
     xml_helper.cpp
 
 HEADERS += main_window.h \
@@ -97,6 +98,7 @@ HEADERS += main_window.h \
     undo_change_object_prop_value.h \
     undo_remove_node.h \
     undo_select_object.h \
+    widget_undo_view.h \
     xml_helper.h
 
 FORMS += main_window.ui \

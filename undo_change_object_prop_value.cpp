@@ -3,6 +3,7 @@
 // Команда отмены значения свойства объекта
 ////////////////////////////////////////////////////////////////
 #include "undo_change_object_prop_value.h"
+#include "base_node.h"
 
 //==============================================================
 // Конструктор с параметрами
@@ -18,6 +19,26 @@ UndoChangeObjectPropValue::UndoChangeObjectPropValue(QObject *object,
     propName_ = propName;
     propValue_ = propValue;
     oldPropValue_ = oldPropValue;
+
+    // Задание наименования отмены
+    if (object != nullptr)
+    {
+        const auto node = qobject_cast<BaseNode*>(object);
+        Q_ASSERT(node != nullptr);
+        if (propName == "topLeft")
+        {
+            setText(QString{"Move node \"%1\""}.arg(node->name()));
+        }
+        else
+        {
+            setText(QString{"Change property \"%1\" of node \"%2\""}.
+                arg(propName, node->name()));
+        }
+    }
+    else
+    {
+        setText(QString{"Change property \"%1\" of project"}.arg(propName));
+    }
 }
 
 //==============================================================

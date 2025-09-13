@@ -17,6 +17,9 @@ UndoAddNode::UndoAddNode(Project *project, const ShPtrBaseNode &node,
     project_ = project;
     node_ = node;
     prevSelectedObject_ = prevSelectedObject;
+
+    // Задание наименования отмены
+    setText(QString{"Add node \"%1\""}.arg(node->name()));
 }
 
 //==============================================================

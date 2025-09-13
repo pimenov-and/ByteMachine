@@ -62,28 +62,43 @@ private slots:
     void slotChangeCurrentObjectIndex(int index);
     // Функция вызывается при изменении выбранного узла
     void slotChangeSelectedNode(ShPtrBaseNode node);
+    // Функция вызывается при измнения состояния стека отмен
+    void slotUndoStackChanged();
+    // Функция вызывается при нажатии на кнопку для показа списка отмен
+    // (расположена на тул-баре)
+    void slotShowUndoView();
 private:
     // Функция вызывается при закрытия окна
     void closeEvent(QCloseEvent*) override;
 
-    // Создание виджета с настройками узла
-    QWidget* createNodeSettingsWidget(BaseNode *node);
-
     // Задание соединений
     void setConnections();
+    // Создание виджета с настройками узла
+    [[nodiscard]]
+    QWidget* createNodeSettingsWidget(BaseNode *node);
+    // Создание кнопки для тул-бара для вызова списка отмен
+    [[nodiscard]]
+    QPushButton* createUndoViewBtn() const;
     // Инициализация панели с узлами
     void initNodesPanel();
     // Создание вкладки Standart для панели Nodes
+    [[nodiscard]]
     QWidget* createStandartPage();
     // Создание вкладки Visualization для панели Nodes
+    [[nodiscard]]
     QWidget* createVisualizationPage();
+    [[nodiscard]]
     // Создание вкладки Script для панели Nodes
+    [[nodiscard]]
     QWidget* createScriptPage();
     // Создание вкладки Other для панели Nodes
+    [[nodiscard]]
     QWidget* createOtherPage();
 
     // Интерфейс пользователя
     Ui::MainWindow *ui_{nullptr};
+    // Кнопка для показа списка отмен (добавляется на тул-бар)
+    QPushButton *pushBtnShowUndoView_{nullptr};
     // Признак обработки узлов проектом (выставляется и
     // сбрасывается в некоторых слотах)
     bool isNodesProcessing_{false};

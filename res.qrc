@@ -23,5 +23,6 @@
         <file>images/collapse_arrow.png</file>
         <file>images/standart_node_disable.png</file>
         <file>images/expand_arrow.png</file>
+        <file>images/undo_view_arrow.png</file>
     </qresource>
 </RCC>

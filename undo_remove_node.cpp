@@ -15,6 +15,9 @@ UndoRemoveNode::UndoRemoveNode(Project *project, const ShPtrBaseNode &node)
 
     project_ = project;
     node_ = node;
+
+    // Задание наименования отмены
+    setText(QString{"Remove node \"%1\""}.arg(node->name()));
 }
 
 //==============================================================
