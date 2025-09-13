@@ -99,6 +99,8 @@ private slots:
 private:
     // Вывод основы
     void drawBody(QPainter *painter) const;
+    // Вывод комментариев
+    void drawComments(QPainter *painter) const;
 
     // Перевод байтов в килобайты
     [[nodiscard]]
@@ -136,6 +138,8 @@ private:
     ShPtrOutputPin outputPin_{};
     // Единицы измерения
     SizeUnits unit_{SizeUnits::Byte};
+    // Размеры символа
+    static QSize charSize_;
 };
 
 //==============================================================

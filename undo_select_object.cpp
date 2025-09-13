@@ -1,45 +1,47 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Команда отмены удаления узла
+// Команда отмены выделения объекта
 ////////////////////////////////////////////////////////////////
-#include "undo_remove_node.h"
+#include "undo_select_object.h"
 #include "project.h"
 
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-UndoRemoveNode::UndoRemoveNode(Project *project, const ShPtrBaseNode &node)
+UndoSelectObject::UndoSelectObject(Project *project, const ShPtrBaseNode &node1,
+    const ShPtrBaseNode &node2)
 {
     Q_ASSERT(project != nullptr);
-    Q_ASSERT(node != nullptr);
+    Q_ASSERT(!(node1 == nullptr && node2 == nullptr));
 
     project_ = project;
-    node_ = node;
+    node1_ = node1;
+    node2_ = node2;
 }
 
 //==============================================================
 // Деструктор
 //==============================================================
-UndoRemoveNode::~UndoRemoveNode()
+UndoSelectObject::~UndoSelectObject()
 {
 }
 
 //==============================================================
 // Функция отмены
 //==============================================================
-void UndoRemoveNode::undo()
+void UndoSelectObject::undo()
 {
     project_->setProperty("isUndo", true);
-    project_->addNode(node_);
+    project_->setSelectedNode(node2_);
     project_->setProperty("isUndo", false);
 }
 
 //==============================================================
 // Функция восстановления
 //==============================================================
-void UndoRemoveNode::redo()
+void UndoSelectObject::redo()
 {
     project_->setProperty("isUndo", true);
-    project_->removeNode(node_);
+    project_->setSelectedNode(node1_);
     project_->setProperty("isUndo", false);
 }

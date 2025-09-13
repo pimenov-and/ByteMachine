@@ -63,6 +63,8 @@ private:
     void drawGrid(QPainter *painter) const;
     // Вывод узлов
     void drawNodes(QPainter *painter) const;
+    // Задание размера символа
+    void setCharSize(QPainter *painter);
 
     // Создание контекстного меню
     [[nodiscard]]

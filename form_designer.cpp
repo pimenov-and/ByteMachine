@@ -5,6 +5,7 @@
 #include "form_designer.h"
 #include "project.h"
 #include "node_helper.h"
+#include "qt_helper.h"
 #include "colors.h"
 #include "icons.h"
 #include <QPainter>
@@ -123,6 +124,8 @@ void FormDesigner::paintEvent(QPaintEvent *event)
     painter.setFont({"Courier New", 10});
     const QRect &clipRect = event->rect();
 
+    setCharSize(&painter);
+
     fillBackgound(&painter, clipRect);
     drawGrid(&painter);
     drawNodes(&painter);
@@ -138,12 +141,19 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         const QPoint pos = event->pos();
 
         //------------------------------------------------------
+        // Попытка проведения связи из выходного пина
+        //------------------------------------------------------
+        if (ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
+        {
+            BaseNode *const node = pin->parentNode();
+            Q_ASSERT(node != nullptr);
+            node->setSelected(true);
+        }
+        //------------------------------------------------------
         // Попытка захвата узла
         //------------------------------------------------------
-        if (const ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
+        else if (const ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
         {
-            project()->unselectNodes();
-
             // Если клавиша Ctrl не нажата, то перемещается захваченный узел
             if ((event->modifiers() & Qt::ControlModifier) != Qt::ControlModifier)
             {
@@ -151,7 +161,7 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
                 node->beginMove(movingBeginPos);
 
                 movingNode_ = node;
-                movingNode_->setSelected(true);
+                project()->setSelectedNode(movingNode_);
                 movingDragOffsetNode_ = pos - movingBeginPos;
                 project()->bringNodeToFront(movingNode_);
             }
@@ -165,7 +175,7 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
                 cloneNode->beginMove(movingBeginPos);
 
                 movingNode_ = cloneNode;
-                movingNode_->setSelected(true);
+                project()->setSelectedNode(movingNode_);
                 movingDragOffsetNode_ = pos - movingBeginPos;
             }
         }
@@ -174,7 +184,7 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         //------------------------------------------------------
         else
         {
-            project()->clearSelection();
+            project()->setSelectedNode(nullptr);
         }
 
         update();
@@ -252,6 +262,8 @@ void FormDesigner::setConnections()
         this, SLOT(repaint()));
     connect(project(), SIGNAL(sigChangedNodeProp(ShPtrBaseNode,PropValue)),
         this, SLOT(repaint()));
+    connect(project(), SIGNAL(sigChangeSelectedNode(ShPtrBaseNode)),
+        this, SLOT(repaint()));
 }
 
 //==============================================================
@@ -296,6 +308,17 @@ void FormDesigner::drawNodes(QPainter *painter) const
     {
         node->draw(painter);
     }
+}
+
+//==============================================================
+// Задание размера символа
+//==============================================================
+void FormDesigner::setCharSize(QPainter *painter)
+{
+    Q_ASSERT(painter != nullptr);
+
+    const QSize charSize = ::strSize(*painter, "0");
+    BaseNode::setCharSize(charSize);
 }
 
 //==============================================================

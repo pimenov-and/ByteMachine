@@ -38,7 +38,6 @@ class BaseNode : public QObject, public IData, public IXml, public IToStr
     Q_PROPERTY(QPoint topLeft READ topLeft WRITE setTopLeft)
     Q_PROPERTY(QSize size READ size WRITE setSize)
     Q_PROPERTY(QString comment READ comment WRITE setComment RESET resetComment)
-    Q_PROPERTY(bool selected READ isSelected WRITE setSelected)
     Q_PROPERTY(bool isUndo READ isUndo WRITE setUndo RESET resetUndo)
 public:
     // Конструктор с параметром
@@ -239,6 +238,24 @@ public:
     [[nodiscard]]
     QRect stateAreaRect() const;
 
+    // Получение размеров символа
+    [[nodiscard]]
+    static QSize charSize() { return charSize_; }
+    // Получение ширины символа
+    [[nodiscard]]
+    static int charWidth() { return charSize_.width(); }
+    // Получение высоты символа
+    [[nodiscard]]
+    static int charHeight() { return charSize_.height(); }
+    // Задание размеров символа
+    static void setCharSize(const QSize &size);
+
+    // Получение признака комментариев узлов
+    [[nodiscard]]
+    static bool isCommentsVisible() { return isCommentsVisible_; }
+    // Задание признака комментариев узлов
+    static void setCommentsVisible(bool isVisible);
+
     // Получение признака перемещения узла
     [[nodiscard]]
     bool isMoving() const { return isMoving_; }
@@ -355,7 +372,7 @@ private:
     static constexpr int resizebleMarkerSize_{8};
     // Размеры символа
     static QSize charSize_;
-    // Тип комментариев
+    // Признак видимости комментариев
     static bool isCommentsVisible_;
 };
 

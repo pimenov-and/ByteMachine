@@ -30,6 +30,8 @@ using std::optional;
 //==============================================================
 //  Статические поля
 //==============================================================
+// Размеры символа
+QSize BaseNode::charSize_{};
 // Тип комментариев
 bool BaseNode::isCommentsVisible_{false};
 
@@ -646,18 +648,7 @@ void BaseNode::setSelected(bool selected)
 {
     if (isSelected_ != selected)
     {
-        // const bool oldSelected = isSelected_;
         isSelected_ = selected;
-        PropValue value{"selected", isSelected_};
-        emit sigChangedProp(value);
-
-        /* if (!isUndo_)
-        {
-            Q_ASSERT(undoStack_ != nullptr);
-            const auto undoCmd = new UndoChangeObjectPropValue{this,
-                "selected", isSelected_, oldSelected};
-            undoStack_->push(undoCmd);
-        } */
     }
 }
 
@@ -695,6 +686,28 @@ QRect BaseNode::stateAreaRect() const
     }
 
     return QRect{right() - 8, top() - 8, 16, 16};
+}
+
+//==============================================================
+// Задание размеров символа
+//==============================================================
+void BaseNode::setCharSize(const QSize &size)
+{
+    if (charSize_ != size)
+    {
+        charSize_ = size;
+    }
+}
+
+//==============================================================
+// Задание признака комментариев узлов
+//==============================================================
+void BaseNode::setCommentsVisible(bool isVisible)
+{
+    if (isCommentsVisible_ != isVisible)
+    {
+        isCommentsVisible_ = isVisible;
+    }
 }
 
 //==============================================================

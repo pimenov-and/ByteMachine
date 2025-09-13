@@ -78,11 +78,11 @@ ConnectStates indexToConnectState(int index)
 QVector<ConnectStates> connectStateValues()
 {
     return QVector<ConnectStates>
-        {
-            ConnectStates::Unknown,
-            ConnectStates::Connect,
-            ConnectStates::Disconnect
-        };
+    {
+        ConnectStates::Unknown,
+        ConnectStates::Connect,
+        ConnectStates::Disconnect
+    };
 }
 
 //===================================================================

@@ -53,18 +53,18 @@ ByteWidths intToByteWidth(int value) noexcept
 {
     switch (value)
     {
-    case 8:
-    {
-        return ByteWidths::Width8;
-    }
-    case 16:
-    {
-        return ByteWidths::Width16;
-    }
-    default:
-    {
-        return ByteWidths::Unknown;
-    }
+        case 8:
+        {
+            return ByteWidths::Width8;
+        }
+        case 16:
+        {
+            return ByteWidths::Width16;
+        }
+        default:
+        {
+            return ByteWidths::Unknown;
+        }
     }
 }
 

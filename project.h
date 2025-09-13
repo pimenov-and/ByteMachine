@@ -24,14 +24,15 @@ class Project : public QObject
     Q_PROPERTY(bool isUndo READ isUndo WRITE setUndo RESET resetUndo)
 public:
     // Получение экземпляра
+    [[nodiscard]]
     static Project* instance();
 
-    // Новый проект
+    // Создание нового проекта
     void createNew();
     // Чтение проекта из файла XML
     void loadFromXml(const QString &path);
     // Запись проекта в файл
-    bool saveToXml(const QString &path) const;
+    void saveToXml(const QString &path) const;
 
     // Добавление узла
     bool addNode(const ShPtrBaseNode &node);
@@ -39,39 +40,46 @@ public:
     bool removeNode(const ShPtrBaseNode &nodej);
 
     // Получение имени
+    [[nodiscard]]
     QString name() const { return name_; }
     // Задание имени
     void setName(const QString &name);
     // Сброс имени
     void resetName();
     // Получение признака изменения имени
+    [[nodiscard]]
     bool isNameChanged() const { return name_ != "Project"; }
     // Получение комментария
+    [[nodiscard]]
     QString comment() const { return comment_; }
     // Задание комментария
     void setComment(const QString &comment);
     // Сброс комментария
     void resetComment();
     // Получение признака изменения комментария
+    [[nodiscard]]
     bool isCommentChanged() const { return !comment_.isEmpty(); }
 
     // Получение признака режима отмены
+    [[nodiscard]]
     bool isUndo() const { return isUndo_; }
     // Задание признака режима отмены
     void setUndo(bool isUndo);
     // Сброс признака режима отмены
     void resetUndo();
     // Получение признака изменения режима отмены
+    [[nodiscard]]
     bool isUndoChanged() const { return isUndo_ == true; }
 
     // Получение выделенного узла
+    [[nodiscard]]
     ShPtrBaseNode selectedNode();
     // Получение выделенного узла (константный вариант)
+    [[nodiscard]]
     ShPtrConstBaseNode selectedNode() const;
-    // Сброс выделения всех узлов
-    void unselectNodes();
-    // Сброс выделения с последующим сигналом
-    void clearSelection();
+    // Задание выделенного узла. Если node равно nullptr, то это
+    // означает сброс выделения со всего
+    void setSelectedNode(const ShPtrBaseNode &node);
 
     // Перенос узла наверх
     bool bringNodeToFront(ShPtrBaseNode node);
@@ -141,16 +149,16 @@ public:
     //----------------------------------------------------------
     // Поиск входного пина узла по координате
     [[nodiscard]]
-    ShPtrInputPin findInputPinByPt(const QPoint &pt);
+    ShPtrInputPin findNodeInputPinByPt(const QPoint &pt);
     // Поиск входного пина узла по координате (константный вариант)
     [[nodiscard]]
-    ShPtrConstInputPin findInputPinByPt(const QPoint &pt) const;
+    ShPtrConstInputPin findNodeInputPinByPt(const QPoint &pt) const;
     // Поиск выходного пина узла по координате
     [[nodiscard]]
-    ShPtrOutputPin findOutputPinByPt(const QPoint &pt);
+    ShPtrOutputPin findNodeOutputPinByPt(const QPoint &pt);
     // Поиск выходного пина узла по координате (константный вариант)
     [[nodiscard]]
-    ShPtrConstOutputPin findOutputPinByPt(const QPoint &pt) const;
+    ShPtrConstOutputPin findNodeOutputPinByPt(const QPoint &pt) const;
 signals:
     // Сигнал возникает при добавлении узла
     void sigAddNode(ShPtrBaseNode node);
@@ -160,8 +168,8 @@ signals:
     void sigChangedNodeProp(ShPtrBaseNode node, PropValue value);
     // Сигнал возникает при изменении свойства
     void sigChangedProp(PropValue value);
-    // Сигнал возникает при очистке выделения
-    void sigClearSelection();
+    // Сигнал возникает при изменении выделенного узла
+    void sigChangeSelectedNode(ShPtrBaseNode node);
 private slots:
     // Функция вызывается при изменении свойства узла
     void slotChangedNodeProp(PropValue value);
@@ -171,10 +179,21 @@ private:
 
     // Задание соединений
     void setConnections();
+    // Сброс выделения всех узлов
+    void unselectNodes();
 
     //----------------------------------------------------------
     // Чтение из XML
     //----------------------------------------------------------
+    // Чтение имени из XML
+    [[nodiscard]]
+    QString readNameFromXml(const QDomElement &elem) const;
+    // Чтение комментария из XML
+    [[nodiscard]]
+    QString readCommentFromXml(const QDomElement &elem) const;
+    // Чтение узлов из XML
+    [[nodiscard]]
+    QVector<ShPtrBaseNode> readNodesFromXml(const QDomElement &elem) const;
 
     //----------------------------------------------------------
     // Запись в XML

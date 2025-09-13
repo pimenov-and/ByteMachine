@@ -262,6 +262,11 @@ private:
     // Получение случайного значения по индексу
     [[nodiscard]]
     static quint8 randValue(qint32 index);
+    // Обновление состояния узла
+    void updateStateInfo();
+    // Получение строки со значением для комментария
+    [[nodiscard]]
+    QString valueStrForComments() const;
 
     //----------------------------------------------------------
     // Чтение значений из XML

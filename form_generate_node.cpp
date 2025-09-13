@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////
 #include "form_generate_node.h"
 #include "generate_node.h"
+#include "byte_convert.h"
 #include <limits>
 
 //==============================================================
@@ -662,8 +663,8 @@ void FormGenerateNode::setConnections()
     connect(ui_.pushBtnResetStrValue_, &QPushButton::clicked,
         this, &FormGenerateNode::slotResetStrValue);
 
-    // connect(ui_.widgetColorValue_, &FormAdvColor::sigColorChanged,
-    //     this, &FormGenerateNode::slotChangedColorValue);
+    connect(ui_.widgetColorValue_, &FormAdvColor::sigColorChanged,
+        this, &FormGenerateNode::slotChangedColorValue);
     connect(ui_.pushBtnResetColorValue_, &QPushButton::clicked,
         this, &FormGenerateNode::slotResetColorValue);
 
@@ -1177,10 +1178,10 @@ void FormGenerateNode::setGenerateTypeStr()
     ui_.pushBtnResetStrValue_->setEnabled(isValueChanged);
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
-    // const int valueByteCount = getValueByteSize(value);
-    // ui_.spinBoxByteCount_->setValue(valueByteCount);
+    const int valueByteCount = getValueByteSize(value);
+    ui_.spinBoxByteCount_->setValue(valueByteCount);
     // ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
-    // ui_.pushBtnResetByteCount_->setEnabled(false);
+    ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
     ui_.labelFilledByte_->hide();
@@ -1206,9 +1207,9 @@ void FormGenerateNode::setGenerateTypeColor()
     // Показ и настройка виджетов
     ui_.labelColorValue_->show();
     ui_.widgetColorValue_->show();
-    // const QColor value = node_->colorValue();
-    // ui_.widgetColorValue_->setColor(value);
-    // ui_.pushBtnResetColorValue_->show();
+    const QColor value = node_->colorValue();
+    ui_.widgetColorValue_->setColor(value);
+    ui_.pushBtnResetColorValue_->show();
     const bool isValueChanged = node_->isColorValueChanged();
     ui_.pushBtnResetColorValue_->setEnabled(isValueChanged);
     ui_.spinBoxByteCount_->blockSignals(true);

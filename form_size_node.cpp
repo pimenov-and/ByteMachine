@@ -3,18 +3,16 @@
 // Форма для настройки узла Size
 ////////////////////////////////////////////////////////////////
 #include "form_size_node.h"
-#include "ui_form_size_node.h"
 
 //==============================================================
 // Конструктор с параметром
 //==============================================================
 FormSizeNode::FormSizeNode(SizeNode *node, QWidget *parent) :
-    QWidget{parent},
-    ui_{new Ui::FormSizeNode{}}
+    QWidget{parent}
 {
     Q_ASSERT(node != nullptr);
 
-    ui_->setupUi(this);
+    ui_.setupUi(this);
 
     setNode(node);
     setConnections();
@@ -25,7 +23,6 @@ FormSizeNode::FormSizeNode(SizeNode *node, QWidget *parent) :
 //==============================================================
 FormSizeNode::~FormSizeNode()
 {
-    delete ui_;
 }
 
 //==============================================================
@@ -37,42 +34,42 @@ void FormSizeNode::slotChangedNodeProp(PropValue value)
     if (value.name == "name")
     {
         const QString name = node_->name();
-        ui_->lineEditName_->setText(name);
-        ui_->lineEditName_->setToolTip(name);
+        ui_.lineEditName_->setText(name);
+        ui_.lineEditName_->setToolTip(name);
     }
     // Размерность
     else if (value.name == "unit")
     {
         const SizeUnits unit = node_->unit();
         const int unitIndex = sizeUnitToInt(unit);
-        ui_->comboBoxUnit_->setCurrentIndex(unitIndex);
+        ui_.comboBoxUnit_->setCurrentIndex(unitIndex);
         const bool isUnitChanged = node_->isUnitChanged();
-        ui_->pushBtnResetUnit_->setEnabled(isUnitChanged);
+        ui_.pushBtnResetUnit_->setEnabled(isUnitChanged);
     }
     // Признак пропуска
     else if (value.name == "bypass")
     {
         const bool isBypass = node_->isBypass();
-        ui_->checkBoxBypass_->setChecked(isBypass);
+        ui_.checkBoxBypass_->setChecked(isBypass);
         const bool isBypassChanged = node_->isBypassChanged();
-        ui_->pushBtnResetBypass_->setEnabled(isBypassChanged);
+        ui_.pushBtnResetBypass_->setEnabled(isBypassChanged);
     }
     // Признак кеширования
     else if (value.name == "caching")
     {
         const bool isCaching = node_->isCaching();
-        ui_->checkBoxCaching_->setChecked(isCaching);
+        ui_.checkBoxCaching_->setChecked(isCaching);
         const bool isCachingChanged = node_->isCachingChanged();
-        ui_->pushBtnResetCaching_->setEnabled(isCachingChanged);
+        ui_.pushBtnResetCaching_->setEnabled(isCachingChanged);
     }
     // Комментарий
     else if (value.name == "comment")
     {
         const QString comment = node_->comment();
-        ui_->lineEditComment_->setText(comment);
-        ui_->lineEditComment_->setToolTip(comment);
+        ui_.lineEditComment_->setText(comment);
+        ui_.lineEditComment_->setToolTip(comment);
         const bool isCommentChanged = node_->isCommentChanged();
-        ui_->pushBtnResetComment_->setEnabled(isCommentChanged);
+        ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
     }
 }
 
@@ -81,7 +78,7 @@ void FormSizeNode::slotChangedNodeProp(PropValue value)
 //==============================================================
 void FormSizeNode::slotEditingFinishedName()
 {
-    const QString name = ui_->lineEditName_->text();
+    const QString name = ui_.lineEditName_->text();
     node_->setName(name);
 }
 
@@ -107,7 +104,7 @@ void FormSizeNode::slotResetUnit()
 {
     node_->resetUnit();
 
-    ui_->comboBoxUnit_->setFocus();
+    ui_.comboBoxUnit_->setFocus();
 }
 
 //==============================================================
@@ -126,7 +123,7 @@ void FormSizeNode::slotResetBypass()
 {
     node_->resetBypass();
 
-    ui_->checkBoxBypass_->setFocus();
+    ui_.checkBoxBypass_->setFocus();
 }
 
 //==============================================================
@@ -145,7 +142,7 @@ void FormSizeNode::slotResetCaching()
 {
     node_->resetCaching();
 
-    ui_->checkBoxCaching_->setFocus();
+    ui_.checkBoxCaching_->setFocus();
 }
 
 //==============================================================
@@ -153,7 +150,7 @@ void FormSizeNode::slotResetCaching()
 //==============================================================
 void FormSizeNode::slotEditingFinishedComment()
 {
-    const QString comment = ui_->lineEditComment_->text();
+    const QString comment = ui_.lineEditComment_->text();
     node_->setComment(comment);
 }
 
@@ -164,7 +161,7 @@ void FormSizeNode::slotResetComment()
 {
     node_->resetComment();
 
-    ui_->lineEditComment_->setFocus();
+    ui_.lineEditComment_->setFocus();
 }
 
 //==============================================================
@@ -178,34 +175,34 @@ void FormSizeNode::setNode(SizeNode *node)
 
     // Задание имени
     const QString name = node_->name();
-    ui_->lineEditName_->setText(name);
-    ui_->lineEditName_->setToolTip(name);
+    ui_.lineEditName_->setText(name);
+    ui_.lineEditName_->setToolTip(name);
 
     // Задание размерности
     const SizeUnits unit = node->unit();
     const int unitIndex = sizeUnitToInt(unit);
-    ui_->comboBoxUnit_->setCurrentIndex(unitIndex);
+    ui_.comboBoxUnit_->setCurrentIndex(unitIndex);
     const bool isUnitChanged = node->isUnitChanged();
-    ui_->pushBtnResetUnit_->setEnabled(isUnitChanged);
+    ui_.pushBtnResetUnit_->setEnabled(isUnitChanged);
 
     // Задание признака пропуска
     const bool isBypass = node->isBypass();
-    ui_->checkBoxBypass_->setChecked(isBypass);
+    ui_.checkBoxBypass_->setChecked(isBypass);
     const bool isBypassChanged = node->isBypassChanged();
-    ui_->pushBtnResetBypass_->setEnabled(isBypassChanged);
+    ui_.pushBtnResetBypass_->setEnabled(isBypassChanged);
 
     // Задание признака кеширования
     const bool isCaching = node->isCaching();
-    ui_->checkBoxCaching_->setChecked(isCaching);
+    ui_.checkBoxCaching_->setChecked(isCaching);
     const bool isCachingChanged = node->isCachingChanged();
-    ui_->pushBtnResetCaching_->setEnabled(isCachingChanged);
+    ui_.pushBtnResetCaching_->setEnabled(isCachingChanged);
 
     // Задание комментария
     const QString comment = node->comment();
-    ui_->lineEditComment_->setText(comment);
-    ui_->lineEditComment_->setToolTip(comment);
+    ui_.lineEditComment_->setText(comment);
+    ui_.lineEditComment_->setToolTip(comment);
     const bool isCommentChanged = node->isCommentChanged();
-    ui_->pushBtnResetComment_->setEnabled(isCommentChanged);
+    ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
 }
 
 //==============================================================
@@ -216,26 +213,26 @@ void FormSizeNode::setConnections()
     connect(node_, &BaseNode::sigChangedProp,
         this, &FormSizeNode::slotChangedNodeProp);
 
-    connect(ui_->lineEditName_, &QLineEdit::editingFinished,
+    connect(ui_.lineEditName_, &QLineEdit::editingFinished,
         this, &FormSizeNode::slotEditingFinishedName);
 
-    connect(ui_->comboBoxUnit_, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(slotChangedUnit(int)));
-    connect(ui_->pushBtnResetUnit_, &QPushButton::clicked,
+    connect(ui_.comboBoxUnit_, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &FormSizeNode::slotChangedUnit);
+    connect(ui_.pushBtnResetUnit_, &QPushButton::clicked,
         this, &FormSizeNode::slotResetUnit);
 
-    connect(ui_->checkBoxBypass_, &QCheckBox::stateChanged,
+    connect(ui_.checkBoxBypass_, &QCheckBox::stateChanged,
         this, &FormSizeNode::slotChangedBypass);
-    connect(ui_->pushBtnResetBypass_, &QPushButton::clicked,
+    connect(ui_.pushBtnResetBypass_, &QPushButton::clicked,
         this, &FormSizeNode::slotResetBypass);
 
-    connect(ui_->checkBoxCaching_, &QCheckBox::stateChanged,
+    connect(ui_.checkBoxCaching_, &QCheckBox::stateChanged,
         this, &FormSizeNode::slotChangedCaching);
-    connect(ui_->pushBtnResetCaching_, &QPushButton::clicked,
+    connect(ui_.pushBtnResetCaching_, &QPushButton::clicked,
         this, &FormSizeNode::slotResetCaching);
 
-    connect(ui_->lineEditComment_, &QLineEdit::editingFinished,
+    connect(ui_.lineEditComment_, &QLineEdit::editingFinished,
         this, &FormSizeNode::slotEditingFinishedComment);
-    connect(ui_->pushBtnResetComment_, &QPushButton::clicked,
+    connect(ui_.pushBtnResetComment_, &QPushButton::clicked,
         this, &FormSizeNode::slotResetComment);
 }

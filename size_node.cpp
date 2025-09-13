@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////
 #include "size_node.h"
 #include "xml_helper.h"
+#include "qt_helper.h"
 #include "colors.h"
 #include "node_name_manager.h"
 #include "undo_change_object_prop_value.h"
@@ -120,7 +121,7 @@ void SizeNode::draw(QPainter *painter) const
     drawInputPins(painter);
     drawOutputPins(painter);
     // drawResizebleMarker(painter);
-    // drawComments(painter);
+    drawComments(painter);
 }
 
 //==============================================================
@@ -319,6 +320,35 @@ void SizeNode::drawBody(QPainter *painter) const
 }
 
 //==============================================================
+// Вывод комментариев
+//==============================================================
+void SizeNode::drawComments(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    if (isCommentsVisible())
+    {
+        QString comments{};
+        comments += QString{" <<< %1: \"%2\"\n"}.arg(tr("Name"), name());
+        comments += QString{"     %1: %2\n"}.arg(tr("Unit"), sizeUnitToStr(unit_));
+        comments += QString{"     %1: %2\n"}.arg(tr("Bypass"), boolToStr(isBypass_));
+        comments += QString{"     %1: %2\n"}.arg(tr("Caching"), boolToStr(isCaching_));
+        comments += QString{"     %1: \"%2\"\n"}.arg(tr("Comment"), comment());
+#ifdef QT_DEBUG
+        comments += "     -\n";
+        comments += QString{"     %1: %2\n"}.arg("Id").arg(id());
+#endif // QT_DEBUG
+
+        const int commentsLeft = right();
+        const int commentsTop = top() + (headerHeight() - charHeight()) / 2;
+        const int commentsFlags = Qt::AlignLeft | Qt::AlignTop | Qt::TextDontClip;
+        const QRect commentsRect{commentsLeft, commentsTop, 0, 0};
+        painter->setPen(Colors::nodeText());
+        painter->drawText(commentsRect, commentsFlags, comments);
+    }
+}
+
+//==============================================================
 // Перевод байтов в килобайты
 //==============================================================
 double SizeNode::bytesToKilobytes(int count)
@@ -425,12 +455,12 @@ void SizeNode::updateStateInfo()
 
     if (!isConnectedInputPin())
     {
-        const QString msg = tr("No connection to input pin");
+        const QString msg = "No connection to input pin";
         stateInfo_ = NodeStateInfo{NodeStates::Error, msg};
     }
     else if (inputDataSize() == 0)
     {
-        const QString msg = tr("Not data");
+        const QString msg = "Not data";
         stateInfo_ = NodeStateInfo{NodeStates::Warning, msg};
     }
     else

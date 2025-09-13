@@ -8,6 +8,7 @@
 //==============================================================
 #include <QWidget>
 #include "size_node.h"
+#include "ui_form_size_node.h"
 
 //==============================================================
 namespace Ui
@@ -54,7 +55,7 @@ private:
     void setConnections();
 
     // Интерфейс пользователя
-    Ui::FormSizeNode *ui_{nullptr};
+    Ui::FormSizeNode ui_{};
     // Узел
     SizeNode *node_{nullptr};
 };

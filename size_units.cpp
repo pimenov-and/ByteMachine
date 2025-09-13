@@ -3,22 +3,31 @@
 // Единицы измерения
 /////////////////////////////////////////////////////////////////////
 #include "size_units.h"
-#include <QObject>
-#include <QMap>
 
 //===================================================================
 // Конвертация единицы измерения в строку
 //===================================================================
 QString sizeUnitToStr(SizeUnits unit)
 {
-    const QMap<SizeUnits, QString> map
+    switch (unit)
     {
-        {SizeUnits::Byte, "Byte"},
-        {SizeUnits::Kilobyte, "Kilobyte"},
-        {SizeUnits::Megabyte, "Megabyte"}
-    };
-
-    return map.value(unit, "Unknown");
+        case SizeUnits::Byte:
+        {
+            return "Byte";
+        }
+        case SizeUnits::Kilobyte:
+        {
+            return "Kilobyte";
+        }
+        case SizeUnits::Megabyte:
+        {
+            return "Megabyte";
+        }
+        default:
+        {
+            return "Unknown";
+        }
+    }
 }
 
 //===================================================================
@@ -26,14 +35,22 @@ QString sizeUnitToStr(SizeUnits unit)
 //===================================================================
 SizeUnits strToSizeUnit(const QString &str)
 {
-    const QMap<QString, SizeUnits> map
+    if (str == "Byte")
     {
-        {"Byte", SizeUnits::Byte},
-        {"Kilobyte", SizeUnits::Kilobyte},
-        {"Megabyte", SizeUnits::Megabyte}
-    };
-
-    return map.value(str, SizeUnits::Unknown);
+        return SizeUnits::Byte;
+    }
+    else if (str == "Kilobyte")
+    {
+        return SizeUnits::Kilobyte;
+    }
+    else if (str == "Megabyte")
+    {
+        return SizeUnits::Megabyte;
+    }
+    else
+    {
+        return SizeUnits::Unknown;
+    }
 }
 
 //===================================================================

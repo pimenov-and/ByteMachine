@@ -3,6 +3,7 @@
 // Вспомогательные функции Qt
 ////////////////////////////////////////////////////////////////
 #include "qt_helper.h"
+#include <QPainter>
 #include <QFile>
 #include <QTextStream>
 
@@ -66,4 +67,15 @@ optional<QString> readFileAllLines(const QString &path)
     }
 
     return QTextStream{&file}.readAll();
+}
+
+//==============================================================
+// Получение размера строки
+//==============================================================
+QSize strSize(QPainter &painter, const QString &str)
+{
+    const QRect boundingRect =
+        painter.boundingRect(QRect{}, Qt::AlignCenter, str);
+
+    return QSize{boundingRect.width(), boundingRect.height()};
 }

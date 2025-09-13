@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Функция отмены добавления узла
+// Команда отмены добавления узла
 ////////////////////////////////////////////////////////////////
 #ifndef UNDO_ADD_NODE_H
 #define UNDO_ADD_NODE_H
@@ -13,15 +13,16 @@
 class Project;
 
 //==============================================================
-// Функция отмены для операции задания имени проекта
+// Команда отмены добавления узла
 //==============================================================
 class UndoAddNode : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
-    explicit UndoAddNode(Project *project, const ShPtrBaseNode &node);
+    explicit UndoAddNode(Project *project, const ShPtrBaseNode &node,
+        const ShPtrBaseNode &prevSelectedObject);
     // Деструктор
-    ~UndoAddNode();
+    ~UndoAddNode() override;
 
     // Функция отмены
     void undo() override;
@@ -32,6 +33,8 @@ private:
     Project *project_{nullptr};
     // Узел
     ShPtrBaseNode node_{nullptr};
+    // Предыдущий выделенный объект
+    ShPtrBaseNode prevSelectedObject_{nullptr};
 };
 
 //==============================================================

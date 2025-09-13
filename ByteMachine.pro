@@ -6,8 +6,8 @@ CONFIG += c++17
 
 QMAKE_CXXFLAGS += -pedantic-errors -Werror
 
-DEFINES += APP_VERSION=\\\"0.059\\\" \
-    APP_BUILD_DATE=\\\"30.08.2025\\\"
+DEFINES += APP_VERSION=\\\"0.062\\\" \
+    APP_BUILD_DATE=\\\"07.08.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -51,6 +51,7 @@ SOURCES += main.cpp \
     undo_add_node.cpp \
     undo_change_object_prop_value.cpp \
     undo_remove_node.cpp \
+    undo_select_object.cpp \
     xml_helper.cpp
 
 HEADERS += main_window.h \
@@ -95,7 +96,7 @@ HEADERS += main_window.h \
     undo_add_node.h \
     undo_change_object_prop_value.h \
     undo_remove_node.h \
-    undo_select_objects.h \
+    undo_select_object.h \
     xml_helper.h
 
 FORMS += main_window.ui \

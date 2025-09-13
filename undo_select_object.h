@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-//
+// Команда отмены выделения объекта
 ////////////////////////////////////////////////////////////////
-#ifndef UNDO_SELECT_OBJECTS_H
-#define UNDO_SELECT_OBJECTS_H
+#ifndef UNDO_SELECT_OBJECT_H
+#define UNDO_SELECT_OBJECT_H
 
 //==============================================================
 #include <QUndoCommand>
@@ -13,29 +13,29 @@
 class Project;
 
 //==============================================================
-//
+// Команда отмены выделения объекта
 //==============================================================
-class UndoSelectObjects : public QUndoCommand
+class UndoSelectObject : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
-    UndoSelectObjects(Project *project, const ShPtrBaseNode &node1,
-        const ShPtrBaseNode &node2, bool isSelected);
+    UndoSelectObject(Project *project, const ShPtrBaseNode &node1,
+        const ShPtrBaseNode &node2);
     // Деструктор
-    ~UndoSelectObjects();
+    ~UndoSelectObject() override;
 
     // Функция отмены
     void undo() override;
     // Функция восстановления
     void redo() override;
 private:
+    // Проект
+    Project *project_{nullptr};
     // Узел 1
     ShPtrBaseNode node1_{nullptr};
     // Узел 2
     ShPtrBaseNode node2_{nullptr};
-    // Признак выделения
-    bool isSelected_{false};
 };
 
 //==============================================================
-#endif // UNDO_SELECT_OBJECTS_H
+#endif // UNDO_SELECT_OBJECT_H

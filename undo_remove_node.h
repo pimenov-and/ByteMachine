@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Функция отмены удаления узла
+// Команда отмены удаления узла
 ////////////////////////////////////////////////////////////////
 #ifndef UNDO_REMOVE_NODE_H
 #define UNDO_REMOVE_NODE_H
@@ -13,7 +13,7 @@
 class Project;
 
 //==============================================================
-// Функция отмены удаления узла
+// Команда отмены удаления узла
 //==============================================================
 class UndoRemoveNode : public QUndoCommand
 {
@@ -21,7 +21,7 @@ public:
     // Конструктор с параметрами
     explicit UndoRemoveNode(Project *project, const ShPtrBaseNode &node);
     // Деструктор
-    ~UndoRemoveNode();
+    ~UndoRemoveNode() override;
 
     // Функция отмены
     void undo() override;

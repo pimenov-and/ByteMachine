@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////
 // ByteMachine
-// Функция отмены для операции задания имени проекта
+// Команда отмены значения свойства объекта
 ////////////////////////////////////////////////////////////////
 #ifndef UNDO_CHANGE_OBJECT_PROP_VALUE_H
 #define UNDO_CHANGE_OBJECT_PROP_VALUE_H
@@ -10,7 +10,7 @@
 #include <QVariant>
 
 //==============================================================
-// Функция отмены для операции задания имени проекта
+// Команда отмены значения свойства объекта
 //==============================================================
 class UndoChangeObjectPropValue : public QUndoCommand
 {
@@ -19,7 +19,7 @@ public:
     UndoChangeObjectPropValue(QObject *object, const QString &propName,
         const QVariant &propValue, const QVariant &oldPropValue);
     // Деструктор
-    ~UndoChangeObjectPropValue();
+    ~UndoChangeObjectPropValue() override;
 
     // Функция отмены
     void undo() override;

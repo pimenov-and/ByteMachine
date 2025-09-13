@@ -625,8 +625,11 @@ color: rgb(160, 160, 160);
    </property>
   </action>
   <action name="actVisibleNodeComments_">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">

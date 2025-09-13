@@ -41,6 +41,8 @@ private slots:
     void slotSettingsPanelVisibleChanged(bool visible);
     // Функция вызывается при изменении видимости сетки дизайнера
     void slotDesignerGridVisible(bool visible);
+    // Функция вызывается при изменении видимости комментариев узлов
+    void slotNodesCommentsVisibleChanged(bool visible);
 
     // Функция вызывается при выборе пункта главного меню "О программе"
     void slotShowAboutProg();
@@ -58,8 +60,8 @@ private slots:
     // Функция вызывается при изменении индекса текущего объекта
     // через комбо-бокс объектов
     void slotChangeCurrentObjectIndex(int index);
-    // Функция вызывается при сбросе выделения со узлов
-    void slotClearSelection();
+    // Функция вызывается при изменении выбранного узла
+    void slotChangeSelectedNode(ShPtrBaseNode node);
 private:
     // Функция вызывается при закрытия окна
     void closeEvent(QCloseEvent*) override;
@@ -82,6 +84,9 @@ private:
 
     // Интерфейс пользователя
     Ui::MainWindow *ui_{nullptr};
+    // Признак обработки узлов проектом (выставляется и
+    // сбрасывается в некоторых слотах)
+    bool isNodesProcessing_{false};
 };
 
 //==============================================================

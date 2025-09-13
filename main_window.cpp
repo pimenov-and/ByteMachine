@@ -108,6 +108,15 @@ void MainWindow::slotDesignerGridVisible(bool visible)
 }
 
 //==============================================================
+// Функция вызывается при изменении видимости комментариев узлов
+//==============================================================
+void MainWindow::slotNodesCommentsVisibleChanged(bool visible)
+{
+    BaseNode::setCommentsVisible(visible);
+    ui_->widgetDesigner_->repaint();
+}
+
+//==============================================================
 // Функция вызывается при выборе пункта главного меню "О программе"
 //==============================================================
 void MainWindow::slotShowAboutProg()
@@ -144,7 +153,7 @@ void MainWindow::slotAddNodeByType(NodeTypes nodeType)
     const auto selNode = project()->selectedNode();
     if (selNode != nullptr)
     {
-        selNode->setSelected(false);
+        // selNode->setSelected(false);
 
         const QPoint selTopLeft = selNode->topLeft();
         node->setUndo(true);
@@ -160,9 +169,13 @@ void MainWindow::slotAddNodeByType(NodeTypes nodeType)
 //==============================================================
 void MainWindow::slotAddNode(ShPtrBaseNode node)
 {
+    Q_ASSERT(node != nullptr);
+
+    isNodesProcessing_ = true;
     const QString nodeDescript = node->toStr();
     ui_->comboBoxObjects_->addItem(nodeDescript);
     ui_->comboBoxObjects_->setCurrentText(nodeDescript);
+    isNodesProcessing_ = false;
 }
 
 //==============================================================
@@ -170,11 +183,8 @@ void MainWindow::slotAddNode(ShPtrBaseNode node)
 //==============================================================
 void MainWindow::slotChangedNodeProp(ShPtrBaseNode node, PropValue value)
 {
-    if ((value.name == "selected") && (value.value == true))
-    {
-        const QString nodeDescript = node->toStr();
-        ui_->comboBoxObjects_->setCurrentText(nodeDescript);
-    }
+    Q_UNUSED(node);
+    Q_UNUSED(value);
 }
 
 //==============================================================
@@ -182,8 +192,34 @@ void MainWindow::slotChangedNodeProp(ShPtrBaseNode node, PropValue value)
 //==============================================================
 void MainWindow::slotRemoveNode(ShPtrBaseNode node)
 {
-    Q_UNUSED(node);
+    Q_ASSERT(node != nullptr);
+
+    isNodesProcessing_ = true;
+    const QString descript = node->toStr();
+    const int index = ui_->comboBoxObjects_->findText(descript);
+    Q_ASSERT(index != -1);
+    ui_->comboBoxObjects_->removeItem(index);
+    isNodesProcessing_ = false;
 }
+
+//==============================================================
+// Функция вызывается при сбросе выделения со узлов
+//==============================================================
+void MainWindow::slotChangeSelectedNode(ShPtrBaseNode node)
+{
+    isNodesProcessing_ = true;
+    if (node != nullptr)
+    {
+        const QString descript = node->toStr();
+        ui_->comboBoxObjects_->setCurrentText(descript);
+    }
+    else
+    {
+        ui_->comboBoxObjects_->setCurrentText("Project");
+    }
+    isNodesProcessing_ = false;
+}
+
 
 //==============================================================
 // Функция вызывается при изменении индекса текущего объекта
@@ -204,7 +240,10 @@ void MainWindow::slotChangeCurrentObjectIndex(int index)
         const auto projectWidget = new FormProjectSettings(project());
         ui_->scrollAreaSettings_->setWidget(projectWidget);
 
-        project()->unselectNodes();
+        if (!isNodesProcessing_)
+        {
+            project()->setSelectedNode(nullptr);
+        }
     }
     else
     {
@@ -217,17 +256,11 @@ void MainWindow::slotChangeCurrentObjectIndex(int index)
         Q_ASSERT(nodeWidget != nullptr);
         ui_->scrollAreaSettings_->setWidget(nodeWidget);
 
-        project()->unselectNodes();
-        node->setSelected(true);
+        if (!isNodesProcessing_)
+        {
+            project()->setSelectedNode(node);
+        }
     }
-}
-
-//==============================================================
-// Функция вызывается при сбросе выделения со узлов
-//==============================================================
-void MainWindow::slotClearSelection()
-{
-    ui_->comboBoxObjects_->setCurrentText("Project");
 }
 
 //==============================================================
@@ -277,6 +310,8 @@ void MainWindow::setConnections()
         this, &MainWindow::slotSettingsPanelVisibleChanged);
     connect(ui_->actVisibleDesignerGrid_, &QAction::triggered,
         this, &MainWindow::slotDesignerGridVisible);
+    connect(ui_->actVisibleNodeComments_, &QAction::triggered,
+        this, &MainWindow::slotNodesCommentsVisibleChanged);
 
     // Меню "Tools"
 
@@ -291,10 +326,12 @@ void MainWindow::setConnections()
     // Проект
     connect(project(), &Project::sigAddNode,
         this, &MainWindow::slotAddNode);
+    connect(project(), &Project::sigRemoveNode,
+        this, &MainWindow::slotRemoveNode);
     connect(project(), &Project::sigChangedNodeProp,
         this, &MainWindow::slotChangedNodeProp);
-    connect(project(), &Project::sigClearSelection,
-        this, &MainWindow::slotClearSelection);
+    connect(project(), &Project::sigChangeSelectedNode,
+        this, &MainWindow::slotChangeSelectedNode);
 
     // Комбо-бокс объектов
     connect(ui_->comboBoxObjects_, SIGNAL(currentIndexChanged(int)),

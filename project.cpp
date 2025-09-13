@@ -6,6 +6,7 @@
 #include "undo_add_node.h"
 #include "undo_remove_node.h"
 #include "undo_change_object_prop_value.h"
+#include "undo_select_object.h"
 #include "icons.h"
 #include <QAction>
 #include <QFile>
@@ -35,6 +36,29 @@ Project* Project::instance()
 }
 
 //==============================================================
+// Создание нового проекта
+//==============================================================
+void Project::createNew()
+{
+}
+
+//==============================================================
+// Чтение проекта из файла XML
+//==============================================================
+void Project::loadFromXml(const QString &path)
+{
+    Q_UNUSED(path);
+}
+
+//==============================================================
+// Запись проекта в файл
+//==============================================================
+void Project::saveToXml(const QString &path) const
+{
+    Q_UNUSED(path);
+}
+
+//==============================================================
 // Добавление узла
 //==============================================================
 bool Project::addNode(const ShPtrBaseNode &node)
@@ -46,6 +70,8 @@ bool Project::addNode(const ShPtrBaseNode &node)
         return false;
     }
 
+    const ShPtrBaseNode selNode = selectedNode();
+
     nodes_ << node;
     emit sigAddNode(node);
     connect(node.get(), &BaseNode::sigChangedProp,
@@ -53,7 +79,7 @@ bool Project::addNode(const ShPtrBaseNode &node)
 
     if (!isUndo_)
     {
-        const auto undoCmd = new UndoAddNode(this, node);
+        const auto undoCmd = new UndoAddNode(this, node, selNode);
         undoStack_.push(undoCmd);
     }
 
@@ -130,17 +156,18 @@ void Project::setComment(const QString &comment)
 {
     if (comment_ != comment)
     {
+        const QString oldComment = comment_;
+        comment_ = comment;
+        const PropValue value{"comment", comment};
+        emit sigChangedProp(value);
+
         if (!isUndo_)
         {
-            const QString oldComment = comment_;
             const auto undoCmd = new UndoChangeObjectPropValue{this,
                 "comment", comment, oldComment};
             undoStack_.push(undoCmd);
         }
 
-        comment_ = comment;
-        const PropValue value{"comment", comment};
-        emit sigChangedProp(value);
     }
 }
 
@@ -204,24 +231,46 @@ ShPtrConstBaseNode Project::selectedNode() const
 }
 
 //==============================================================
-// Сброс выделения всех узлов
+// Задание выделенного узла. Если node равно nullptr, то это
+// означает сброс выделения со всего
 //==============================================================
-void Project::unselectNodes()
+void Project::setSelectedNode(const ShPtrBaseNode &node)
 {
-    for (const ShPtrBaseNode &node: as_const(nodes_))
+    const ShPtrBaseNode prevSelNode = selectedNode();
+    if (prevSelNode != node)
     {
-        node->setSelected(false);
+        if (!isUndo_)
+        {
+            const auto undoCmd = new UndoSelectObject{this,
+                node, prevSelNode};
+            undoStack_.push(undoCmd);
+            return;
+        }
+
+        if (node != nullptr)
+        {
+            unselectNodes();
+            node->setSelected(true);
+        }
+        else
+        {
+            unselectNodes();
+        }
+
+        emit sigChangeSelectedNode(node);
     }
 }
 
 //==============================================================
-// Сброс выделения с последующим сигналом
+// Сброс выделения всех узлов
 //==============================================================
-void Project::clearSelection()
+void Project::unselectNodes()
 {
-    unselectNodes();
-
-    emit sigClearSelection();
+    const ShPtrBaseNode node = selectedNode();
+    if (node != nullptr)
+    {
+        node->setSelected(false);
+    }
 }
 
 //==============================================================
@@ -445,7 +494,7 @@ ShPtrConstBaseNode Project::findSelectedNode() const
 //==============================================================
 // Поиск входного пина узла по координате
 //==============================================================
-ShPtrInputPin Project::findInputPinByPt(const QPoint &pt)
+ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -466,7 +515,7 @@ ShPtrInputPin Project::findInputPinByPt(const QPoint &pt)
 //==============================================================
 // Поиск входного пина узла по координате (константный вариант)
 //==============================================================
-ShPtrConstInputPin Project::findInputPinByPt(const QPoint &pt) const
+ShPtrConstInputPin Project::findNodeInputPinByPt(const QPoint &pt) const
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -487,7 +536,7 @@ ShPtrConstInputPin Project::findInputPinByPt(const QPoint &pt) const
 //==============================================================
 // Поиск выходного пина узла по координате
 //==============================================================
-ShPtrOutputPin Project::findOutputPinByPt(const QPoint &pt)
+ShPtrOutputPin Project::findNodeOutputPinByPt(const QPoint &pt)
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -508,7 +557,7 @@ ShPtrOutputPin Project::findOutputPinByPt(const QPoint &pt)
 //==============================================================
 // Поиск выходного пина узла по координате (константный вариант)
 //==============================================================
-ShPtrConstOutputPin Project::findOutputPinByPt(const QPoint &pt) const
+ShPtrConstOutputPin Project::findNodeOutputPinByPt(const QPoint &pt) const
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -555,6 +604,36 @@ Project::Project(QObject *parent) : QObject{parent}
 //==============================================================
 void Project::setConnections()
 {
+}
+
+//==============================================================
+// Чтение имени из XML
+//==============================================================
+QString Project::readNameFromXml(const QDomElement &elem) const
+{
+    Q_UNUSED(elem);
+
+    return QString{};
+}
+
+//==============================================================
+// Чтение комментария из XML
+//==============================================================
+QString Project::readCommentFromXml(const QDomElement &elem) const
+{
+    Q_UNUSED(elem);
+
+    return QString{};
+}
+
+//==============================================================
+// Чтение узлов из XML
+//==============================================================
+QVector<ShPtrBaseNode> Project::readNodesFromXml(const QDomElement &elem) const
+{
+    Q_UNUSED(elem);
+
+    return QVector<ShPtrBaseNode>{};
 }
 
 //==============================================================

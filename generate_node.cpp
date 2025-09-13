@@ -9,6 +9,7 @@
 #include "xml_helper.h"
 #include "byte_convert.h"
 #include "base_exception.h"
+#include "colors.h"
 #include <QPainter>
 #include <QDomDocument>
 #include <QDebug>
@@ -92,6 +93,7 @@ void GenerateNode::draw(QPainter *painter) const
 
     drawSimpleBody(painter);
     drawOutputPins(painter);
+    drawComments(painter);
 }
 
 //==============================================================
@@ -907,6 +909,27 @@ qint32 GenerateNode::byteCountForGenerateType() const
 void GenerateNode::drawComments(QPainter *painter) const
 {
     Q_ASSERT(painter != nullptr);
+
+    if (isCommentsVisible())
+    {
+        QString comments{};
+        comments += QString{" <<< %1: \"%2\"\n"}.arg(tr("Name"), name());
+        comments += QString{"     %1: %2\n"}.arg(tr("Generate type"), generateTypeToStr(generateType()));
+        comments += QString{"     %1: %2\n"}.arg(tr("Count (B)")).arg(dataSize());
+        comments += valueStrForComments();
+        comments += QString{"     %1: \"%2\"\n"}.arg(tr("Comment"), comment());
+#ifdef QT_DEBUG
+        comments += "     -\n";
+        comments += QString{"     %1: %2\n"}.arg("Id").arg(id());
+#endif // QT_DEBUG
+
+        const int commentsLeft = right();
+        const int commentsTop = top() + (height() - charHeight()) / 2;
+        const int commentsFlags = Qt::AlignLeft | Qt::AlignTop | Qt::TextDontClip;
+        const QRect commentsRect{commentsLeft, commentsTop, 0, 0};
+        painter->setPen(Colors::nodeText());
+        painter->drawText(commentsRect, commentsFlags, comments);
+    }
 }
 
 //==============================================================
@@ -994,6 +1017,117 @@ QString GenerateNode::valueStrForTooltip() const
 quint8 GenerateNode::randValue(qint32 index)
 {
     return static_cast<quint8>(qHash(index));
+}
+
+//==============================================================
+// Обновление состояния узла
+//==============================================================
+void GenerateNode::updateStateInfo()
+{
+    const NodeStateInfo oldStateInfo = stateInfo_;
+
+    if (byteCount() == 0)
+    {
+        const QString msg = "The number of bytes generated is 0";
+        stateInfo_ = NodeStateInfo{NodeStates::Warning, msg};
+    }
+    else
+    {
+        stateInfo_ = NodeStateInfo{NodeStates::Success, QString{}};
+    }
+
+    if (stateInfo_ != oldStateInfo)
+    {
+        emit sigChangedState(stateInfo_);
+    }
+}
+
+//==============================================================
+// Получение строки со значением для комментария
+//==============================================================
+QString GenerateNode::valueStrForComments() const
+{
+    switch (generateType_)
+    {
+        case GenerateTypes::Usual:
+        {
+            return QString{"     %1: 0x%2\n"}.arg(tr("Filled byte"),
+                dataToHexStr(filledByte(), 2));
+        }
+        case GenerateTypes::Random:
+        {
+            return QString{};
+        }
+        case GenerateTypes::Bool:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value"),
+                boolToStr(boolValue_));
+        }
+        case GenerateTypes::Int8:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(int8Value_);
+        }
+        case GenerateTypes::UInt8:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(uint8Value_);
+        }
+        case GenerateTypes::Int16:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(int16Value_);
+        }
+        case GenerateTypes::UInt16:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(uint16Value_);
+        }
+        case GenerateTypes::Int32:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(int32Value_);
+        }
+        case GenerateTypes::UInt32:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(uint32Value_);
+        }
+        case GenerateTypes::Int64:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(int64Value_);
+        }
+        case GenerateTypes::UInt64:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(uint64Value_);
+        }
+        case GenerateTypes::Float:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(static_cast<double>(floatValue_), 0, 'f', 3);
+        }
+        case GenerateTypes::Double:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value")).
+                arg(doubleValue_, 0, 'f', 3);
+        }
+        case GenerateTypes::String:
+        {
+            return QString{"     %1: \"%2\"\n"}.arg(tr("Value"),
+                strValue_.isEmpty() ? "" : "...");
+        }
+        case GenerateTypes::Color:
+        {
+            return QString{"     %1: %2\n"}.arg(tr("Value"),
+                colorValue_.name(QColor::HexArgb).toUpper());
+        }
+        default:
+        {
+            return QString{};
+        }
+    }
 }
 
 //==============================================================
