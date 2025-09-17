@@ -858,7 +858,7 @@ QString GenerateNode::getUiPropertyName(const QString &systemName)
         {"size", "Size"},
         {"comment", "Comment"},
         {"generateType", "Generate type"},
-        {"byteCount", "Byte count"},
+        {"byteCount", "Сount (B)"},
         {"filledByte", "Filled byte"},
         {"boolValue", "Value"},
         {"int8Value", "Value"},

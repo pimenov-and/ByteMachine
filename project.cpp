@@ -576,6 +576,26 @@ ShPtrConstOutputPin Project::findNodeOutputPinByPt(const QPoint &pt) const
 }
 
 //==============================================================
+// Виртуальная функция получения имени свойства из графического
+// интерфейса по его системному имени
+//==============================================================
+QString Project::getUiPropertyName(const QString &systemName)
+{
+    if (systemName == "name")
+    {
+        return "Name";
+    }
+    else if (systemName == "comment")
+    {
+        return "Comment";
+    }
+    else
+    {
+        return "Unknown property";
+    }
+}
+
+//==============================================================
 // Функция вызывается при изменении свойства узла
 //==============================================================
 void Project::slotChangedNodeProp(PropValue value)

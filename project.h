@@ -159,6 +159,10 @@ public:
     // Поиск выходного пина узла по координате (константный вариант)
     [[nodiscard]]
     ShPtrConstOutputPin findNodeOutputPinByPt(const QPoint &pt) const;
+
+    // Виртуальная функция получения имени свойства из графического
+    // интерфейса по его системному имени
+    QString getUiPropertyName(const QString &systemName);
 signals:
     // Сигнал возникает при добавлении узла
     void sigAddNode(ShPtrBaseNode node);

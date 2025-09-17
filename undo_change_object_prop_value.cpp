@@ -43,7 +43,8 @@ UndoChangeObjectPropValue::UndoChangeObjectPropValue(QObject *object,
     }
     else
     {
-        setText(QString{"Change property \"%1\" of Project"}.arg(propName));
+        const QString uiPropName = project()->getUiPropertyName(propName);
+        setText(QString{"Change property \"%1\" of Project"}.arg(uiPropName));
     }
 }
 

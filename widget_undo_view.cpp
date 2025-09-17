@@ -20,7 +20,7 @@ WidgetUndoView::WidgetUndoView(QUndoStack *undoStack, QWidget *parent)
     const auto undoView = new QUndoView{undoStack, this};
     undoView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    auto layout = new QVBoxLayout(this);
+    const auto layout = new QVBoxLayout(this);
     layout->setMargin(0);
     layout->addWidget(undoView);
     setLayout(layout);
