@@ -48,10 +48,10 @@ SOURCES += main.cpp \
     show_node_state.cpp \
     size_units.cpp \
     status_bar.cpp \
-    undo_add_node.cpp \
-    undo_change_object_prop_value.cpp \
-    undo_remove_node.cpp \
-    undo_select_object.cpp \
+    undo/undo_add_node.cpp \
+    undo/undo_change_object_prop_value.cpp \
+    undo/undo_remove_node.cpp \
+    undo/undo_select_object.cpp \
     widget_undo_view.cpp \
     xml_helper.cpp
 
@@ -94,10 +94,10 @@ HEADERS += main_window.h \
     size_units.h \
     standart_colors.h \
     status_bar.h \
-    undo_add_node.h \
-    undo_change_object_prop_value.h \
-    undo_remove_node.h \
-    undo_select_object.h \
+    undo/undo_add_node.h \
+    undo/undo_change_object_prop_value.h \
+    undo/undo_remove_node.h \
+    undo/undo_select_object.h \
     widget_undo_view.h \
     xml_helper.h
 
@@ -110,7 +110,8 @@ FORMS += main_window.ui \
     form_project_settings.ui \
     form_size_node.ui
 
-INCLUDEPATH += nodes/
+INCLUDEPATH += nodes/ \
+    undo/
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
