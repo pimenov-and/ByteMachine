@@ -313,6 +313,7 @@ void FormGenerateNode::slotChangedGenerateType(int index)
             break;
         }
     }
+    highlightByteCountWidget();
 }
 
 //==============================================================
@@ -331,6 +332,7 @@ void FormGenerateNode::slotResetGenerateType()
 void FormGenerateNode::slotChangedByteCount(int count)
 {
     node_->setByteCount(count);
+    highlightByteCountWidget();
 }
 
 //==============================================================
@@ -1235,6 +1237,21 @@ void FormGenerateNode::setGenerateTypeColor()
 }
 
 //==============================================================
+// Подсветка виджета с количеством байт
+//==============================================================
+void FormGenerateNode::highlightByteCountWidget()
+{
+    if (ui_.spinBoxByteCount_->value() > 0)
+    {
+        ui_.spinBoxByteCount_->setStyleSheet("");
+    }
+    else
+    {
+        ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(255, 240, 168);");
+    }
+}
+
+//==============================================================
 // Задание узла
 //==============================================================
 void FormGenerateNode::setNode(GenerateNode *node)
@@ -1260,6 +1277,7 @@ void FormGenerateNode::setNode(GenerateNode *node)
     // Задание количества байтов
     const int count = node_->byteCount();
     ui_.spinBoxByteCount_->setValue(count);
+    // highlightByteCountWidget();
 
     // Задание заполняющего байта
     const quint8 filledByte = node_->filledByte();

@@ -9,6 +9,7 @@
 #include "xml_helper.h"
 #include "qt_helper.h"
 #include "base_exception.h"
+#include <QMap>
 #include <QUndoStack>
 #include <QColor>
 #include <QPen>

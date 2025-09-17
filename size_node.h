@@ -95,6 +95,10 @@ public:
     // Получение признака изменения кеширования
     [[nodiscard]]
     bool isCachingChanged() const { return isCaching_; }
+
+    // Виртуальная функция получения имени свойства из графического
+    // интерфейса по его системному имени
+    QString getUiPropertyName(const QString &systemName) override;
 private slots:
 private:
     // Вывод основы

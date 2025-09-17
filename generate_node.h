@@ -245,6 +245,10 @@ public:
     // Получение признака изменения значения типа Color
     [[nodiscard]]
     bool isColorValueChanged() const { return colorValue_ != Qt::black; }
+
+    // Виртуальная функция получения имени свойства из графического
+    // интерфейса по его системному имени
+    QString getUiPropertyName(const QString &systemName) override;
 private slots:
     // Функция вызывается при подключении выходного пина
     void slotOutputPinConnectChanged(ConnectStates state, InputPin *pin);

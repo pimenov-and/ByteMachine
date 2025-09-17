@@ -112,6 +112,9 @@ private:
     // Задание типа генерации QColor
     void setGenerateTypeColor();
 
+    // Подсветка виджета с количеством байт
+    void highlightByteCountWidget();
+
     // Интерфейс пользователя
     Ui::FormGenerateNode ui_{};
     // Узел

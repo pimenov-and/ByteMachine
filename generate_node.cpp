@@ -842,6 +842,43 @@ void GenerateNode::resetColorValue()
 }
 
 //==============================================================
+// Виртуальная функция получения имени свойства из графического
+// интерфейса по его системному имени
+//==============================================================
+QString GenerateNode::getUiPropertyName(const QString &systemName)
+{
+    const QMap<QString, QString> map
+    {
+        {"name", "Name"},
+        {"left", "Left"},
+        {"top", "Top"},
+        {"width", "Width"},
+        {"height", "Height"},
+        {"topLeft", "Top and left"},
+        {"size", "Size"},
+        {"comment", "Comment"},
+        {"generateType", "Generate type"},
+        {"byteCount", "Byte count"},
+        {"filledByte", "Filled byte"},
+        {"boolValue", "Value"},
+        {"int8Value", "Value"},
+        {"uint8Value", "Value"},
+        {"int16Value", "Value"},
+        {"uint16Value", "Value"},
+        {"int32Value", "Value"},
+        {"uint32Value", "Value"},
+        {"int64Value", "Value"},
+        {"uint64Value", "Value"},
+        {"floatValue", "Value"},
+        {"doubleValue", "Value"},
+        {"strValue", "Value"},
+        {"colorValue", "Value"}
+    };
+
+    return map.value(systemName, "Unknown property");
+}
+
+//==============================================================
 // Функция вызывается при подключении выходного пина
 //==============================================================
 void GenerateNode::slotOutputPinConnectChanged(ConnectStates state,

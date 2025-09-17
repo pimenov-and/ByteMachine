@@ -398,7 +398,7 @@ ShPtrBaseNode Project::findNodeByPtr(BaseNode *node)
 
     for (const ShPtrBaseNode &n: as_const(nodes_))
     {
-        if (n == node)
+        if (n.get() == node)
         {
             return n;
         }
@@ -416,7 +416,7 @@ ShPtrConstBaseNode Project::findNodeByPtr(BaseNode * const node) const
 
     for (const ShPtrBaseNode &n: as_const(nodes_))
     {
-        if (n == node)
+        if (n.get() == node)
         {
             return n;
         }

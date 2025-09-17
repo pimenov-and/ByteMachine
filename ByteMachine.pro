@@ -6,8 +6,8 @@ CONFIG += c++17
 
 QMAKE_CXXFLAGS += -pedantic-errors -Werror
 
-DEFINES += APP_VERSION=\\\"0.063\\\" \
-    APP_BUILD_DATE=\\\"13.08.2025\\\"
+DEFINES += APP_VERSION=\\\"0.065\\\" \
+    APP_BUILD_DATE=\\\"17.08.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

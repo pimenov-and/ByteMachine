@@ -261,6 +261,10 @@ public:
     static bool isCommentsVisible() { return isCommentsVisible_; }
     // Задание признака комментариев узлов
     static void setCommentsVisible(bool isVisible);
+
+    // Виртуальная функция получения имени свойства из графического
+    // интерфейса по его системному имени
+    virtual QString getUiPropertyName(const QString &systemName) = 0;
 signals:
     // Сигнал возникает при изменении узла
     void sigChangedProp(PropValue value);

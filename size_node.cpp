@@ -9,6 +9,7 @@
 #include "node_name_manager.h"
 #include "undo_change_object_prop_value.h"
 #include <QPainter>
+#include <QMap>
 #include <QDomDocument>
 #include <QUndoStack>
 // #include <QDebug>
@@ -130,12 +131,15 @@ void SizeNode::draw(QPainter *painter) const
 ShPtrBaseNode SizeNode::clone() const
 {
     const auto cloneNode = ShPtrSizeNode::create(undoStack());
+    cloneNode->setUndo(true);
     cloneNode->setLeft(left());
     cloneNode->setTop(top());
     cloneNode->setWidth(width());
     // cloneNode->setHeight(height());
     cloneNode->setUnit(unit());
+    cloneNode->setBypass(isBypass());
     cloneNode->setComment(comment());
+    cloneNode->setUndo(false);
 
     return cloneNode;
 }
@@ -283,6 +287,30 @@ void SizeNode::resetCaching()
 }
 
 //==============================================================
+// Виртуальная функция получения имени свойства из графического
+// интерфейса по его системному имени
+//==============================================================
+QString SizeNode::getUiPropertyName(const QString &systemName)
+{
+    const QMap<QString, QString> map
+    {
+        {"name", "Name"},
+        {"left", "Left"},
+        {"top", "Top"},
+        {"width", "Width"},
+        {"height", "Height"},
+        {"topLeft", "Top and left"},
+        {"size", "Size"},
+        {"comment", "Comment"},
+        {"unit", "Unit"},
+        {"bypass", "Bypass"},
+        {"caching", "Caching"}
+    };
+
+    return map.value(systemName, "Unknown property");
+}
+
+//==============================================================
 // Вывод основы
 //==============================================================
 void SizeNode::drawBody(QPainter *painter) const
@@ -353,7 +381,7 @@ void SizeNode::drawComments(QPainter *painter) const
 //==============================================================
 double SizeNode::bytesToKilobytes(int count)
 {
-    return count / 1000.0;
+    return count / 1024.0;
 }
 
 //==============================================================
@@ -361,7 +389,7 @@ double SizeNode::bytesToKilobytes(int count)
 //==============================================================
 double SizeNode::bytesToMegabytes(int count)
 {
-    return count / 1000.0 / 1000;
+    return count / 1024.0 / 1024;
 }
 
 //==============================================================

@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////
 #include "undo_change_object_prop_value.h"
 #include "base_node.h"
+#include "project.h"
 
 //==============================================================
 // Конструктор с параметрами
@@ -21,23 +22,28 @@ UndoChangeObjectPropValue::UndoChangeObjectPropValue(QObject *object,
     oldPropValue_ = oldPropValue;
 
     // Задание наименования отмены
-    if (object != nullptr)
+    if (object != project())
     {
         const auto node = qobject_cast<BaseNode*>(object);
         Q_ASSERT(node != nullptr);
-        if (propName == "topLeft")
+        if ((propName == "top") || (propName == "left") || (propName == "topLeft"))
         {
             setText(QString{"Move node \"%1\""}.arg(node->name()));
         }
+        else if ((propName == "width") || (propName == "height"))
+        {
+            setText(QString{"Resize node \"%1\""}.arg(node->name()));
+        }
         else
         {
+            const QString uiPropName = node->getUiPropertyName(propName);
             setText(QString{"Change property \"%1\" of node \"%2\""}.
-                arg(propName, node->name()));
+                arg(uiPropName, node->name()));
         }
     }
     else
     {
-        setText(QString{"Change property \"%1\" of project"}.arg(propName));
+        setText(QString{"Change property \"%1\" of Project"}.arg(propName));
     }
 }
 
