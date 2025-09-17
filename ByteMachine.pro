@@ -15,7 +15,6 @@ DEFINES += APP_VERSION=\\\"0.065\\\" \
 
 SOURCES += main.cpp \
     base_exception.cpp \
-    base_node.cpp \
     base_pin.cpp \
     byte_convert.cpp \
     byte_widths.cpp \
@@ -28,7 +27,6 @@ SOURCES += main.cpp \
     form_node_panel_item.cpp \
     form_project_settings.cpp \
     form_size_node.cpp \
-    generate_node.cpp \
     generate_types.cpp \
     icons.cpp \
     input_pin.cpp \
@@ -39,13 +37,15 @@ SOURCES += main.cpp \
     node_state_info.cpp \
     node_states.cpp \
     node_types.cpp \
+    nodes/base_node.cpp \
+    nodes/generate_node.cpp \
+    nodes/size_node.cpp \
     output_pin.cpp \
     pin_connection.cpp \
     project.cpp \
     prop_value.cpp \
     qt_helper.cpp \
     show_node_state.cpp \
-    size_node.cpp \
     size_units.cpp \
     status_bar.cpp \
     undo_add_node.cpp \
@@ -57,7 +57,6 @@ SOURCES += main.cpp \
 
 HEADERS += main_window.h \
     base_exception.h \
-    base_node.h \
     base_pin.h \
     byte_convert.h \
     byte_widths.h \
@@ -71,7 +70,6 @@ HEADERS += main_window.h \
     form_node_panel_item.h \
     form_project_settings.h \
     form_size_node.h \
-    generate_node.h \
     generate_types.h \
     i_data.h \
     i_to_str.h \
@@ -84,13 +82,15 @@ HEADERS += main_window.h \
     node_state_info.h \
     node_states.h \
     node_types.h \
+    nodes/base_node.h \
+    nodes/generate_node.h \
+    nodes/size_node.h \
     output_pin.h \
     pin_connection.h \
     project.h \
     prop_value.h \
     qt_helper.h \
     show_node_state.h \
-    size_node.h \
     size_units.h \
     standart_colors.h \
     status_bar.h \
@@ -109,6 +109,8 @@ FORMS += main_window.ui \
     form_generate_node.ui \
     form_project_settings.ui \
     form_size_node.ui
+
+INCLUDEPATH += nodes/
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
