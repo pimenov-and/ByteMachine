@@ -2,8 +2,8 @@
 // ByteMachine
 // Панель со списком отмен
 ////////////////////////////////////////////////////////////////
-#ifndef WIDGET_UNDO_VIEW_H
-#define WIDGET_UNDO_VIEW_H
+#ifndef FORM_UNDO_VIEW_H
+#define FORM_UNDO_VIEW_H
 
 //==============================================================
 #include <QWidget>
@@ -14,15 +14,15 @@ class QUndoStack;
 //==============================================================
 // Панель со списком отмен
 //==============================================================
-class WidgetUndoView : public QWidget
+class FormUndoView : public QWidget
 {
     Q_OBJECT
 public:
     // Конструктор с параметрами
-    explicit WidgetUndoView(QUndoStack *undoStack, QWidget *parent = nullptr);
+    explicit FormUndoView(QUndoStack *undoStack, QWidget *parent = nullptr);
     // Деструктор
-    ~WidgetUndoView() override;
+    ~FormUndoView() override;
 };
 
 //==============================================================
-#endif // WIDGET_UNDO_VIEW_H
+#endif // FORM_UNDO_VIEW_H

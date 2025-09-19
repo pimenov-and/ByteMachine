@@ -2,7 +2,7 @@
 // ByteMachine
 // Панель со списком отмен
 /////////////////////////////////////////////////////////////////
-#include "widget_undo_view.h"
+#include "form_undo_view.h"
 #include <QUndoView>
 #include <QLayout>
 // #include <QDebug>
@@ -10,7 +10,7 @@
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-WidgetUndoView::WidgetUndoView(QUndoStack *undoStack, QWidget *parent)
+FormUndoView::FormUndoView(QUndoStack *undoStack, QWidget *parent)
     : QWidget{parent, Qt::Popup | Qt::FramelessWindowHint}
 {
     Q_ASSERT(undoStack != nullptr);
@@ -29,6 +29,6 @@ WidgetUndoView::WidgetUndoView(QUndoStack *undoStack, QWidget *parent)
 //==============================================================
 // Деструктор
 //==============================================================
-WidgetUndoView::~WidgetUndoView()
+FormUndoView::~FormUndoView()
 {
 }

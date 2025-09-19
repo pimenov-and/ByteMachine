@@ -9,7 +9,7 @@
 #include "form_project_settings.h"
 #include "form_generate_node.h"
 #include "form_size_node.h"
-#include "widget_undo_view.h"
+#include "form_undo_view.h"
 #include "node_helper.h"
 #include "generate_node.h"
 #include "icons.h"
@@ -243,7 +243,7 @@ void MainWindow::slotShowUndoView()
     const QPoint globalPos = ui_->toolBar_->mapToGlobal(pos);
 
     QUndoStack *const undoStack = project()->undoStack();
-    const auto undoView = new WidgetUndoView{undoStack};
+    const auto undoView = new FormUndoView{undoStack};
     undoView->move(globalPos);
     undoView->show();
 }
