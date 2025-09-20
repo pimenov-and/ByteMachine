@@ -492,6 +492,42 @@ ShPtrConstBaseNode Project::findSelectedNode() const
 }
 
 //==============================================================
+// Получение узла, на области состояния которого расположена точка
+// для верхнего уровня
+//==============================================================
+ShPtrBaseNode Project::findStateAreaNodeByPt(const QPoint &pt)
+{
+    for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
+    {
+        const ShPtrBaseNode &node = *it;
+        if (node->stateAreaRect().contains(pt))
+        {
+            return node;
+        }
+    }
+
+    return nullptr;
+}
+
+//==============================================================
+// Получение узла, на области состояния которого расположена точка
+// для верхнего уровня (константный вариант)
+//==============================================================
+ShPtrConstBaseNode Project::findStateAreaNodeByPt(const QPoint &pt) const
+{
+    for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
+    {
+        const ShPtrBaseNode &node = *it;
+        if (node->stateAreaRect().contains(pt))
+        {
+            return node;
+        }
+    }
+
+    return nullptr;
+}
+
+//==============================================================
 // Поиск входного пина узла по координате
 //==============================================================
 ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)

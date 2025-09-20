@@ -25,6 +25,8 @@ SizeNode::SizeNode(QUndoStack *undoStack, QObject *parent) :
 
     createInputPin();
     createOutputPin();
+
+    SizeNode::updateStateInfo();
 }
 
 //==============================================================
@@ -121,6 +123,7 @@ void SizeNode::draw(QPainter *painter) const
     drawBody(painter);
     drawInputPins(painter);
     drawOutputPins(painter);
+    drawStateArea(painter);
     // drawResizebleMarker(painter);
     drawComments(painter);
 }
@@ -483,12 +486,12 @@ void SizeNode::updateStateInfo()
 
     if (!isConnectedInputPin())
     {
-        const QString msg = "No connection to input pin";
+        const QString msg = "Input pin is not connected";
         stateInfo_ = NodeStateInfo{NodeStates::Error, msg};
     }
     else if (inputDataSize() == 0)
     {
-        const QString msg = "Not data";
+        const QString msg = "No data";
         stateInfo_ = NodeStateInfo{NodeStates::Warning, msg};
     }
     else

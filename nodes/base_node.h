@@ -277,8 +277,8 @@ protected:
     void drawInputPins(QPainter *painter) const;
     // Рисование выходных пинов
     void drawOutputPins(QPainter *painter) const;
-    // Получение текущего цвета границы
-    QColor currentBorderColor() const;
+    // Рисование области состояния
+    void drawStateArea(QPainter *painter) const;
 
     //----------------------------------------------------------
     // Чтение из XML
@@ -326,6 +326,9 @@ protected:
     void writeBypassToXml(QDomDocument &doc, QDomElement &elem) const;
     // Запись комментария в XML
     void writeCommentToXml(QDomDocument &doc, QDomElement &elem) const;
+
+    // Получение текущего цвета границы
+    QColor currentBorderColor() const;
 
     // Имя
     QString name_{};

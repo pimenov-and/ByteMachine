@@ -430,45 +430,53 @@ QWidget* MainWindow::createStandartPage()
     const auto generateItem = new FormNodePanelItem{NodeTypes::Generate};
     connect(generateItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    generateItem->setToolTip("A node that generates stream");
     pageLayout->addWidget(generateItem);
 
     const auto inFileItem = new FormNodePanelItem{NodeTypes::InFile};
     connect(inFileItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    inFileItem->setToolTip("A node that loads data from a file");
     inFileItem->setEnabled(false);
     pageLayout->addWidget(inFileItem);
 
     const auto takeItem = new FormNodePanelItem{NodeTypes::Take};
     connect(takeItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    takeItem->setToolTip("A node that takes the first count bytes from the stream");
     takeItem->setEnabled(false);
     pageLayout->addWidget(takeItem);
 
     const auto skipItem = new FormNodePanelItem{NodeTypes::Skip};
     connect(skipItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    skipItem->setToolTip("A node that skips the first count bytes in the stream");
     skipItem->setEnabled(false);
     pageLayout->addWidget(skipItem);
 
     const auto reverseItem = new FormNodePanelItem{NodeTypes::Reverse};
     connect(reverseItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    reverseItem->setToolTip("A node that reverses the byte order in the stream");
     reverseItem->setEnabled(false);
     pageLayout->addWidget(reverseItem);
 
     const auto mergeItem = new FormNodePanelItem{NodeTypes::Merge};
     connect(mergeItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    mergeItem->setToolTip("A node that merges two streams into one");
     mergeItem->setEnabled(false);
     pageLayout->addWidget(mergeItem);
 
     const auto outFileItem = new FormNodePanelItem{NodeTypes::OutFile};
     connect(outFileItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    outFileItem->setToolTip("A node that saves incoming stream to a file");
     outFileItem->setEnabled(false);
     pageLayout->addWidget(outFileItem);
 
     const auto paintOpItem = new FormNodePanelItem{NodeTypes::PaintOp};
+    paintOpItem->setToolTip("A node that generates a single graphics operation");
     paintOpItem->setEnabled(false);
     pageLayout->addWidget(paintOpItem);
 
@@ -493,29 +501,34 @@ QWidget* MainWindow::createVisualizationPage()
     const auto sizeItem = new FormNodePanelItem{NodeTypes::Size};
     connect(sizeItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    sizeItem->setToolTip("A node that displays the size of the data passing through it");
     pageLayout->addWidget(sizeItem);
 
     const auto dumpItem = new FormNodePanelItem{NodeTypes::Dump};
     connect(dumpItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    dumpItem->setToolTip("A node that displays a hexadecimal dump of the data passing through it");
     dumpItem->setEnabled(false);
     pageLayout->addWidget(dumpItem);
 
     const auto structItem = new FormNodePanelItem{NodeTypes::Struct};
     connect(structItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    structItem->setToolTip("A node that overlays a structure with basic types onto raw data");
     structItem->setEnabled(false);
     pageLayout->addWidget(structItem);
 
     const auto graphItem = new FormNodePanelItem{NodeTypes::Graph};
     connect(graphItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    graphItem->setToolTip("A node that plots a graph from the data passing through it");
     graphItem->setEnabled(false);
     pageLayout->addWidget(graphItem);
 
     const auto paintItem = new FormNodePanelItem{NodeTypes::Paint};
     connect(paintItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    paintItem->setToolTip("A node that renders graphical operations from the input stream");
     paintItem->setEnabled(false);
     pageLayout->addWidget(paintItem);
 
@@ -540,24 +553,32 @@ QWidget* MainWindow::createScriptPage()
     const auto sinItem = new FormNodePanelItem{NodeTypes::SIn};
     connect(sinItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    sinItem->setToolTip("A node that generates data using "
+        "an embedded xMonkey script");
     sinItem->setEnabled(false);
     pageLayout->addWidget(sinItem);
-
-    const auto smergeItem = new FormNodePanelItem{NodeTypes::SMerge};
-    connect(smergeItem, &FormNodePanelItem::sigClicked,
-        this, &MainWindow::slotAddNodeByType);
-    smergeItem->setEnabled(false);
-    pageLayout->addWidget(smergeItem);
 
     const auto schangeItem = new FormNodePanelItem{NodeTypes::SChange};
     connect(schangeItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    schangeItem->setToolTip("A node that processes the input stream "
+        "using an embedded xMonkey script");
     schangeItem->setEnabled(false);
     pageLayout->addWidget(schangeItem);
+
+    const auto smergeItem = new FormNodePanelItem{NodeTypes::SMerge};
+    connect(smergeItem, &FormNodePanelItem::sigClicked,
+            this, &MainWindow::slotAddNodeByType);
+    smergeItem->setToolTip("A node that merges two input streams "
+        "and processes them with an xMonkey script");
+    smergeItem->setEnabled(false);
+    pageLayout->addWidget(smergeItem);
 
     const auto soutItem = new FormNodePanelItem{NodeTypes::SOut};
     connect(soutItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    soutItem->setToolTip("A node that processes the input stream "
+        "using an embedded xMonkey script (final node)");
     soutItem->setEnabled(false);
     pageLayout->addWidget(soutItem);
 
@@ -582,12 +603,16 @@ QWidget* MainWindow::createOtherPage()
     const auto blockItem = new FormNodePanelItem{NodeTypes::Block};
     connect(blockItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    blockItem->setToolTip("A node that groups other nodes into "
+        "a collapsible block for better organization");
     blockItem->setEnabled(false);
     pageLayout->addWidget(blockItem);
 
     const auto nonItem = new FormNodePanelItem{NodeTypes::Non};
     connect(nonItem, &FormNodePanelItem::sigClicked,
         this, &MainWindow::slotAddNodeByType);
+    nonItem->setToolTip("A decorative node that bends "
+        "the connection line for visual clarity");
     nonItem->setEnabled(false);
     pageLayout->addWidget(nonItem);
 

@@ -143,6 +143,12 @@ public:
     // Поиск выделенного узла (константный вариант)
     [[nodiscard]]
     ShPtrConstBaseNode findSelectedNode() const;
+    // Получение узла, на области состояния которого расположена точка
+    // для верхнего уровня
+    ShPtrBaseNode findStateAreaNodeByPt(const QPoint &pt);
+    // Получение узла, на области состояния которого расположена точка
+    // для верхнего уровня (константный вариант)
+    ShPtrConstBaseNode findStateAreaNodeByPt(const QPoint &pt) const;
 
     //----------------------------------------------------------
     // Поиск пина узла по различным параметрам

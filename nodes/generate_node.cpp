@@ -30,6 +30,8 @@ GenerateNode::GenerateNode(QUndoStack *undoStack, QObject *parent) :
     Q_ASSERT(!name_.isEmpty());
 
     createOutputPin();
+
+    GenerateNode::updateStateInfo();
 }
 
 //==============================================================
@@ -93,6 +95,7 @@ void GenerateNode::draw(QPainter *painter) const
 
     drawSimpleBody(painter);
     drawOutputPins(painter);
+    drawStateArea(painter);
     drawComments(painter);
 }
 
@@ -1065,7 +1068,7 @@ void GenerateNode::updateStateInfo()
 
     if (byteCount() == 0)
     {
-        const QString msg = "The number of bytes generated is 0";
+        const QString msg = "Input pin is not connected";
         stateInfo_ = NodeStateInfo{NodeStates::Warning, msg};
     }
     else

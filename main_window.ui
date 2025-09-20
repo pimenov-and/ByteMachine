@@ -245,6 +245,9 @@ color: rgb(160, 160, 160);
              <height>5001</height>
             </size>
            </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
            <property name="acceptDrops">
             <bool>true</bool>
            </property>
@@ -468,7 +471,7 @@ color: rgb(160, 160, 160);
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Save as...</string>
+    <string>Save As...</string>
    </property>
   </action>
   <action name="actExit_">
@@ -559,7 +562,7 @@ color: rgb(160, 160, 160);
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Application output...</string>
+    <string>Application Output...</string>
    </property>
   </action>
   <action name="actScriptIde_">
@@ -585,7 +588,7 @@ color: rgb(160, 160, 160);
      <normaloff>:/res_images/images/visible_nodes_panel.png</normaloff>:/res_images/images/visible_nodes_panel.png</iconset>
    </property>
    <property name="text">
-    <string>Visible nodes panel</string>
+    <string>Show Node Panel</string>
    </property>
   </action>
   <action name="actVisibleSettingsPanel_">
@@ -603,7 +606,7 @@ color: rgb(160, 160, 160);
      <normaloff>:/res_images/images/visible_settings_panel.png</normaloff>:/res_images/images/visible_settings_panel.png</iconset>
    </property>
    <property name="text">
-    <string>Visible settings panel</string>
+    <string>Show Settings Panel</string>
    </property>
   </action>
   <action name="actVisibleDesignerGrid_">
@@ -621,7 +624,7 @@ color: rgb(160, 160, 160);
      <normaloff>:/res_images/images/visible_designer_grid.png</normaloff>:/res_images/images/visible_designer_grid.png</iconset>
    </property>
    <property name="text">
-    <string>Visible designer grid</string>
+    <string>Show Designer Grid</string>
    </property>
   </action>
   <action name="actVisibleNodeComments_">
@@ -636,7 +639,7 @@ color: rgb(160, 160, 160);
      <normaloff>:/res_images/images/visible_node_comments.png</normaloff>:/res_images/images/visible_node_comments.png</iconset>
    </property>
    <property name="text">
-    <string>Visible node comments</string>
+    <string>Show Node Comments</string>
    </property>
   </action>
   <action name="actHelp_">
@@ -667,7 +670,7 @@ color: rgb(160, 160, 160);
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>About program...</string>
+    <string>About...</string>
    </property>
   </action>
   <action name="actPaintMode_">
@@ -679,7 +682,7 @@ color: rgb(160, 160, 160);
      <normaloff>:/res_images/images/paint_mode.png</normaloff>:/res_images/images/paint_mode.png</iconset>
    </property>
    <property name="text">
-    <string>Paint mode</string>
+    <string>Paint Mode</string>
    </property>
   </action>
  </widget>

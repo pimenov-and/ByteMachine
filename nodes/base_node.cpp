@@ -760,6 +760,34 @@ void BaseNode::drawOutputPins(QPainter *painter) const
 }
 
 //==============================================================
+// Рисование области состояния
+//==============================================================
+void BaseNode::drawStateArea(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    const NodeStates s = stateInfo().state();
+    switch (s)
+    {
+        case NodeStates::Warning:
+        {
+            drawWarningStateArea(painter);
+            break;
+        }
+        case NodeStates::Error:
+        {
+            drawErrorStateArea(painter);
+            break;
+        }
+        default:
+        {
+            qDebug() << "BaseNode::drawStateArea: bad type of state area";
+            break;
+        }
+    }
+}
+
+//==============================================================
 // Получение текущего цвета границы
 //==============================================================
 QColor BaseNode::currentBorderColor() const

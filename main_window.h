@@ -87,7 +87,6 @@ private:
     // Создание вкладки Visualization для панели Nodes
     [[nodiscard]]
     QWidget* createVisualizationPage();
-    [[nodiscard]]
     // Создание вкладки Script для панели Nodes
     [[nodiscard]]
     QWidget* createScriptPage();

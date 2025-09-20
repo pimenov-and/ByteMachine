@@ -6,19 +6,19 @@ CONFIG += c++17
 
 QMAKE_CXXFLAGS += -pedantic-errors -Werror
 
-DEFINES += APP_VERSION=\\\"0.067\\\" \
-    APP_BUILD_DATE=\\\"19.08.2025\\\"
+DEFINES += APP_VERSION=\\\"0.068\\\" \
+    APP_BUILD_DATE=\\\"20.08.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    base_exception.cpp \
     byte_convert.cpp \
     byte_widths.cpp \
     connect_states.cpp \
     dialog_about_prog.cpp \
+    exceptions/base_exception.cpp \
     form_adv_color.cpp \
     form_color.cpp \
     form_designer.cpp \
@@ -56,12 +56,12 @@ SOURCES += main.cpp \
     xml_helper.cpp
 
 HEADERS += main_window.h \
-    base_exception.h \
     byte_convert.h \
     byte_widths.h \
     colors.h \
     connect_states.h \
     dialog_about_prog.h \
+    exceptions/base_exception.h \
     form_adv_color.h \
     form_color.h \
     form_designer.h \
@@ -114,7 +114,8 @@ FORMS += main_window.ui \
 INCLUDEPATH += nodes/ \
     nodes/node_forms/ \
     undo/ \
-    undo/undo_forms/
+    undo/undo_forms/ \
+    exceptions/
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

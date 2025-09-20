@@ -59,7 +59,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Program for data analysis and visualization</string>
+           <string>A tool for data analysis and visualization</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>

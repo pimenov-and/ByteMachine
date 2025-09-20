@@ -218,6 +218,42 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
             update();
         }
     }
+    //---------------------------------------------------------------
+    // Если курсов находится на области состояния узла, показать подсказку
+    // состояния
+    //---------------------------------------------------------------
+    else if (const ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos))
+    {
+        setToolTip(node->stateInfo().toStr());
+
+        setCursor(Qt::ArrowCursor);
+    }
+    //---------------------------------------------------------------
+    // Изменение вида курсора при наведении на маркер изменения размера узла
+    //---------------------------------------------------------------
+    // else if (project()->findResizebleAreaNodeFromCurrentByPt(pos) != nullptr)
+    // {
+    //     setCursor(Qt::SizeFDiagCursor);
+    // }
+    //----------------------------------------------------------
+    // Если курсор находится на узле, показать подсказку
+    //----------------------------------------------------------
+    else if (const ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
+    {
+        setToolTip(node->tooltipText());
+
+        setCursor(Qt::ArrowCursor);
+    }
+    //----------------------------------------------------------
+    // Иначе
+    //----------------------------------------------------------
+    else
+    {
+        setToolTip(QString{});
+        QToolTip::hideText();
+
+        setCursor(Qt::ArrowCursor);
+    }
 }
 
 //==============================================================
