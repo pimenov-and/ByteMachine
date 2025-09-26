@@ -340,8 +340,6 @@ protected:
     bool isUndo_{false};
     // Стек отмен
     QUndoStack *undoStack_{nullptr};
-    // Признак кеширования данных
-    bool isCaching_{false};
 private:
     // Рисование пина
     void drawPin(QPainter *painter, const ShPtrConstBasePin &pin) const;

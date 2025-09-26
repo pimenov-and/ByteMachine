@@ -260,36 +260,6 @@ void SizeNode::resetBypass()
 }
 
 //==============================================================
-// Задание признака кеширования
-//==============================================================
-void SizeNode::setCaching(bool caching)
-{
-    if (isCaching_ != caching)
-    {
-        const bool oldCaching = caching;
-        isCaching_ = caching;
-        const PropValue value{"caching", isCaching_};
-        emit sigChangedProp(value);
-
-        if (!isUndo_)
-        {
-            Q_ASSERT(undoStack_ != nullptr);
-            const auto undoCmd = new UndoChangeObjectPropValue{this,
-                "caching", isCaching_, oldCaching};
-            undoStack_->push(undoCmd);
-        }
-    }
-}
-
-//==============================================================
-// Сброс признака кеширования
-//==============================================================
-void SizeNode::resetCaching()
-{
-    setCaching(false);
-}
-
-//==============================================================
 // Виртуальная функция получения имени свойства из графического
 // интерфейса по его системному имени
 //==============================================================
@@ -363,7 +333,6 @@ void SizeNode::drawComments(QPainter *painter) const
         comments += QString{" <<< %1: \"%2\"\n"}.arg(tr("Name"), name());
         comments += QString{"     %1: %2\n"}.arg(tr("Unit"), sizeUnitToStr(unit_));
         comments += QString{"     %1: %2\n"}.arg(tr("Bypass"), boolToStr(isBypass_));
-        comments += QString{"     %1: %2\n"}.arg(tr("Caching"), boolToStr(isCaching_));
         comments += QString{"     %1: \"%2\"\n"}.arg(tr("Comment"), comment());
 #ifdef QT_DEBUG
         comments += "     -\n";

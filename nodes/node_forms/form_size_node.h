@@ -42,10 +42,6 @@ private slots:
     void slotChangedBypass(int state);
     // Сброс признака пропуска узла
     void slotResetBypass();
-    // Функция вызывается при изменении признак кеширования узла
-    void slotChangedCaching(int state);
-    // Сброс признака кеширования
-    void slotResetCaching();
     // Функция вызывается при завершении редактирования комментария
     void slotEditingFinishedComment();
     // Сброс комментария

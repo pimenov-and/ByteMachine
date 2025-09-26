@@ -56,14 +56,6 @@ void FormSizeNode::slotChangedNodeProp(PropValue value)
         const bool isBypassChanged = node_->isBypassChanged();
         ui_.pushBtnResetBypass_->setEnabled(isBypassChanged);
     }
-    // Признак кеширования
-    else if (value.name == "caching")
-    {
-        const bool isCaching = node_->isCaching();
-        ui_.checkBoxCaching_->setChecked(isCaching);
-        const bool isCachingChanged = node_->isCachingChanged();
-        ui_.pushBtnResetCaching_->setEnabled(isCachingChanged);
-    }
     // Комментарий
     else if (value.name == "comment")
     {
@@ -137,25 +129,6 @@ void FormSizeNode::slotResetBypass()
 }
 
 //==============================================================
-// Функция вызывается при изменении признак кеширования узла
-//==============================================================
-void FormSizeNode::slotChangedCaching(int state)
-{
-    const bool caching = static_cast<bool>(state);
-    node_->setCaching(caching);
-}
-
-//==============================================================
-// Сброс признака кеширования
-//==============================================================
-void FormSizeNode::slotResetCaching()
-{
-    node_->resetCaching();
-
-    ui_.checkBoxCaching_->setFocus();
-}
-
-//==============================================================
 // Функция вызывается при завершении редактирования комментария
 //==============================================================
 void FormSizeNode::slotEditingFinishedComment()
@@ -201,12 +174,6 @@ void FormSizeNode::setNode(SizeNode *node)
     const bool isBypassChanged = node->isBypassChanged();
     ui_.pushBtnResetBypass_->setEnabled(isBypassChanged);
 
-    // Задание признака кеширования
-    const bool isCaching = node->isCaching();
-    ui_.checkBoxCaching_->setChecked(isCaching);
-    const bool isCachingChanged = node->isCachingChanged();
-    ui_.pushBtnResetCaching_->setEnabled(isCachingChanged);
-
     // Задание комментария
     const QString comment = node->comment();
     ui_.lineEditComment_->setText(comment);
@@ -240,11 +207,6 @@ void FormSizeNode::setConnections()
         this, &FormSizeNode::slotChangedBypass);
     connect(ui_.pushBtnResetBypass_, &QPushButton::clicked,
         this, &FormSizeNode::slotResetBypass);
-
-    connect(ui_.checkBoxCaching_, &QCheckBox::stateChanged,
-        this, &FormSizeNode::slotChangedCaching);
-    connect(ui_.pushBtnResetCaching_, &QPushButton::clicked,
-        this, &FormSizeNode::slotResetCaching);
 
     connect(ui_.lineEditComment_, &QLineEdit::editingFinished,
         this, &FormSizeNode::slotEditingFinishedComment);

@@ -20,7 +20,6 @@ class SizeNode final : public BaseNode
     Q_OBJECT
     Q_PROPERTY(SizeUnits unit READ unit WRITE setUnit RESET resetUnit)
     Q_PROPERTY(bool bypass READ isBypass WRITE setBypass RESET resetBypass)
-    Q_PROPERTY(bool caching READ isCaching WRITE setCaching RESET resetCaching)
 public:
     // Конструктор с параметром
     explicit SizeNode(QUndoStack *undoStack, QObject *parent = nullptr);
@@ -84,17 +83,6 @@ public:
     bool isBypassChanged() const { return isBypass_; }
     // Сброс признака пропуска
     void resetBypass();
-
-    // Получение признака кеширования
-    [[nodiscard]]
-    bool isCaching() const { return isCaching_; }
-    // Задание признака кеширования
-    void setCaching(bool caching);
-    // Сброс признака кеширования
-    void resetCaching();
-    // Получение признака изменения кеширования
-    [[nodiscard]]
-    bool isCachingChanged() const { return isCaching_; }
 
     // Виртуальная функция получения имени свойства из графического
     // интерфейса по его системному имени
