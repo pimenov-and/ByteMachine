@@ -30,6 +30,8 @@ public:
 private slots:
     // Функция вызывается при изменении свойств узла
     void slotChangedNodeProp(PropValue value);
+    // Функция вызывается при изменении состояния узла
+    void slotChangedNodeState(const NodeStateInfo &stateInfo);
     // Функция вызывается при завершении редактирования имени
     void slotEditingFinishedName();
     // Функция вызывается при изменении размерности

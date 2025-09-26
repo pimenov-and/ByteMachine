@@ -76,6 +76,8 @@ bool Project::addNode(const ShPtrBaseNode &node)
     emit sigAddNode(node);
     connect(node.get(), &BaseNode::sigChangedProp,
         this, &Project::slotChangedNodeProp);
+    connect(node.get(), &BaseNode::sigChangedState,
+        this, &Project::slotChangedNodeState);
 
     if (!isUndo_)
     {
@@ -643,6 +645,20 @@ void Project::slotChangedNodeProp(PropValue value)
     Q_ASSERT(shPtrNode != nullptr);
 
     emit sigChangedNodeProp(shPtrNode, value);
+}
+
+//==============================================================
+// Функция вызывается при изменении состояния узла
+//==============================================================
+void Project::slotChangedNodeState(NodeStateInfo state)
+{
+    BaseNode *node = qobject_cast<BaseNode*>(sender());
+    Q_ASSERT(node != nullptr);
+
+    ShPtrBaseNode shPtrNode = findNodeByPtr(node);
+    Q_ASSERT(shPtrNode != nullptr);
+
+    emit sigChangedNodeState(shPtrNode, state);
 }
 
 //==============================================================

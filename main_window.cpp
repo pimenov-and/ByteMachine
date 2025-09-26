@@ -59,7 +59,7 @@ MainWindow::~MainWindow()
 //==============================================================
 void MainWindow::slotOpenProject()
 {
-    const QString caption = "Open project";
+    const QString caption = "Open Project";
     const QString filter = "Project (*.bm)";
     const QString dir{};
     const QString path = QFileDialog::getOpenFileName(this, caption, dir, filter);
@@ -73,7 +73,7 @@ void MainWindow::slotOpenProject()
 //==============================================================
 void MainWindow::slotSaveProjectAs()
 {
-    const QString caption = "Save project as";
+    const QString caption = "Save Project As";
     const QString filter = "Project (*.bm)";
     const QString dir = "Project";
     const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);
@@ -179,15 +179,6 @@ void MainWindow::slotAddNode(ShPtrBaseNode node)
     ui_->comboBoxObjects_->addItem(nodeDescript);
     ui_->comboBoxObjects_->setCurrentText(nodeDescript);
     isNodesProcessing_ = false;
-}
-
-//==============================================================
-// Функция вызывается при изменении свойства узла
-//==============================================================
-void MainWindow::slotChangedNodeProp(ShPtrBaseNode node, PropValue value)
-{
-    Q_UNUSED(node);
-    Q_UNUSED(value);
 }
 
 //==============================================================
@@ -355,8 +346,6 @@ void MainWindow::setConnections()
         this, &MainWindow::slotAddNode);
     connect(project(), &Project::sigRemoveNode,
         this, &MainWindow::slotRemoveNode);
-    connect(project(), &Project::sigChangedNodeProp,
-        this, &MainWindow::slotChangedNodeProp);
     connect(project(), &Project::sigChangeSelectedNode,
         this, &MainWindow::slotChangeSelectedNode);
 
@@ -406,6 +395,10 @@ void MainWindow::initNodesPanel()
     const int visualizationItemIndex = toolBoxNodes->addItem(createVisualizationPage(),
         Icons::collapseArrow(), "Visualization");
     toolBoxNodes->setItemToolTip(visualizationItemIndex, "Set for visualization nodes");
+
+    const int communicationItemIndex = toolBoxNodes->addItem(createCommunicationPage(),
+        Icons::collapseArrow(), "Communication");
+    toolBoxNodes->setItemToolTip(communicationItemIndex, "Set for communication nodes");
 
     const int scriptItemIndex = toolBoxNodes->addItem(createScriptPage(),
         Icons::collapseArrow(), "Script");
@@ -540,6 +533,48 @@ QWidget* MainWindow::createVisualizationPage()
 }
 
 //==============================================================
+// Создание вкладки Communication для панели Nodes
+//==============================================================
+QWidget* MainWindow::createCommunicationPage()
+{
+    auto page = new QWidget{};
+
+    auto pageLayout = new QVBoxLayout{page};
+    pageLayout->setContentsMargins(QMargins{});
+    pageLayout->setSpacing(0);
+
+    const auto tcpServerItem = new FormNodePanelItem{NodeTypes::TcpServer};
+    connect(tcpServerItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
+    tcpServerItem->setEnabled(false);
+    pageLayout->addWidget(tcpServerItem);
+
+    const auto tcpClientItem = new FormNodePanelItem{NodeTypes::TcpClient};
+    connect(tcpClientItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
+    tcpClientItem->setEnabled(false);
+    pageLayout->addWidget(tcpClientItem);
+
+    const auto udpServerItem = new FormNodePanelItem{NodeTypes::UdpServer};
+    connect(udpServerItem, &FormNodePanelItem::sigClicked,
+            this, &MainWindow::slotAddNodeByType);
+    udpServerItem->setEnabled(false);
+    pageLayout->addWidget(udpServerItem);
+
+    const auto udpClientItem = new FormNodePanelItem{NodeTypes::UdpClient};
+    connect(udpClientItem, &FormNodePanelItem::sigClicked,
+            this, &MainWindow::slotAddNodeByType);
+    udpClientItem->setEnabled(false);
+    pageLayout->addWidget(udpClientItem);
+
+    auto spacer = new QSpacerItem{20, 40, QSizePolicy::Minimum,
+        QSizePolicy::Expanding};
+    pageLayout->addItem(spacer);
+
+    return page;
+}
+
+//==============================================================
 // Создание вкладки Script для панели Nodes
 //==============================================================
 QWidget* MainWindow::createScriptPage()
@@ -607,6 +642,12 @@ QWidget* MainWindow::createOtherPage()
         "a collapsible block for better organization");
     blockItem->setEnabled(false);
     pageLayout->addWidget(blockItem);
+
+    const auto cacheItem = new FormNodePanelItem{NodeTypes::Cache};
+    connect(cacheItem, &FormNodePanelItem::sigClicked,
+        this, &MainWindow::slotAddNodeByType);
+    cacheItem->setEnabled(false);
+    pageLayout->addWidget(cacheItem);
 
     const auto nonItem = new FormNodePanelItem{NodeTypes::Non};
     connect(nonItem, &FormNodePanelItem::sigClicked,

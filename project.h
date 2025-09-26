@@ -176,6 +176,8 @@ signals:
     void sigRemoveNode(ShPtrBaseNode node);
     // Сигнал возникает при изменении свойства узла
     void sigChangedNodeProp(ShPtrBaseNode node, PropValue value);
+    // Сигнал возникает при изменении состояния узла
+    void sigChangedNodeState(ShPtrBaseNode node, NodeStateInfo state);
     // Сигнал возникает при изменении свойства
     void sigChangedProp(PropValue value);
     // Сигнал возникает при изменении выделенного узла
@@ -183,6 +185,8 @@ signals:
 private slots:
     // Функция вызывается при изменении свойства узла
     void slotChangedNodeProp(PropValue value);
+    // Функция вызывается при изменении состояния узла
+    void slotChangedNodeState(NodeStateInfo state);
 private:
     // Конструктор с параметром
     explicit Project(QObject *parent = nullptr);

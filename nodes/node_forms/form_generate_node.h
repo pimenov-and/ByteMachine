@@ -8,15 +8,13 @@
 //==============================================================
 #include <QWidget>
 #include "ui_form_generate_node.h"
-#include "prop_value.h"
-#include "generate_types.h"
+#include "generate_node.h"
 
 //==============================================================
 namespace Ui
 {
     class FormGenerateNode;
 }
-class GenerateNode;
 
 //==============================================================
 // Виджет для настройки узла "Generate"
@@ -33,6 +31,8 @@ public:
 private slots:
     // Функция вызывается при изменении свойств узла
     void slotChangedNodeProp(PropValue value);
+    // Функция вызывается при изменении состояния узла
+    void slotChangedNodeState(const NodeStateInfo &stateInfo);
     // Функция вызывается при завершении редактирования имени
     void slotEditingFinishedName();
     // Функция вызывается при изменении типа генерации

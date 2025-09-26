@@ -413,6 +413,8 @@ void GenerateNode::setByteCount(qint32 count)
                 "byteCount", byteCount_, oldByteCount};
             undoStack_->push(undoCmd);
         }
+
+        updateStateInfo();
     }
 }
 

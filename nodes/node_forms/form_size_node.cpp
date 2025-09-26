@@ -3,6 +3,8 @@
 // Форма для настройки узла Size
 ////////////////////////////////////////////////////////////////
 #include "form_size_node.h"
+#include "show_node_state.h"
+// #include <QDebug>
 
 //==============================================================
 // Конструктор с параметром
@@ -71,6 +73,14 @@ void FormSizeNode::slotChangedNodeProp(PropValue value)
         const bool isCommentChanged = node_->isCommentChanged();
         ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
     }
+}
+
+//==============================================================
+// Функция вызывается при изменении состояния узла
+//==============================================================
+void FormSizeNode::slotChangedNodeState(const NodeStateInfo &stateInfo)
+{
+    showNodeState(stateInfo, ui_.plainTextEditState_);
 }
 
 //==============================================================
@@ -203,6 +213,9 @@ void FormSizeNode::setNode(SizeNode *node)
     ui_.lineEditComment_->setToolTip(comment);
     const bool isCommentChanged = node->isCommentChanged();
     ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
+
+    // Задание состояния
+    showNodeState(node_->stateInfo(), ui_.plainTextEditState_);
 }
 
 //==============================================================
@@ -212,6 +225,8 @@ void FormSizeNode::setConnections()
 {
     connect(node_, &BaseNode::sigChangedProp,
         this, &FormSizeNode::slotChangedNodeProp);
+    connect(node_, &SizeNode::sigChangedState,
+        this, &FormSizeNode::slotChangedNodeState);
 
     connect(ui_.lineEditName_, &QLineEdit::editingFinished,
         this, &FormSizeNode::slotEditingFinishedName);

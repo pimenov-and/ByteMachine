@@ -53,8 +53,6 @@ private slots:
     void slotAddNodeByType(NodeTypes nodeType);
     // Функция вызывается при добавлении узла
     void slotAddNode(ShPtrBaseNode node);
-    // Функция вызывается при изменении свойства узла
-    void slotChangedNodeProp(ShPtrBaseNode node, PropValue value);
     // Функция вызывается при удалении узла
     void slotRemoveNode(ShPtrBaseNode node);
     // Функция вызывается при изменении индекса текущего объекта
@@ -87,6 +85,9 @@ private:
     // Создание вкладки Visualization для панели Nodes
     [[nodiscard]]
     QWidget* createVisualizationPage();
+    // Создание вкладки Communication для панели Nodes
+    [[nodiscard]]
+    QWidget* createCommunicationPage();
     // Создание вкладки Script для панели Nodes
     [[nodiscard]]
     QWidget* createScriptPage();

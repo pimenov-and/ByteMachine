@@ -33,7 +33,12 @@ enum class NodeTypes
     SChange,
     SMerge,
     SOut,
+    TcpServer,
+    TcpClient,
+    UdpServer,
+    UdpClient,
     Block,
+    Cache,
     Non,
     Count
 };
@@ -104,9 +109,24 @@ inline bool isSMerge(NodeTypes type) noexcept { return type == NodeTypes::SMerge
 // Получение признака NodeTypes::SOut
 [[nodiscard]]
 inline bool isSOut(NodeTypes type) noexcept { return type == NodeTypes::SOut; }
+// Получение признака NodeTypes::TcpServer
+[[nodiscard]]
+inline bool isTcpServer(NodeTypes type) noexcept { return type == NodeTypes::TcpServer; }
+// Получение признака NodeTypes::TcpClient
+[[nodiscard]]
+inline bool isTcpClient(NodeTypes type) noexcept { return type == NodeTypes::TcpClient; }
+// Получение признака NodeTypes::UdpServer
+[[nodiscard]]
+inline bool isUdpServer(NodeTypes type) noexcept { return type == NodeTypes::UdpServer; }
+// Получение признака NodeTypes::UdpClient
+[[nodiscard]]
+inline bool isUdpClient(NodeTypes type) noexcept { return type == NodeTypes::UdpClient; }
 // Получение признака NodeTypes::Block
 [[nodiscard]]
 inline bool isBlock(NodeTypes type) noexcept { return type == NodeTypes::Block; }
+// Получение признака NodeTypes::Cache
+[[nodiscard]]
+inline bool isCache(NodeTypes type) noexcept { return type == NodeTypes::Cache; }
 // Получение признака NodeTypes::Non
 [[nodiscard]]
 inline bool isNon(NodeTypes type) noexcept { return type == NodeTypes::Non; }

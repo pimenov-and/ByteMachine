@@ -302,14 +302,16 @@ void FormDesigner::contextMenuEvent(QContextMenuEvent *event)
 //==============================================================
 void FormDesigner::setConnections()
 {
-    connect(project(), SIGNAL(sigAddNode(ShPtrBaseNode)),
-        this, SLOT(repaint()));
-    connect(project(), SIGNAL(sigRemoveNode(ShPtrBaseNode)),
-        this, SLOT(repaint()));
-    connect(project(), SIGNAL(sigChangedNodeProp(ShPtrBaseNode,PropValue)),
-        this, SLOT(repaint()));
-    connect(project(), SIGNAL(sigChangeSelectedNode(ShPtrBaseNode)),
-        this, SLOT(repaint()));
+    connect(project(), &Project::sigAddNode,
+        this, [this](ShPtrBaseNode) { this->update(); });
+    connect(project(), &Project::sigRemoveNode,
+        this, [this](ShPtrBaseNode) { this->update(); });
+    connect(project(), &Project::sigChangedNodeProp,
+        this, [this](ShPtrBaseNode, PropValue) { this->update(); });
+    connect(project(), &Project::sigChangeSelectedNode,
+        this, [this](ShPtrBaseNode) { this->update(); });
+    connect(project(), &Project::sigChangedNodeState,
+        this, [this](ShPtrBaseNode, NodeStateInfo) { this->update(); });
 }
 
 //==============================================================

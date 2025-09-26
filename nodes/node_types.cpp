@@ -29,7 +29,12 @@ QString nodeTypeToStr(NodeTypes type)
         {NodeTypes::SChange, "SChange"},
         {NodeTypes::SMerge, "SMerge"},
         {NodeTypes::SOut, "SOut"},
+        {NodeTypes::TcpServer, "TcpServer"},
+        {NodeTypes::TcpClient, "TcpClient"},
+        {NodeTypes::UdpServer, "UdpServer"},
+        {NodeTypes::UdpClient, "UdpClient"},
         {NodeTypes::Block, "Block"},
+        {NodeTypes::Cache, "Cache"},
         {NodeTypes::Non, "Non"}
     };
 
@@ -61,6 +66,7 @@ NodeTypes strToNodeType(const QString &str)
         {"SMerge", NodeTypes::SMerge},
         {"SOut", NodeTypes::SOut},
         {"Block", NodeTypes::Block},
+        {"Cache", NodeTypes::Cache},
         {"Non", NodeTypes::Non}
     };
 
@@ -91,7 +97,12 @@ QVector<NodeTypes> nodeTypes()
         NodeTypes::SChange,
         NodeTypes::SMerge,
         NodeTypes::SOut,
+        NodeTypes::TcpServer,
+        NodeTypes::TcpClient,
+        NodeTypes::UdpServer,
+        NodeTypes::UdpClient,
         NodeTypes::Block,
+        NodeTypes::Cache,
         NodeTypes::Non,
         NodeTypes::Count
     };

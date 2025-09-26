@@ -3,8 +3,8 @@
 // Виджет для настройки узла "Generate"
 ////////////////////////////////////////////////////////////////
 #include "form_generate_node.h"
-#include "generate_node.h"
 #include "byte_convert.h"
+#include "show_node_state.h"
 #include <limits>
 
 //==============================================================
@@ -206,6 +206,14 @@ void FormGenerateNode::slotChangedNodeProp(PropValue value)
         const bool isCommentChanged = node_->isCommentChanged();
         ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
     }
+}
+
+//==============================================================
+// Функция вызывается при изменении состояния узла
+//==============================================================
+void FormGenerateNode::slotChangedNodeState(const NodeStateInfo &stateInfo)
+{
+    showNodeState(stateInfo, ui_.plainTextEditState_);
 }
 
 //==============================================================
@@ -626,6 +634,8 @@ void FormGenerateNode::setConnections()
 {
     connect(node_, &BaseNode::sigChangedProp,
         this, &FormGenerateNode::slotChangedNodeProp);
+    connect(node_, &BaseNode::sigChangedState,
+        this, &FormGenerateNode::slotChangedNodeState);
 
     connect(ui_.lineEditName_, &QLineEdit::editingFinished,
         this, &FormGenerateNode::slotEditingFinishedName);
@@ -1291,4 +1301,7 @@ void FormGenerateNode::setNode(GenerateNode *node)
     ui_.lineEditComment_->setToolTip(comment);
     const bool isCommentChanged = node->isCommentChanged();
     ui_.pushBtnResetComment_->setEnabled(isCommentChanged);
+
+    // Задание состояния узла
+    showNodeState(node_->stateInfo(), ui_.plainTextEditState_);
 }
