@@ -33,7 +33,7 @@ public:
     QSet<QString> names() const { return names_; }
     // Получение количества имён
     [[nodiscard]]
-    qint32 nameCount() const { return names_.count(); }
+    int32_t nameCount() const { return names_.count(); }
 private:
     // Конструктор с параметром
     NodeNameManager() = default;
@@ -41,7 +41,7 @@ private:
     // Имена
     QSet<QString> names_{};
     // Максимальная длина имени
-    static constexpr qint32 maxNameLen_{32};
+    static constexpr int32_t maxNameLen_{32};
 };
 
 //==============================================================

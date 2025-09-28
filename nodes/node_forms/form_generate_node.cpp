@@ -67,7 +67,7 @@ void FormGenerateNode::slotChangedNodeProp(PropValue value)
     // Заполняющий байт
     else if (value.name == "filledByte")
     {
-        const quint8 filledByte = node_->filledByte();
+        const uint8_t filledByte = node_->filledByte();
         ui_.spinBoxFilledByte_->setValue(filledByte);
 
         const bool isFilledByte = node_->isFilledByteChanged();
@@ -401,13 +401,13 @@ void FormGenerateNode::slotChangedIntValue(int value)
     {
         case GenerateTypes::Int8:
         {
-            const qint8 v = static_cast<qint8>(value);
+            const int8_t v = static_cast<int8_t>(value);
             node_->setInt8Value(v);
             break;
         }
         case GenerateTypes::UInt8:
         {
-            const quint8 v = static_cast<quint8>(value);
+            const uint8_t v = static_cast<uint8_t>(value);
             node_->setUInt8Value(v);
             break;
         }
@@ -419,31 +419,31 @@ void FormGenerateNode::slotChangedIntValue(int value)
         }
         case GenerateTypes::UInt16:
         {
-            const quint16 v = static_cast<quint16>(value);
+            const uint16_t v = static_cast<uint16_t>(value);
             node_->setUInt16Value(v);
             break;
         }
         case GenerateTypes::Int32:
         {
-            const qint32 v = static_cast<qint32>(value);
+            const int32_t v = static_cast<int32_t>(value);
             node_->setInt32Value(v);
             break;
         }
         case GenerateTypes::UInt32:
         {
-            const quint32 v = static_cast<quint32>(value);
+            const uint32_t v = static_cast<uint32_t>(value);
             node_->setUInt32Value(v);
             break;
         }
         case GenerateTypes::Int64:
         {
-            const qint64 v = static_cast<qint64>(value);
+            const int64_t v = static_cast<int64_t>(value);
             node_->setInt64Value(v);
             break;
         }
         case GenerateTypes::UInt64:
         {
-            const quint64 v = static_cast<quint64>(value);
+            const uint64_t v = static_cast<uint64_t>(value);
             node_->setUInt64Value(v);
             break;
         }
@@ -716,7 +716,7 @@ void FormGenerateNode::setGenerateTypeUsual()
     ui_.spinBoxByteCount_->blockSignals(false);
     ui_.spinBoxByteCount_->setEnabled(true);
     ui_.spinBoxByteCount_->setMinimum(0);
-    ui_.spinBoxByteCount_->setMaximum(numeric_limits<qint32>::max());
+    ui_.spinBoxByteCount_->setMaximum(numeric_limits<int32_t>::max());
     ui_.spinBoxByteCount_->setStyleSheet(QString{});
     const bool isByteCountChanged = node_->isByteCountChanged();
     ui_.pushBtnResetByteCount_->setEnabled(isByteCountChanged);
@@ -749,7 +749,7 @@ void FormGenerateNode::setGenerateTypeRandom()
     ui_.spinBoxByteCount_->blockSignals(false);
     ui_.spinBoxByteCount_->setEnabled(true);
     ui_.spinBoxByteCount_->setMinimum(0);
-    ui_.spinBoxByteCount_->setMaximum(numeric_limits<qint32>::max());
+    ui_.spinBoxByteCount_->setMaximum(numeric_limits<int32_t>::max());
     ui_.spinBoxByteCount_->setStyleSheet(QString{});
     const bool isByteCountChanged = node_->isByteCountChanged();
     ui_.pushBtnResetByteCount_->setEnabled(isByteCountChanged);
@@ -816,9 +816,9 @@ void FormGenerateNode::setGenerateTypeInt8()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<qint8>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint8>::max());
-    const qint8 value = node_->int8Value();
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<int8_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int8_t>::max());
+    const int8_t value = node_->int8Value();
     ui_.spinBoxIntValue_->setValue(value);
     ui_.pushBtnResetIntValue_->show();
     const bool isValueChanged = node_->isInt8ValueChanged();
@@ -853,10 +853,10 @@ void FormGenerateNode::setGenerateTypeUInt8()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<quint8>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<quint8>::max());
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<uint8_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<uint8_t>::max());
     ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
-    const quint8 value = node_->uint8Value();
+    const uint8_t value = node_->uint8Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isUInt8ValueChanged();
     ui_.pushBtnResetIntValue_->setEnabled(isValueChanged);
@@ -890,10 +890,10 @@ void FormGenerateNode::setGenerateTypeInt16()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<qint16>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint16>::max());
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<int16_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int16_t>::max());
     ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
-    const qint16 value = node_->int16Value();
+    const int16_t value = node_->int16Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isInt16ValueChanged();
     ui_.pushBtnResetIntValue_->setEnabled(isValueChanged);
@@ -927,10 +927,10 @@ void FormGenerateNode::setGenerateTypeUInt16()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<quint16>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<quint16>::max());
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<uint16_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<uint16_t>::max());
     ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
-    const quint16 value = node_->uint16Value();
+    const uint16_t value = node_->uint16Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isUInt16ValueChanged();
     ui_.pushBtnResetIntValue_->setEnabled(isValueChanged);
@@ -964,9 +964,9 @@ void FormGenerateNode::setGenerateTypeInt32()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<qint32>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint32>::max());
-    const qint32 value = node_->int32Value();
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<int32_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int32_t>::max());
+    const int32_t value = node_->int32Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isInt32ValueChanged();
     ui_.pushBtnResetIntValue_->setEnabled(isValueChanged);
@@ -1001,7 +1001,7 @@ void FormGenerateNode::setGenerateTypeUInt32()
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
     ui_.spinBoxIntValue_->setMinimum(0);
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint32>::max());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int32_t>::max());
     const quint32 value = node_->uint32Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isUInt32ValueChanged();
@@ -1036,8 +1036,8 @@ void FormGenerateNode::setGenerateTypeInt64()
     // Показ и настройка виджетов
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
-    ui_.spinBoxIntValue_->setMinimum(numeric_limits<qint32>::min());
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint32>::max());
+    ui_.spinBoxIntValue_->setMinimum(numeric_limits<int32_t>::min());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int32_t>::max());
     const qint64 value = node_->int64Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isInt64ValueChanged();
@@ -1073,7 +1073,7 @@ void FormGenerateNode::setGenerateTypeUInt64()
     ui_.labelValue_->show();
     ui_.spinBoxIntValue_->show();
     ui_.spinBoxIntValue_->setMinimum(0);
-    ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint32>::max());
+    ui_.spinBoxIntValue_->setMaximum(numeric_limits<int32_t>::max());
     const quint64 value = node_->uint64Value();
     ui_.spinBoxIntValue_->setValue(value);
     ui_.pushBtnResetIntValue_->show();
@@ -1290,7 +1290,7 @@ void FormGenerateNode::setNode(GenerateNode *node)
     // highlightByteCountWidget();
 
     // Задание заполняющего байта
-    const quint8 filledByte = node_->filledByte();
+    const uint8_t filledByte = node_->filledByte();
     ui_.spinBoxFilledByte_->setValue(filledByte);
     const bool isFilledByteChanged = node_->isFilledByteChanged();
     ui_.pushBtnResetFilledByte_->setEnabled(isFilledByteChanged);

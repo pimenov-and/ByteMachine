@@ -225,7 +225,7 @@ void OutputPin::removeInputPin(const InputPin *pin, bool isRaiseSignal)
 //===================================================================
 // Получение размера данных
 //===================================================================
-qint32 OutputPin::dataSize() const
+int32_t OutputPin::dataSize() const
 {
     return parentNode()->dataSize();
 }
@@ -233,10 +233,10 @@ qint32 OutputPin::dataSize() const
 //===================================================================
 // Получение байта данных
 //===================================================================
-quint8 OutputPin::dataByte(qint32 index) const
+uint8_t OutputPin::dataByte(int32_t index) const
 {
     Q_ASSERT_X((index >= 0) && (index < dataSize()), "Check index",
-               qPrintable(QString("index: %1, dataSize: %2").arg(index).arg(dataSize())));
+        qPrintable(QString("index: %1, dataSize: %2").arg(index).arg(dataSize())));
 
     return parentNode()->dataByte(index);
 }
@@ -244,12 +244,12 @@ quint8 OutputPin::dataByte(qint32 index) const
 //===================================================================
 // Получение блока данных
 //===================================================================
-QVector<quint8> OutputPin::dataBlock(qint32 index, qint32 count) const
+QVector<uint8_t> OutputPin::dataBlock(int32_t index, int32_t count) const
 {
     Q_ASSERT_X(index >= 0, "Check index", qPrintable(QString::number(index)));
     Q_ASSERT_X(count >= 0, "Check count", qPrintable(QString::number(count)));
     Q_ASSERT_X(static_cast<qint64>(index) + count <= dataSize(), "Check index and count",
-               qPrintable(QString("index: %1, count: %2, dataSize: %3").arg(index).arg(count).arg(dataSize())));
+        qPrintable(QString("index: %1, count: %2, dataSize: %3").arg(index).arg(count).arg(dataSize())));
 
     return parentNode()->dataBlock(index, count);
 }

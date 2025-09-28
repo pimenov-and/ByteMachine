@@ -158,7 +158,7 @@ void BaseNode::resetUndo()
 //==============================================================
 // Задание смещения слева
 //==============================================================
-void BaseNode::setLeft(qint32 left) noexcept
+void BaseNode::setLeft(int32_t left) noexcept
 {
     if (left < gridSize())
     {
@@ -185,7 +185,7 @@ void BaseNode::setLeft(qint32 left) noexcept
 //==============================================================
 // Задание смещения сверху
 //==============================================================
-void BaseNode::setTop(qint32 top) noexcept
+void BaseNode::setTop(int32_t top) noexcept
 {
     if (top < gridSize())
     {
@@ -212,7 +212,7 @@ void BaseNode::setTop(qint32 top) noexcept
 //==============================================================
 // Задание ширины узла
 //==============================================================
-void BaseNode::setWidth(qint32 width)
+void BaseNode::setWidth(int32_t width)
 {
     if (width_ != width)
     {
@@ -234,7 +234,7 @@ void BaseNode::setWidth(qint32 width)
 //==============================================================
 // Задание высоты узла
 //==============================================================
-void BaseNode::setHeight(qint32 height)
+void BaseNode::setHeight(int32_t height)
 {
     if (height_ != height)
     {
@@ -911,7 +911,7 @@ QString BaseNode::readNameFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение смещения слева из XML
 //==============================================================
-qint32 BaseNode::readLeftFromXml(const QDomElement &elem) const
+int32_t BaseNode::readLeftFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -951,7 +951,7 @@ qint32 BaseNode::readLeftFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение смещения сверху из XML
 //==============================================================
-qint32 BaseNode::readTopFromXml(const QDomElement &elem) const
+int32_t BaseNode::readTopFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -991,7 +991,7 @@ qint32 BaseNode::readTopFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение ширины из XML
 //==============================================================
-qint32 BaseNode::readWidthFromXml(const QDomElement &elem) const
+int32_t BaseNode::readWidthFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1031,7 +1031,7 @@ qint32 BaseNode::readWidthFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение высоты из XML
 //==============================================================
-qint32 BaseNode::readHeightFromXml(const QDomElement &elem) const
+int32_t BaseNode::readHeightFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 

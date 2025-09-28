@@ -5,18 +5,21 @@
 #include "byte_convert.h"
 
 //==============================================================
+using std::size_t;
+
+//==============================================================
 // Конвертация значения QString в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QString>(const QString &value)
+QVector<uint8_t> valueToByteList<QString>(const QString &value)
 {
     const QByteArray ba = value.toUtf8();
-    QVector<quint8> values{};
-    values.reserve(sizeof(qint32) + ba.size());
-    values << valueToByteList<qint32>(ba.size());
+    QVector<uint8_t> values{};
+    values.reserve(sizeof(int32_t) + ba.size());
+    values << valueToByteList<int32_t>(ba.size());
     for (const char b: ba)
     {
-        values << static_cast<quint8>(b);
+        values << static_cast<uint8_t>(b);
     }
 
     return values;
@@ -26,21 +29,21 @@ QVector<quint8> valueToByteList<QString>(const QString &value)
 // Конвертация значения QColor в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QColor>(const QColor &value)
+QVector<uint8_t> valueToByteList<QColor>(const QColor &value)
 {
-    const quint8 r = static_cast<quint8>(value.red());
-    const quint8 g = static_cast<quint8>(value.green());
-    const quint8 b = static_cast<quint8>(value.blue());
-    const quint8 a = static_cast<quint8>(value.alpha());
+    const uint8_t r = static_cast<uint8_t>(value.red());
+    const uint8_t g = static_cast<uint8_t>(value.green());
+    const uint8_t b = static_cast<uint8_t>(value.blue());
+    const uint8_t a = static_cast<uint8_t>(value.alpha());
 
-    return QVector<quint8>{r, g, b, a};
+    return QVector<uint8_t>{r, g, b, a};
 }
 
 //==============================================================
 // Конвертация значения QPoint в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QPoint>(const QPoint &value)
+QVector<uint8_t> valueToByteList<QPoint>(const QPoint &value)
 {
     return valueToByteList(value.x()) + valueToByteList(value.y());
 }
@@ -49,7 +52,7 @@ QVector<quint8> valueToByteList<QPoint>(const QPoint &value)
 // Конвертация значения QPointF в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QPointF>(const QPointF &value)
+QVector<uint8_t> valueToByteList<QPointF>(const QPointF &value)
 {
     return valueToByteList(value.x()) + valueToByteList(value.y());
 }
@@ -58,7 +61,7 @@ QVector<quint8> valueToByteList<QPointF>(const QPointF &value)
 // Конвертация значения QSize в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QSize>(const QSize &value)
+QVector<uint8_t> valueToByteList<QSize>(const QSize &value)
 {
     return valueToByteList(value.width()) + valueToByteList(value.height());
 }
@@ -67,7 +70,7 @@ QVector<quint8> valueToByteList<QSize>(const QSize &value)
 // Конвертация значения QSizeF в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QSizeF>(const QSizeF &value)
+QVector<uint8_t> valueToByteList<QSizeF>(const QSizeF &value)
 {
     return valueToByteList(value.width()) + valueToByteList(value.height());
 }
@@ -76,7 +79,7 @@ QVector<quint8> valueToByteList<QSizeF>(const QSizeF &value)
 // Конвертация значения QRectF в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueToByteList<QRectF>(const QRectF &value)
+QVector<uint8_t> valueToByteList<QRectF>(const QRectF &value)
 {
     return valueToByteList(value.topLeft()) + valueToByteList(value.size());
 }
@@ -85,9 +88,9 @@ QVector<quint8> valueToByteList<QRectF>(const QRectF &value)
 // Конвертация списка значений QColor в список байтов
 //==============================================================
 template<>
-QVector<quint8> valueListToByteList(const QVector<QColor> &valueList)
+QVector<uint8_t> valueListToByteList(const QVector<QColor> &valueList)
 {
-    QVector<quint8> ba{};
+    QVector<uint8_t> ba{};
     ba.reserve(valueList.size() * static_cast<int>(getTypeByteSize<QColor>()));
     for (const QColor &value: valueList)
     {
@@ -101,7 +104,7 @@ QVector<quint8> valueListToByteList(const QVector<QColor> &valueList)
 // Получение размера данных по значению для типа QString
 //==============================================================
 template<>
-int getValueByteSize<QString>(const QString &value)
+size_t getValueByteSize<QString>(const QString &value)
 {
     return valueToByteList(value).size();
 }
@@ -110,7 +113,7 @@ int getValueByteSize<QString>(const QString &value)
 // Получение размера данных по значению для типа QColor
 //==============================================================
 template<>
-int getValueByteSize<QColor>(const QColor&)
+size_t getValueByteSize<QColor>(const QColor&)
 {
     return getTypeByteSize<QColor>();
 }
@@ -119,7 +122,7 @@ int getValueByteSize<QColor>(const QColor&)
 // Получение размера данных по значению для типа QPoint
 //==============================================================
 template<>
-int getValueByteSize<QPoint>(const QPoint&)
+size_t getValueByteSize<QPoint>(const QPoint&)
 {
     return getTypeByteSize<QPoint>();
 }
@@ -128,7 +131,7 @@ int getValueByteSize<QPoint>(const QPoint&)
 // Получение размера данных по значению для типа QPointF
 //==============================================================
 template<>
-int getValueByteSize<QPointF>(const QPointF&)
+size_t getValueByteSize<QPointF>(const QPointF&)
 {
     return getTypeByteSize<QPointF>();
 }
@@ -137,7 +140,7 @@ int getValueByteSize<QPointF>(const QPointF&)
 // Получение размера данных по значению для типа QSize
 //==============================================================
 template<>
-int getValueByteSize<QSize>(const QSize&)
+size_t getValueByteSize<QSize>(const QSize&)
 {
     return getTypeByteSize<QSize>();
 }
@@ -146,7 +149,7 @@ int getValueByteSize<QSize>(const QSize&)
 // Получение размера данных по значению для типа QSizeF
 //==============================================================
 template<>
-int getValueByteSize<QSizeF>(const QSizeF&)
+size_t getValueByteSize<QSizeF>(const QSizeF&)
 {
     return getTypeByteSize<QSizeF>();
 }
@@ -155,7 +158,7 @@ int getValueByteSize<QSizeF>(const QSizeF&)
 // Получение размера данных по значению для типа QRect
 //==============================================================
 template<>
-int getValueByteSize<QRect>(const QRect&)
+size_t getValueByteSize<QRect>(const QRect&)
 {
     return getTypeByteSize<QRect>();
 }
@@ -164,7 +167,7 @@ int getValueByteSize<QRect>(const QRect&)
 // Получение размера данных по значению для типа QRectF
 //==============================================================
 template<>
-int getValueByteSize<QRectF>(const QRectF&)
+size_t getValueByteSize<QRectF>(const QRectF&)
 {
     return getTypeByteSize<QRectF>();
 }

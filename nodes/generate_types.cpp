@@ -107,9 +107,9 @@ bool isCorrect(GenerateTypes type)
 //==============================================================
 // Получение количества типов генерации
 //==============================================================
-qint32 getGenerateTypeValueCount()
+int32_t getGenerateTypeValueCount()
 {
-    static qint32 count = getGenerateTypeValues().count();
+    static int32_t count = getGenerateTypeValues().count();
 
     return count;
 }

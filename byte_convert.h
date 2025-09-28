@@ -23,104 +23,104 @@
 // Конвертация значения в список байтов
 template<typename T>
 [[nodiscard]]
-QVector<quint8> valueToByteList(const T &value);
+QVector<uint8_t> valueToByteList(const T &value);
 // Конвертации значения QString в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QString>(const QString &value);
+QVector<uint8_t> valueToByteList<QString>(const QString &value);
 // Конвертация значения QColor в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QColor>(const QColor &value);
+QVector<uint8_t> valueToByteList<QColor>(const QColor &value);
 // Конвертация значения QPoint в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QPoint>(const QPoint &value);
+QVector<uint8_t> valueToByteList<QPoint>(const QPoint &value);
 // Конвертация значения QPointF в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QPointF>(const QPointF &value);
+QVector<uint8_t> valueToByteList<QPointF>(const QPointF &value);
 // Конвертация значения QSize в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QSize>(const QSize &value);
+QVector<uint8_t> valueToByteList<QSize>(const QSize &value);
 // Конвертация значения QSizeF в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QSizeF>(const QSizeF &value);
+QVector<uint8_t> valueToByteList<QSizeF>(const QSizeF &value);
 // Конвертация значения QRect в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QRect>(const QRect &value);
+QVector<uint8_t> valueToByteList<QRect>(const QRect &value);
 // Конвертация значения QRectF в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueToByteList<QRectF>(const QRectF &value);
+QVector<uint8_t> valueToByteList<QRectF>(const QRectF &value);
 
 // Конвертация списка значений в список байтов
 template<typename T>
 [[nodiscard]]
-QVector<quint8> valueListToByteList(const QVector<T> &valueList);
+QVector<uint8_t> valueListToByteList(const QVector<T> &valueList);
 // Конвертация списка значений QColor в список байтов
 template<>
 [[nodiscard]]
-QVector<quint8> valueListToByteList(const QVector<QColor> &valueList);
+QVector<uint8_t> valueListToByteList(const QVector<QColor> &valueList);
 
 // Получение размера данных по типу
 template<typename T>
 [[nodiscard]]
-constexpr int getTypeByteSize()
+constexpr std::size_t getTypeByteSize()
 {
     static_assert(std::is_pod_v<T>);
 
-    return static_cast<int>(sizeof(T));
+    return sizeof(T);
 }
 // Получение размера данных для типа QColor
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QColor>()
+constexpr std::size_t getTypeByteSize<QColor>()
 {
     return 4;
 }
 // Получение размера данных для типа QPoint
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QPoint>()
+constexpr std::size_t getTypeByteSize<QPoint>()
 {
     return 8;
 }
 // Получение размера данных для типа QPointF
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QPointF>()
+constexpr std::size_t getTypeByteSize<QPointF>()
 {
     return 16;
 }
 // Получение размера данных для типа QSize
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QSize>()
+constexpr std::size_t getTypeByteSize<QSize>()
 {
     return 8;
 }
 // Получение размера данных для типа QSizeF
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QSizeF>()
+constexpr std::size_t getTypeByteSize<QSizeF>()
 {
     return 16;
 }
 // Получение размера данных для типа QRect
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QRect>()
+constexpr std::size_t getTypeByteSize<QRect>()
 {
     return 16;
 }
 // Получение размера данных для типа QRectF
 template<>
 [[nodiscard]]
-constexpr int getTypeByteSize<QRectF>()
+constexpr std::size_t getTypeByteSize<QRectF>()
 {
     return 32;
 }
@@ -128,39 +128,39 @@ constexpr int getTypeByteSize<QRectF>()
 // Получение размера данных по значению
 template<typename T>
 [[nodiscard]]
-int getValueByteSize(const T &value);
+std::size_t getValueByteSize(const T &value);
 // Получение размера данных по значению для типа QString
 template<>
 [[nodiscard]]
-int getValueByteSize<QString>(const QString &value);
+std::size_t getValueByteSize<QString>(const QString &value);
 // Получение размера данных по значению для типа QColor
 template<>
 [[nodiscard]]
-int getValueByteSize<QColor>(const QColor&);
+std::size_t getValueByteSize<QColor>(const QColor&);
 // Получение размера данных по значению для типа QPoint
 template<>
 [[nodiscard]]
-int getValueByteSize<QPoint>(const QPoint&);
+std::size_t getValueByteSize<QPoint>(const QPoint&);
 // Получение размера данных по значению для типа QPointF
 template<>
 [[nodiscard]]
-int getValueByteSize<QPointF>(const QPointF&);
+std::size_t getValueByteSize<QPointF>(const QPointF&);
 // Получение размера данных по значению для типа QSize
 template<>
 [[nodiscard]]
-int getValueByteSize<QSize>(const QSize&);
+std::size_t getValueByteSize<QSize>(const QSize&);
 // Получение размера данных по значению для типа QSizeF
 template<>
 [[nodiscard]]
-int getValueByteSize<QSizeF>(const QSizeF&);
+std::size_t getValueByteSize<QSizeF>(const QSizeF&);
 // Получение размера данных по значению для типа QRect
 template<>
 [[nodiscard]]
-int getValueByteSize<QRect>(const QRect&);
+std::size_t getValueByteSize<QRect>(const QRect&);
 // Получение размера данных по значению для типа QRectF
 template<>
 [[nodiscard]]
-int getValueByteSize<QRectF>(const QRectF&);
+std::size_t getValueByteSize<QRectF>(const QRectF&);
 
 ////////////////////////////////////////////////////////////
 // Реализация функций
@@ -170,12 +170,12 @@ int getValueByteSize<QRectF>(const QRectF&);
 // Конвертация значения в список байтов
 //==========================================================
 template<typename T>
-QVector<quint8> valueToByteList(const T &value)
+QVector<uint8_t> valueToByteList(const T &value)
 {
     static_assert(std::is_pod_v<T>);
 
-    constexpr qint32 typeByteSize = sizeof(T);
-    QVector<quint8> byteList(typeByteSize);
+    constexpr std::size_t typeByteSize = sizeof(T);
+    QVector<uint8_t> byteList(typeByteSize);
     std::memcpy(byteList.data(), &value, typeByteSize);
 
     return byteList;
@@ -185,12 +185,12 @@ QVector<quint8> valueToByteList(const T &value)
 // Конвертация списка значений в список байтов
 //==============================================================
 template<typename T>
-QVector<quint8> valueListToByteList(const QVector<T> &valueList)
+QVector<uint8_t> valueListToByteList(const QVector<T> &valueList)
 {
     static_assert(std::is_pod_v<T>);
 
-    const qint32 byteSize = valueList.size() * getTypeByteSize<T>();
-    QVector<quint8> byteList(byteSize);
+    const std::size_t byteSize = valueList.size() * getTypeByteSize<T>();
+    QVector<uint8_t> byteList(byteSize);
     std::memcpy(byteList.data(), valueList.constData(), byteSize);
 
     return byteList;
@@ -200,11 +200,11 @@ QVector<quint8> valueListToByteList(const QVector<T> &valueList)
 // Получение размера данных по значению
 //==============================================================
 template<typename T>
-int getValueByteSize(const T &value)
+std::size_t getValueByteSize(const T &value)
 {
     static_assert(std::is_pod_v<T>);
 
-    return static_cast<int>(sizeof(value));
+    return sizeof(value);
 }
 
 //==============================================================

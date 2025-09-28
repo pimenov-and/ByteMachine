@@ -92,7 +92,7 @@ public:
     QVector<ShPtrConstBaseNode> nodes() const;
     // Получение количества узлов
     [[nodiscard]]
-    qint32 nodeCount() const { return nodes_.count(); }
+    int32_t nodeCount() const { return nodes_.count(); }
 
     //----------------------------------------------------------
     // Функции отмены

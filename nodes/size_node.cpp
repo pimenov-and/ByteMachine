@@ -44,10 +44,10 @@ void SizeNode::readFromXml(const QDomElement &elem)
     Q_ASSERT(!elem.isNull());
 
     const QString name = readNameFromXml(elem);
-    const qint32 left = readLeftFromXml(elem);
-    const qint32 top = readTopFromXml(elem);
-    const qint32 width = readWidthFromXml(elem);
-    // const qint32 height = readHeightFromXml(elem);
+    const int32_t left = readLeftFromXml(elem);
+    const int32_t top = readTopFromXml(elem);
+    const int32_t width = readWidthFromXml(elem);
+    // const int32_t height = readHeightFromXml(elem);
     const SizeUnits unit = readUnitFromXml(elem);
     const bool isBypass = readBypassFromXml(elem);
     const QString comment = readCommentFromXml(elem);
@@ -158,7 +158,7 @@ QString SizeNode::tooltipText() const
 //==============================================================
 // Получение размера данных
 //==============================================================
-qint32 SizeNode::dataSize() const
+int32_t SizeNode::dataSize() const
 {
     if (stateInfo_.isError())
     {
@@ -171,7 +171,7 @@ qint32 SizeNode::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-quint8 SizeNode::dataByte(qint32 index) const
+uint8_t SizeNode::dataByte(int32_t index) const
 {
     Q_UNUSED(index);
 
@@ -181,12 +181,12 @@ quint8 SizeNode::dataByte(qint32 index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-QVector<quint8> SizeNode::dataBlock(qint32 index, qint32 count) const
+QVector<uint8_t> SizeNode::dataBlock(int32_t index, int32_t count) const
 {
     Q_UNUSED(index);
     Q_UNUSED(count);
 
-    return QVector<quint8>{};
+    return QVector<uint8_t>{};
 }
 
 //==============================================================

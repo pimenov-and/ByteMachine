@@ -60,7 +60,7 @@ QVector<ConnectStates> connectStateValues();
 bool isCorrect(ConnectStates state);
 // Получение количества состояний подключения в виде строки
 [[nodiscard]]
-constexpr qint32 getConnectStateCount() noexcept { return 3; }
+constexpr int32_t getConnectStateCount() noexcept { return 3; }
 
 //==============================================================
 #endif // CONNECT_STATES_H

@@ -21,7 +21,11 @@ FormUndoView::FormUndoView(QUndoStack *undoStack, QWidget *parent)
     undoView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     const auto layout = new QVBoxLayout(this);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     layout->setMargin(0);
+#else
+    layout->setContentsMargins(0, 0, 0, 0);
+#endif
     layout->addWidget(undoView);
     setLayout(layout);
 }

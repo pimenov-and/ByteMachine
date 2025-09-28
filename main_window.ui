@@ -670,7 +670,7 @@ color: rgb(160, 160, 160);
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>About...</string>
+    <string>About program...</string>
    </property>
   </action>
   <action name="actPaintMode_">

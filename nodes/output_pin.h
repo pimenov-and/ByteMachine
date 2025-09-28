@@ -55,11 +55,11 @@ public:
     void removeInputPin(const InputPin *pin, bool isRaiseSignal = true);
 
     // Получение размера данных
-    qint32 dataSize() const override;
+    int32_t dataSize() const override;
     // Получение байта данных
-    quint8 dataByte(qint32 index) const override;
+    uint8_t dataByte(int32_t index) const override;
     // Получение блока данных
-    QVector<quint8> dataBlock(qint32 index, qint32 count) const override;
+    QVector<uint8_t> dataBlock(int32_t index, int32_t count) const override;
     // Функция вызывается при изменении данных родительского узла
     void dataChanged() override;
 signals:

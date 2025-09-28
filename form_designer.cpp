@@ -143,11 +143,20 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         //------------------------------------------------------
         // Попытка проведения связи из выходного пина
         //------------------------------------------------------
-        if (ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
+        if (const ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
         {
             BaseNode *const node = pin->parentNode();
             Q_ASSERT(node != nullptr);
-            node->setSelected(true);
+            const ShPtrBaseNode shPtrNode = project()->findNodeByPtr(node);
+            Q_ASSERT(shPtrNode != nullptr);
+            project()->setSelectedNode(shPtrNode);
+        }
+        //------------------------------------------------------
+        // При нажатии на
+        //------------------------------------------------------
+        else if (const ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos))
+        {
+            project()->setSelectedNode(node);
         }
         //------------------------------------------------------
         // Попытка захвата узла

@@ -64,7 +64,7 @@ QVector<NodeStates> getNodeStateValues();
 bool isCorrect(NodeStates state);
 // Получение количества состояний узла
 [[nodiscard]]
-constexpr qint32 getNodeStateCount() noexcept { return 4; }
+constexpr int32_t getNodeStateCount() noexcept { return 4; }
 
 //==============================================================
 #endif // NODE_STATES_H
