@@ -49,11 +49,12 @@ public:
     void correctConnections(QVector<QSharedPointer<BaseNode>> &nodes);
 
     // Получение размера данных
-    int32_t dataSize() const override;
+    std::size_t dataSize() const override;
     // Получение байта данных
-    uint8_t dataByte(int32_t index) const override;
+    uint8_t dataByte(std::size_t index) const override;
     // Получение блока данных
-    QVector<uint8_t> dataBlock(int32_t index, int32_t count) const override;
+    std::deque<uint8_t> dataBlock(std::size_t index,
+        std::size_t count) const override;
     // Функция вызывается при изменении данных родительского узла
     void dataChanged() override;
 signals:

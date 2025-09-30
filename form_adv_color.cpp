@@ -203,7 +203,7 @@ void FormAdvColor::slotChangedColor(QColor color)
 //===================================================================
 // Функция вызывается при изменении составляющей Red цвета через спин-бокс
 //===================================================================
-void FormAdvColor::slotChangedSpinBoxRed(int value)
+void FormAdvColor::slotChangedSpinBoxRed(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.horzSliderRed_->setValue(value);
@@ -218,7 +218,7 @@ void FormAdvColor::slotChangedSpinBoxRed(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Green цвета через спин-бокс
 //===================================================================
-void FormAdvColor::slotChangedSpinBoxGreen(int value)
+void FormAdvColor::slotChangedSpinBoxGreen(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.horzSliderGreen_->setValue(value);
@@ -233,7 +233,7 @@ void FormAdvColor::slotChangedSpinBoxGreen(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Blue цвета через спин-бокс
 //===================================================================
-void FormAdvColor::slotChangedSpinBoxBlue(int value)
+void FormAdvColor::slotChangedSpinBoxBlue(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.horzSliderBlue_->setValue(value);
@@ -248,7 +248,7 @@ void FormAdvColor::slotChangedSpinBoxBlue(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Alpha цвета через спин-бокс
 //===================================================================
-void FormAdvColor::slotChangedSpinBoxAlpha(int value)
+void FormAdvColor::slotChangedSpinBoxAlpha(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.horzSliderAlpha_->setValue(value);
@@ -263,7 +263,7 @@ void FormAdvColor::slotChangedSpinBoxAlpha(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Red цвета через комбо-бокс
 //===================================================================
-void FormAdvColor::slotChangedSliderRed(int value)
+void FormAdvColor::slotChangedSliderRed(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.spinBoxRed_->setValue(value);
@@ -278,7 +278,7 @@ void FormAdvColor::slotChangedSliderRed(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Green цвета через комбо-бокс
 //===================================================================
-void FormAdvColor::slotChangedSliderGreen(int value)
+void FormAdvColor::slotChangedSliderGreen(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.spinBoxGreen_->setValue(value);
@@ -293,7 +293,7 @@ void FormAdvColor::slotChangedSliderGreen(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Blue цвета через комбо-бокс
 //===================================================================
-void FormAdvColor::slotChangedSliderBlue(int value)
+void FormAdvColor::slotChangedSliderBlue(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.spinBoxBlue_->setValue(value);
@@ -308,7 +308,7 @@ void FormAdvColor::slotChangedSliderBlue(int value)
 //===================================================================
 // Функция вызывается при изменении составляющей Alpha цвет через комбо-бокс
 //===================================================================
-void FormAdvColor::slotChangedSliderAlpha(int value)
+void FormAdvColor::slotChangedSliderAlpha(int32_t value)
 {
     blockWidgetSignals(true);
     ui_.spinBoxAlpha_->setValue(value);

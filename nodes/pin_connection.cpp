@@ -12,7 +12,7 @@
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-PinConnection::PinConnection(int nodeId, int index)
+PinConnection::PinConnection(int32_t nodeId, int32_t index)
 {
     init(nodeId, index);
 }
@@ -20,7 +20,7 @@ PinConnection::PinConnection(int nodeId, int index)
 //==============================================================
 // Функция инициализации
 //==============================================================
-void PinConnection::init(int nodeId, int index)
+void PinConnection::init(int32_t nodeId, int32_t index)
 {
     this->nodeId = nodeId;
     this->index = index;

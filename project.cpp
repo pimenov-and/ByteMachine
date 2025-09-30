@@ -362,7 +362,7 @@ ShPtrConstBaseNode Project::findNodeByName(const QString &name) const
 //==============================================================
 // Поиск узла по идентификатору
 //==============================================================
-ShPtrBaseNode Project::findNodeById(int id)
+ShPtrBaseNode Project::findNodeById(int32_t id)
 {
     for (const auto &node: as_const(nodes_))
     {
@@ -378,7 +378,7 @@ ShPtrBaseNode Project::findNodeById(int id)
 //==============================================================
 // Поиск узла по идентификатору (константный вариант)
 //==============================================================
-ShPtrConstBaseNode Project::findNodeById(int id) const
+ShPtrConstBaseNode Project::findNodeById(int32_t id) const
 {
     for (const auto &node: nodes_)
     {

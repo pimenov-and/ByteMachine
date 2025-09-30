@@ -6,7 +6,7 @@
 #define I_DATA_H
 
 //==============================================================
-#include <QVector>
+#include <deque>
 #include <cstdint>
 
 //==============================================================
@@ -19,13 +19,14 @@ struct IData
 
     // Получение размера данных
     [[nodiscard]]
-    virtual int32_t dataSize() const = 0;
+    virtual std::size_t dataSize() const = 0;
     // Получение байта данных
     [[nodiscard]]
-    virtual uint8_t dataByte(int32_t index) const = 0;
+    virtual uint8_t dataByte(std::size_t index) const = 0;
     // Получение блока данных
     [[nodiscard]]
-    virtual QVector<uint8_t> dataBlock(int32_t index, int32_t count) const = 0;
+    virtual std::deque<uint8_t> dataBlock(std::size_t index,
+        std::size_t count) const = 0;
     // Функция вызывается при изменении данных
     virtual void dataChanged() = 0;
 };

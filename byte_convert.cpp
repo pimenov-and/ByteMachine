@@ -6,6 +6,8 @@
 
 //==============================================================
 using std::size_t;
+using std::deque;
+using std::copy;
 
 //==============================================================
 // Конвертация значения QString в список байтов
@@ -85,13 +87,146 @@ QVector<uint8_t> valueToByteList<QRectF>(const QRectF &value)
 }
 
 //==============================================================
+// Конвертации значения QString в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QString>(const QString &value)
+{
+    const QByteArray valueByteList = value.toUtf8();
+    const int32_t valueByteListSize = static_cast<int32_t>(valueByteList.size());
+    const uint8_t *const pValueByteListSize = reinterpret_cast<const uint8_t*>(&valueByteListSize);
+    deque<uint8_t> byteList(sizeof(valueByteListSize) + valueByteList.size());
+    const auto it = copy(pValueByteListSize, pValueByteListSize + sizeof(valueByteListSize),
+        byteList.begin());
+    copy(valueByteList.cbegin(), valueByteList.cend(), it);
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QColor в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QColor>(const QColor &value)
+{
+    const uint8_t r = static_cast<uint8_t>(value.red());
+    const uint8_t g = static_cast<uint8_t>(value.green());
+    const uint8_t b = static_cast<uint8_t>(value.blue());
+    const uint8_t a = static_cast<uint8_t>(value.alpha());
+
+    return deque<uint8_t>{r, g, b, a};
+}
+
+//==============================================================
+// Конвертация значения QPoint в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QPoint>(const QPoint &value)
+{
+    const deque<uint8_t> byteListX = valueToByteList2(value.x());
+    const deque<uint8_t> byteListY = valueToByteList2(value.y());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListX.cbegin(), byteListX.cend());
+    byteList.insert(it, byteListY.cbegin(), byteListY.cend());
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QPointF в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QPointF>(const QPointF &value)
+{
+    const deque<uint8_t> byteListX = valueToByteList2(value.x());
+    const deque<uint8_t> byteListY = valueToByteList2(value.y());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListX.cbegin(), byteListX.cend());
+    byteList.insert(it, byteListY.cbegin(), byteListY.cend());
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QSize в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QSize>(const QSize &value)
+{
+    const deque<uint8_t> byteListWidth = valueToByteList2(value.width());
+    const deque<uint8_t> byteListHeight = valueToByteList2(value.height());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListWidth.cbegin(), byteListWidth.cend());
+    byteList.insert(it, byteListHeight.cbegin(), byteListHeight.cend());
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QSizeF в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QSizeF>(const QSizeF &value)
+{
+    const deque<uint8_t> byteListWidth = valueToByteList2(value.width());
+    const deque<uint8_t> byteListHeight = valueToByteList2(value.height());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListWidth.cbegin(), byteListWidth.cend());
+    byteList.insert(it, byteListHeight.cbegin(), byteListHeight.cend());
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QRect в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QRect>(const QRect &value)
+{
+    const deque<uint8_t> byteListTopLeft = valueToByteList2(value.topLeft());
+    const deque<uint8_t> byteListSize = valueToByteList2(value.size());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListTopLeft.cbegin(), byteListTopLeft.cend());
+    byteList.insert(it, byteListSize.cbegin(), byteListSize.cend());
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения QRectF в список байтов
+//==============================================================
+template<>
+deque<uint8_t> valueToByteList2<QRectF>(const QRectF &value)
+{
+    const deque<uint8_t> byteListTopLeft = valueToByteList2(value.topLeft());
+    const deque<uint8_t> byteListSize = valueToByteList2(value.size());
+
+    deque<uint8_t> byteList{};
+    const auto it = byteList.insert(byteList.cbegin(),
+        byteListTopLeft.cbegin(), byteListTopLeft.cend());
+    byteList.insert(it, byteListSize.cbegin(), byteListSize.cend());
+
+    return byteList;
+}
+
+//==============================================================
 // Конвертация списка значений QColor в список байтов
 //==============================================================
 template<>
 QVector<uint8_t> valueListToByteList(const QVector<QColor> &valueList)
 {
     QVector<uint8_t> ba{};
-    ba.reserve(valueList.size() * static_cast<int>(getTypeByteSize<QColor>()));
+    ba.reserve(valueList.size() * static_cast<int32_t>(getTypeByteSize<QColor>()));
     for (const QColor &value: valueList)
     {
         ba << valueToByteList(value);

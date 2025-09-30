@@ -14,6 +14,8 @@
 #include <QSizeF>
 #include <QRect>
 #include <QRectF>
+#include <deque>
+#include <algorithm>
 #include <type_traits>
 #include <cstring>
 
@@ -56,6 +58,43 @@ QVector<uint8_t> valueToByteList<QRect>(const QRect &value);
 template<>
 [[nodiscard]]
 QVector<uint8_t> valueToByteList<QRectF>(const QRectF &value);
+
+// Конвертация значения в список байтов (2 вариант)
+template<typename T>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2(const T &value);
+// Конвертации значения QString в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QString>(const QString &value);
+// Конвертация значения QColor в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QColor>(const QColor &value);
+// Конвертация значения QPoint в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QPoint>(const QPoint &value);
+// Конвертация значения QPointF в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QPointF>(const QPointF &value);
+// Конвертация значения QSize в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QSize>(const QSize &value);
+// Конвертация значения QSizeF в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QSizeF>(const QSizeF &value);
+// Конвертация значения QRect в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QRect>(const QRect &value);
+// Конвертация значения QRectF в список байтов
+template<>
+[[nodiscard]]
+std::deque<uint8_t> valueToByteList2<QRectF>(const QRectF &value);
 
 // Конвертация списка значений в список байтов
 template<typename T>
@@ -192,6 +231,22 @@ QVector<uint8_t> valueListToByteList(const QVector<T> &valueList)
     const std::size_t byteSize = valueList.size() * getTypeByteSize<T>();
     QVector<uint8_t> byteList(byteSize);
     std::memcpy(byteList.data(), valueList.constData(), byteSize);
+
+    return byteList;
+}
+
+//==============================================================
+// Конвертация значения в список байтов (2 вариант)
+//==============================================================
+template<typename T>
+std::deque<uint8_t> valueToByteList2(const T &value)
+{
+    static_assert(std::is_pod_v<T>);
+
+    const quint8 *const pValue = reinterpret_cast<const uint8_t*>(&value);
+    constexpr std::size_t typeByteSize = sizeof(T);
+    std::deque<uint8_t> byteList(typeByteSize);
+    std::copy(pValue, pValue + typeByteSize, byteList.begin());
 
     return byteList;
 }

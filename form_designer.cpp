@@ -312,15 +312,15 @@ void FormDesigner::contextMenuEvent(QContextMenuEvent *event)
 void FormDesigner::setConnections()
 {
     connect(project(), &Project::sigAddNode,
-        this, [this](ShPtrBaseNode) { this->update(); });
+        this, [this]() { this->update(); });
     connect(project(), &Project::sigRemoveNode,
-        this, [this](ShPtrBaseNode) { this->update(); });
+        this, [this]() { this->update(); });
     connect(project(), &Project::sigChangedNodeProp,
-        this, [this](ShPtrBaseNode, PropValue) { this->update(); });
+        this, [this]() { this->update(); });
     connect(project(), &Project::sigChangeSelectedNode,
-        this, [this](ShPtrBaseNode) { this->update(); });
+        this, [this]() { this->update(); });
     connect(project(), &Project::sigChangedNodeState,
-        this, [this](ShPtrBaseNode, NodeStateInfo) { this->update(); });
+        this, [this]() { this->update(); });
 }
 
 //==============================================================
@@ -341,12 +341,12 @@ void FormDesigner::drawGrid(QPainter *painter) const
         const QColor color{Colors::designerGrid()};
         painter->setPen(color);
 
-        constexpr int gridSize = 20;
-        for (int i = gridSize; i < width(); i += gridSize)
+        constexpr int32_t gridSize = 20;
+        for (int32_t i = gridSize; i < width(); i += gridSize)
         {
             painter->drawLine(i, 0, i, height());
         }
-        for (int i = gridSize; i < height(); i += gridSize)
+        for (int32_t i = gridSize; i < height(); i += gridSize)
         {
             painter->drawLine(0, i, width(), i);
         }

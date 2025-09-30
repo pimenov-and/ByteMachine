@@ -33,16 +33,16 @@ QString connectStateToStr(ConnectStates state);
 ConnectStates strToConnectState(const QString &str);
 // Конвертация состояния подключание в число
 [[nodiscard]]
-inline int connectStateToInt(ConnectStates state) noexcept { return static_cast<int>(state); }
+inline int32_t connectStateToInt(ConnectStates state) noexcept { return static_cast<int32_t>(state); }
 // Конвертация числа в состояние подключения
 [[nodiscard]]
-ConnectStates intToConnectState(int value) noexcept;
+ConnectStates intToConnectState(int32_t value) noexcept;
 // Конвертация состояния подключения в индекс
 [[nodiscard]]
-int connectStateToIndex(ConnectStates state) noexcept;
+int32_t connectStateToIndex(ConnectStates state) noexcept;
 // Конвертация индекса в состояние подключения
 [[nodiscard]]
-ConnectStates indexToConnectState(int index);
+ConnectStates indexToConnectState(int32_t index);
 // Получение признака ConnectStates::None
 [[nodiscard]]
 inline bool isUnknown(ConnectStates state) noexcept { return state == ConnectStates::Unknown; }

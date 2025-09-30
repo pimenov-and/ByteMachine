@@ -131,7 +131,7 @@ void MainWindow::slotShowAboutProg()
 //==============================================================
 // Функция вызывается при изменении страницы панели с узлами
 //==============================================================
-void MainWindow::slotNodesPageChanged(int index)
+void MainWindow::slotNodesPageChanged(int32_t index)
 {
     if (index == -1)
     {

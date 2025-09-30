@@ -48,7 +48,7 @@ private slots:
     void slotShowAboutProg();
 private slots:
     // Функция вызывается при изменении страницы панели с узлами
-    void slotNodesPageChanged(int index);
+    void slotNodesPageChanged(int32_t index);
     // Функция вызывается при добавлении узла через панель
     void slotAddNodeByType(NodeTypes nodeType);
     // Функция вызывается при добавлении узла

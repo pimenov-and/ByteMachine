@@ -1,7 +1,7 @@
-/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // ByteMachine
 // Выходной пин узла
-/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 #include "output_pin.h"
 #include "input_pin.h"
 #include "base_node.h"
@@ -9,17 +9,21 @@
 #include <QDomDocument>
 #include <QRect>
 
-//===================================================================
+//==============================================================
+using std::size_t;
+using std::deque;
+
+//==============================================================
 // Конструктор с параметром
-//===================================================================
-OutputPin::OutputPin(BaseNode *parentNode, int index) :
+//==============================================================
+OutputPin::OutputPin(BaseNode *parentNode, int32_t index) :
     BasePin{parentNode, index}
 {
 }
 
-//===================================================================
+//==============================================================
 // Деструктор
-//===================================================================
+//==============================================================
 OutputPin::~OutputPin()
 {
     /* for (InputPin *const inPin: qAsConst(inputPins_))
@@ -28,9 +32,9 @@ OutputPin::~OutputPin()
     } */ // FIXME: возможно нужно удалять связи
 }
 
-//===================================================================
+//==============================================================
 // Чтение из XML
-//===================================================================
+//==============================================================
 void OutputPin::readFromXml(const QDomElement &elem)
 {
     inputPinConnections_.clear();
@@ -48,7 +52,7 @@ void OutputPin::readFromXml(const QDomElement &elem)
         if (strNodeId.isEmpty())
             throw BaseException{"Bad node id"};
         bool ok = false;
-        const int nodeId = strNodeId.toInt(&ok);
+        const int32_t nodeId = strNodeId.toInt(&ok);
         if (!ok)
         {
             throw BaseException{"Bad node id"};
@@ -60,7 +64,7 @@ void OutputPin::readFromXml(const QDomElement &elem)
         {
             throw BaseException{"Bad pin index"};
         }
-        const int index = strIndex.toInt(&ok);
+        const int32_t index = strIndex.toInt(&ok);
         if (!ok)
         {
             throw BaseException{"Bad pin index"};
@@ -71,46 +75,46 @@ void OutputPin::readFromXml(const QDomElement &elem)
     }
 }
 
-//===================================================================
+//==============================================================
 // Запись в XML
-//===================================================================
+//==============================================================
 void OutputPin::writeToXml(QDomDocument &doc, QDomElement &elem) const
 {
     writeIndexToXml(doc, elem);
     writeInputPinsToXml(doc, elem);
 }
 
-//===================================================================
+//==============================================================
 // Получение области пина
-//===================================================================
+//==============================================================
 QRect OutputPin::rect() const
 {
     const BaseNode *const node = parentNode();
-    const int index = node->indexOfOutputPin(this);
+    const int32_t index = node->indexOfOutputPin(this);
     Q_ASSERT(index != -1);
 
     return node->outputPinRect(index);
 }
 
-//===================================================================
+//==============================================================
 // Получение представления в виде строки
-//===================================================================
+//==============================================================
 QString OutputPin::toStr() const
 {
     return "OutputPin";
 }
 
-//===================================================================
+//==============================================================
 // Получение входных пинов
-//===================================================================
+//==============================================================
 QVector<ShPtrInputPin> OutputPin::inputPins()
 {
     return inputPins_;
 }
 
-//===================================================================
+//==============================================================
 // Получение входных пинов (константный вариант)
-//===================================================================
+//==============================================================
 QVector<ShPtrConstInputPin> OutputPin::inputPins() const
 {
     QVector<ShPtrConstInputPin> pins{};
@@ -122,33 +126,33 @@ QVector<ShPtrConstInputPin> OutputPin::inputPins() const
     return pins;
 }
 
-//===================================================================
+//==============================================================
 // Получение количества подключенных входных пинов
-//===================================================================
-int OutputPin::inputPinCount() const
+//==============================================================
+int32_t OutputPin::inputPinCount() const
 {
     return inputPins_.count();
 }
 
-//===================================================================
+//==============================================================
 // Получение признака подключения
-//===================================================================
+//==============================================================
 bool OutputPin::isConnected() const
 {
     return !inputPins_.isEmpty();
 }
 
-//===================================================================
+//==============================================================
 // Проверка наличия подключенного входного пина
-//===================================================================
+//==============================================================
 bool OutputPin::containsInputPin(const ShPtrConstInputPin &pin) const
 {
     return containsInputPin(pin.get());
 }
 
-//===================================================================
+//==============================================================
 // Проверка наличия подключенного входного пина (2 вариант)
-//===================================================================
+//==============================================================
 bool OutputPin::containsInputPin(const InputPin *pin) const
 {
     for (const ShPtrInputPin &inputPin: inputPins_)
@@ -162,9 +166,9 @@ bool OutputPin::containsInputPin(const InputPin *pin) const
     return false;
 }
 
-//===================================================================
+//==============================================================
 // Добавление подключенного входного пина
-//===================================================================
+//==============================================================
 void OutputPin::addInputPin(const ShPtrInputPin &pin)
 {
     if (!containsInputPin(pin))
@@ -175,11 +179,11 @@ void OutputPin::addInputPin(const ShPtrInputPin &pin)
     }
 }
 
-//===================================================================
+//==============================================================
 // Удаление входного пина
-//===================================================================
+//==============================================================
 void OutputPin::removeInputPin(const ShPtrConstInputPin &pin,
-                               bool isRaiseSignal)
+    bool isRaiseSignal)
 {
     if (containsInputPin(pin))
     {
@@ -194,9 +198,9 @@ void OutputPin::removeInputPin(const ShPtrConstInputPin &pin,
     }
 }
 
-//===================================================================
+//==============================================================
 // Удаление входного пина ((сырые указатели))
-//===================================================================
+//==============================================================
 void OutputPin::removeInputPin(const InputPin *pin, bool isRaiseSignal)
 {
     if (containsInputPin(pin))
@@ -208,7 +212,7 @@ void OutputPin::removeInputPin(const InputPin *pin, bool isRaiseSignal)
             emit sigConnectChanged(ConnectStates::Disconnect, p);
         }
 
-        int index = -1;
+        int32_t index = -1;
         for (int i = 0; i < inputPins_.count(); ++i)
         {
             if (inputPins_[i] == p)
@@ -222,41 +226,39 @@ void OutputPin::removeInputPin(const InputPin *pin, bool isRaiseSignal)
     }
 }
 
-//===================================================================
+//==============================================================
 // Получение размера данных
-//===================================================================
-int32_t OutputPin::dataSize() const
+//==============================================================
+std::size_t OutputPin::dataSize() const
 {
     return parentNode()->dataSize();
 }
 
-//===================================================================
+//==============================================================
 // Получение байта данных
-//===================================================================
-uint8_t OutputPin::dataByte(int32_t index) const
+//==============================================================
+uint8_t OutputPin::dataByte(size_t index) const
 {
-    Q_ASSERT_X((index >= 0) && (index < dataSize()), "Check index",
+    Q_ASSERT_X(index < dataSize(), "Check index",
         qPrintable(QString("index: %1, dataSize: %2").arg(index).arg(dataSize())));
 
     return parentNode()->dataByte(index);
 }
 
-//===================================================================
+//==============================================================
 // Получение блока данных
-//===================================================================
-QVector<uint8_t> OutputPin::dataBlock(int32_t index, int32_t count) const
+//==============================================================
+deque<uint8_t> OutputPin::dataBlock(size_t index, size_t count) const
 {
-    Q_ASSERT_X(index >= 0, "Check index", qPrintable(QString::number(index)));
-    Q_ASSERT_X(count >= 0, "Check count", qPrintable(QString::number(count)));
-    Q_ASSERT_X(static_cast<qint64>(index) + count <= dataSize(), "Check index and count",
+    Q_ASSERT_X((count > dataSize()) || (index > dataSize() - count), "Check index and count",
         qPrintable(QString("index: %1, count: %2, dataSize: %3").arg(index).arg(count).arg(dataSize())));
 
     return parentNode()->dataBlock(index, count);
 }
 
-//===================================================================
+//==============================================================
 // Функция вызывается при изменении данных родительского узла
-//===================================================================
+//==============================================================
 void OutputPin::dataChanged()
 {
     for (ShPtrInputPin &pin: inputPins_)
@@ -265,9 +267,9 @@ void OutputPin::dataChanged()
     }
 }
 
-//===================================================================
+//==============================================================
 // Запись индекса в XML
-//===================================================================
+//==============================================================
 void OutputPin::writeIndexToXml(QDomDocument &doc, QDomElement &elem) const
 {
     Q_UNUSED(doc)
@@ -275,9 +277,9 @@ void OutputPin::writeIndexToXml(QDomDocument &doc, QDomElement &elem) const
     elem.setAttribute("index", index());
 }
 
-//===================================================================
+//==============================================================
 // Запись подключенных входных пинов
-//===================================================================
+//==============================================================
 void OutputPin::writeInputPinsToXml(QDomDocument &doc, QDomElement &elem) const
 {
     QDomElement elemInputPins = doc.createElement("inputPins");
@@ -285,10 +287,10 @@ void OutputPin::writeInputPinsToXml(QDomDocument &doc, QDomElement &elem) const
     {
         QDomElement elemInputPin = doc.createElement("inputPin");
 
-        const int nodeId = pin->parentNode()->id();
+        const int32_t nodeId = pin->parentNode()->id();
         elemInputPin.setAttribute("nodeId", nodeId);
 
-        const int index = pin->index();
+        const int32_t index = pin->index();
         elemInputPin.setAttribute("index", index);
 
         elemInputPins.appendChild(elemInputPin);

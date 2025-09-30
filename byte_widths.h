@@ -33,16 +33,16 @@ QString byteWidthToStr(ByteWidths width);
 ByteWidths strToWidthByte(const QString &str);
 // Конвертация ширины в байтах в число
 [[nodiscard]]
-inline int byteWidthToInt(ByteWidths width) noexcept { return static_cast<int>(width); }
+inline int32_t byteWidthToInt(ByteWidths width) noexcept { return static_cast<int32_t>(width); }
 // Конвертация числа в ширину в байтах
 [[nodiscard]]
-ByteWidths intToByteWidth(int value) noexcept;
+ByteWidths intToByteWidth(int32_t value) noexcept;
 // Конвертация ширины в байтах в индекс
 [[nodiscard]]
-int byteWidthToIndex(ByteWidths width) noexcept;
+int32_t byteWidthToIndex(ByteWidths width) noexcept;
 // Конвертация индекса в ширину в байтах
 [[nodiscard]]
-ByteWidths indexToByteWidth(int index) noexcept;
+ByteWidths indexToByteWidth(int32_t index) noexcept;
 // Получение признака ByteWidths::None
 [[nodiscard]]
 inline bool isUnknown(ByteWidths width) noexcept { return width == ByteWidths::Unknown; }
@@ -60,7 +60,7 @@ QVector<ByteWidths> getByteWidthValues();
 bool isCorrect(ByteWidths width);
 // Получение количества значений ByteWidths
 [[nodiscard]]
-constexpr int getByteWidthValueCount() { return 3; }
+constexpr int32_t getByteWidthValueCount() { return 3; }
 
 //==============================================================
 #endif // BYTE_WIDTHS_H

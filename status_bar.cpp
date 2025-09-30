@@ -40,10 +40,10 @@ void StatusBar::paintEvent(QPaintEvent*)
 //==============================================================
 void StatusBar::setConnections()
 {
-    connect(project(), SIGNAL(sigAddNode(ShPtrBaseNode)),
-        this, SLOT(repaint()));
-    connect(project(), SIGNAL(sigRemoveNode(ShPtrBaseNode)),
-        this, SLOT(repaint()));
+    connect(project(), &Project::sigAddNode,
+        this, [this]() { this->update(); });
+    connect(project(), &Project::sigRemoveNode,
+        this, [this]() { this->update(); });
 }
 
 //==============================================================
@@ -64,7 +64,7 @@ void StatusBar::drawNumberOfNodes(QPainter *painter) const
     Q_ASSERT(painter != nullptr);
 
     painter->setPen(Colors::statusBarTextColor());
-    constexpr int textFlags = Qt::AlignLeft | Qt::AlignVCenter;
+    constexpr int32_t textFlags = Qt::AlignLeft | Qt::AlignVCenter;
     const QString text = QString{"%1: %2"}.arg("Number of nodes").
         arg(project()->nodeCount());
     const QRect textRect{5, 0, width() - 8, height()};
@@ -76,11 +76,11 @@ void StatusBar::drawNumberOfNodes(QPainter *painter) const
 //==============================================================
 void StatusBar::drawVersionArea(QPainter *painter) const
 {
-    constexpr int areaWidth = 160;
+    constexpr int32_t areaWidth = 160;
     const QRect rect{width() - areaWidth, 0, areaWidth, height()};
     painter->fillRect(rect, Colors::statusBarVersionAreaBackColor());
 
-    constexpr int textFlags = Qt::AlignHCenter | Qt::AlignVCenter;
+    constexpr int32_t textFlags = Qt::AlignHCenter | Qt::AlignVCenter;
     painter->setPen(Colors::statusBarTextColor());
     const QString version = QString{"ByteMachine %1"}.arg(APP_VERSION);
     painter->drawText(rect, textFlags, version);

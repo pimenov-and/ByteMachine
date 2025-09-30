@@ -121,10 +121,10 @@ public:
     ShPtrConstBaseNode findNodeByName(const QString &name) const;
     // Поиск узла по идентификатору
     [[nodiscard]]
-    ShPtrBaseNode findNodeById(int id);
+    ShPtrBaseNode findNodeById(int32_t id);
     // Поиск узла по идентификатору (константный вариант)
     [[nodiscard]]
-    ShPtrConstBaseNode findNodeById(int id) const;
+    ShPtrConstBaseNode findNodeById(int32_t id) const;
     // Поиск узла по указателю
     [[nodiscard]]
     ShPtrBaseNode findNodeByPtr(BaseNode *node);

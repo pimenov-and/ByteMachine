@@ -34,16 +34,16 @@ QString nodeStateToStr(NodeStates state);
 NodeStates strToNodeState(const QString &str);
 // Конвертация состояния узла в число
 [[nodiscard]]
-inline int nodeStateToInt(NodeStates state) noexcept { return static_cast<int>(state); }
+inline int32_t nodeStateToInt(NodeStates state) noexcept { return static_cast<int32_t>(state); }
 // Конвертация числа в состояние узла
 [[nodiscard]]
-NodeStates intToNodeState(int value);
+NodeStates intToNodeState(int32_t value);
 // Конвертация состояния узла в индекс
 [[nodiscard]]
-int nodeStateToIndex(NodeStates state);
+int32_t nodeStateToIndex(NodeStates state);
 // Конвертация индекса в состояние узла
 [[nodiscard]]
-NodeStates indexToNodeState(int index);
+NodeStates indexToNodeState(int32_t index);
 // Является ли состояние узла None
 [[nodiscard]]
 inline bool isUnknown(NodeStates state) noexcept { return state == NodeStates::Unknown; }

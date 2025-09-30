@@ -15,6 +15,8 @@
 #include <QDebug>
 
 //==============================================================
+using std::size_t;
+using std::deque;
 using std::optional;
 
 //==============================================================
@@ -148,7 +150,7 @@ QString GenerateNode::tooltipText() const
 //==============================================================
 // Получение размера данных
 //==============================================================
-int32_t GenerateNode::dataSize() const
+size_t GenerateNode::dataSize() const
 {
     if (stateInfo_.isError())
     {
@@ -161,10 +163,10 @@ int32_t GenerateNode::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t GenerateNode::dataByte(int32_t index) const
+uint8_t GenerateNode::dataByte(size_t index) const
 {
-    Q_ASSERT_X((index >= 0) && (index < dataSize()), "Check index",
-               qPrintable(QString{"Index: %1, DataSize: %2"}.arg(index).arg(dataSize())));
+    Q_ASSERT_X(index < dataSize(), "Check index",
+        qPrintable(QString{"Index: %1, DataSize: %2"}.arg(index).arg(dataSize())));
 
     switch (generateType_)
     {
@@ -238,96 +240,94 @@ uint8_t GenerateNode::dataByte(int32_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-QVector<uint8_t> GenerateNode::dataBlock(int32_t index, int32_t count) const
+deque<uint8_t> GenerateNode::dataBlock(size_t index, size_t count) const
 {
-    Q_ASSERT_X(index >= 0, "Check index", qPrintable(QString::number(index)));
-    Q_ASSERT_X(count >= 0, "Check count", qPrintable(QString::number(count)));
-    Q_ASSERT_X(static_cast<int64_t>(index) + count <= dataSize(), "Check index and count",
+    Q_ASSERT_X((count > dataSize()) || (index > dataSize() - count), "Check index and count",
         qPrintable(QString{"Index: %1, Count: %2, DataSize: %3"}.arg(index).arg(count).arg(dataSize())));
 
     switch (generateType_)
     {
         case GenerateTypes::Usual:
         {
-            return QVector<uint8_t>(count, filledByte_);
+            return deque<uint8_t>(count, filledByte_);
         }
         case GenerateTypes::Random:
         {
-            QVector<uint8_t> block{};
-            for (int32_t i = index, j = 0; j < count; ++i, ++j)
+            deque<uint8_t> block{};
+            for (size_t i = index, j = 0; j < count; ++i, ++j)
             {
-                block << randValue(i);
+                block.push_back(randValue(i));
             }
             return block;
         }
         case GenerateTypes::Bool:
         {
-            const QVector<uint8_t> bl = valueToByteList(boolValue_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(boolValue_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int8:
         {
-            const QVector<uint8_t> bl = valueToByteList(int8Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(int8Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt8:
         {
-            const QVector<uint8_t> bl = valueToByteList(uint8Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(uint8Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int16:
         {
-            const QVector<uint8_t> bl = valueToByteList(int16Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(int16Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt16:
         {
-            const QVector<uint8_t> bl = valueToByteList(uint16Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(uint16Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int32:
         {
-            const QVector<uint8_t> bl = valueToByteList(int32Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(int32Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt32:
         {
-            const QVector<uint8_t> bl = valueToByteList(uint32Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(uint32Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int64:
         {
-            const QVector<uint8_t> bl = valueToByteList(int64Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(int64Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt64:
         {
-            const QVector<uint8_t> bl = valueToByteList(uint64Value_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(uint64Value_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Float:
         {
-            const QVector<uint8_t> bl = valueToByteList(floatValue_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(floatValue_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Double:
         {
-            const QVector<uint8_t> bl = valueToByteList(doubleValue_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(doubleValue_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::String:
         {
-            const QVector<uint8_t> bl = valueToByteList(strValue_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(strValue_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Color:
         {
-            const QVector<uint8_t> bl = valueToByteList(colorValue_);
-            return bl.mid(index, count);
+            const deque<uint8_t> bl = valueToByteList2(colorValue_);
+            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         default:
         {
-            return QVector<uint8_t>{};
+            return deque<uint8_t>{};
         }
     }
 }
@@ -1070,7 +1070,7 @@ void GenerateNode::updateStateInfo()
 
     if (byteCount() == 0)
     {
-        const QString msg = "Not data";
+        const QString msg = "The number of generated bytes is zero";
         stateInfo_ = NodeStateInfo{NodeStates::Warning, msg};
     }
     else

@@ -23,7 +23,7 @@ class BasePin : public QObject, public IData, public IXml, public IToStr
     Q_OBJECT
 public:
     // Конструктор с параметрами
-    BasePin(BaseNode *parentNode, int index);
+    BasePin(BaseNode *parentNode, int32_t index);
 
     // Получение признака подключения
     [[nodiscard]]
@@ -36,18 +36,18 @@ public:
     BaseNode* parentNode() const { return parentNode_; }
     // Индекс пина в узле
     [[nodiscard]]
-    int index() const { return index_; }
+    int32_t index() const { return index_; }
     // Получение ширины
     [[nodiscard]]
-    static int width() { return 20; }
+    static int32_t width() { return 20; }
     // Получение высоты
     [[nodiscard]]
-    static int height() { return 10; }
+    static int32_t height() { return 10; }
 private:
     // Родительский узел
     BaseNode *parentNode_{nullptr};
     // Индекс пина в узле
-    int index_{0};
+    int32_t index_{0};
 };
 
 //==============================================================

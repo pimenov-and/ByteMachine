@@ -49,7 +49,7 @@ ByteWidths strToWidthByte(const QString &str)
 //==============================================================
 // Конвертация числа в ширину в байтах
 //==============================================================
-ByteWidths intToByteWidth(int value) noexcept
+ByteWidths intToByteWidth(int32_t value) noexcept
 {
     switch (value)
     {
@@ -71,7 +71,7 @@ ByteWidths intToByteWidth(int value) noexcept
 //==============================================================
 // Конвертация ширины в байтах в индекс
 //==============================================================
-int byteWidthToIndex(ByteWidths width) noexcept
+int32_t byteWidthToIndex(ByteWidths width) noexcept
 {
     switch (width)
     {
@@ -93,7 +93,7 @@ int byteWidthToIndex(ByteWidths width) noexcept
 //==============================================================
 // Конвертация индекса в ширину в байтах
 //==============================================================
-ByteWidths indexToByteWidth(int index) noexcept
+ByteWidths indexToByteWidth(int32_t index) noexcept
 {
     switch (index)
     {

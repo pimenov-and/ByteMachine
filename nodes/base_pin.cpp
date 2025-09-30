@@ -8,7 +8,7 @@
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-BasePin::BasePin(BaseNode *parentNode, int index)
+BasePin::BasePin(BaseNode *parentNode, int32_t index)
 {
     Q_ASSERT(parentNode != nullptr);
     Q_ASSERT_X(index >= 0, "Check index", qPrintable(QString::number(index)));

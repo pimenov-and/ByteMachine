@@ -15,6 +15,10 @@
 // #include <QDebug>
 
 //==============================================================
+using std::size_t;
+using std::deque;
+
+//==============================================================
 // Конструктор с параметром
 //==============================================================
 SizeNode::SizeNode(QUndoStack *undoStack, QObject *parent) :
@@ -152,13 +156,19 @@ ShPtrBaseNode SizeNode::clone() const
 //==============================================================
 QString SizeNode::tooltipText() const
 {
-    return QString{};
+    QString text{};
+    text += QString{"%1: \"%2\"\n"}.arg("Name", name());
+    text += QString{"%1: %2\n"}.arg("Unit", sizeUnitToStr(unit()));
+    text += QString{"%1: %2\n"}.arg("Bypass", boolToStr(isBypass()));
+    text += QString{"%1: \"%2\""}.arg("Comment", comment());
+
+    return text;
 }
 
 //==============================================================
 // Получение размера данных
 //==============================================================
-int32_t SizeNode::dataSize() const
+size_t SizeNode::dataSize() const
 {
     if (stateInfo_.isError())
     {
@@ -171,7 +181,7 @@ int32_t SizeNode::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t SizeNode::dataByte(int32_t index) const
+uint8_t SizeNode::dataByte(size_t index) const
 {
     Q_UNUSED(index);
 
@@ -181,12 +191,12 @@ uint8_t SizeNode::dataByte(int32_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-QVector<uint8_t> SizeNode::dataBlock(int32_t index, int32_t count) const
+deque<uint8_t> SizeNode::dataBlock(size_t index, size_t count) const
 {
     Q_UNUSED(index);
     Q_UNUSED(count);
 
-    return QVector<uint8_t>{};
+    return deque<uint8_t>{};
 }
 
 //==============================================================
@@ -351,7 +361,7 @@ void SizeNode::drawComments(QPainter *painter) const
 //==============================================================
 // Перевод байтов в килобайты
 //==============================================================
-double SizeNode::bytesToKilobytes(int count)
+double SizeNode::bytesToKilobytes(int32_t count)
 {
     return count / 1024.0;
 }
