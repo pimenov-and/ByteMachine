@@ -116,30 +116,30 @@ public:
     //----------------------------------------------------------
     // Получение смещения слева
     [[nodiscard]]
-    int32_t left() const noexcept { return left_; }
+    qint32 left() const noexcept { return left_; }
     // Задание смещения слева
-    void setLeft(int32_t left) noexcept;
+    void setLeft(qint32 left) noexcept;
     // Получение смещения сверху
     [[nodiscard]]
-    int32_t top() const noexcept { return top_; }
+    qint32 top() const noexcept { return top_; }
     // Задание смещения сверху
-    void setTop(int32_t top) noexcept;
+    void setTop(qint32 top) noexcept;
     // Получение ширины узла
     [[nodiscard]]
-    int32_t width() const noexcept { return width_; }
+    qint32 width() const noexcept { return width_; }
     // Задание ширины узла
-    virtual void setWidth(int32_t width);
+    virtual void setWidth(qint32 width);
     // Получение высоты узла
     [[nodiscard]]
-    int32_t height() const noexcept { return height_; }
+    qint32 height() const noexcept { return height_; }
     // Задание высоты узла
-    virtual void setHeight(int32_t height);
+    virtual void setHeight(qint32 height);
     // Получение правой границы
     [[nodiscard]]
-    int32_t right() const noexcept { return left() + width(); }
+    qint32 right() const noexcept { return left() + width(); }
     // Получение нижней границы
     [[nodiscard]]
-    int32_t bottom() const noexcept { return top_ + height_; }
+    qint32 bottom() const noexcept { return top_ + height_; }
     // Получение центра
     [[nodiscard]]
     QPoint center() const;
@@ -288,16 +288,16 @@ protected:
     QString readNameFromXml(const QDomElement &elem) const;
     // Чтение смещения слева из XML
     [[nodiscard]]
-    int32_t readLeftFromXml(const QDomElement &elem) const;
+    qint32 readLeftFromXml(const QDomElement &elem) const;
     // Чтение смещения сверху из XML
     [[nodiscard]]
-    int32_t readTopFromXml(const QDomElement &elem) const;
+    qint32 readTopFromXml(const QDomElement &elem) const;
     // Чтение ширины из XML
     [[nodiscard]]
-    int32_t readWidthFromXml(const QDomElement &elem) const;
+    qint32 readWidthFromXml(const QDomElement &elem) const;
     // Чтение высоты из XML
     [[nodiscard]]
-    int32_t readHeightFromXml(const QDomElement &elem) const;
+    qint32 readHeightFromXml(const QDomElement &elem) const;
     // Чтение признака пропуска из XML
     [[nodiscard]]
     bool readBypassFromXml(const QDomElement &elem) const;
@@ -349,15 +349,15 @@ private:
     void drawWarningStateArea(QPainter *painter) const;
 
     // Идентификатор
-    int32_t id_{0};
+    qint32 id_{0};
     // Смещение слева
-    int32_t left_{20};
+    qint32 left_{20};
     // Смещение сверху
-    int32_t top_{20};
+    qint32 top_{20};
     // Ширина
-    int32_t width_{100};
+    qint32 width_{100};
     // Высота
-    int32_t height_{40};
+    qint32 height_{40};
     // Выделение
     bool isSelected_{true};
     // Комментарий

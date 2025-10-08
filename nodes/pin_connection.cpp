@@ -12,7 +12,7 @@
 //==============================================================
 // Конструктор с параметрами
 //==============================================================
-PinConnection::PinConnection(int32_t nodeId, int32_t index)
+PinConnection::PinConnection(qint32 nodeId, qint32 index)
 {
     init(nodeId, index);
 }
@@ -20,7 +20,7 @@ PinConnection::PinConnection(int32_t nodeId, int32_t index)
 //==============================================================
 // Функция инициализации
 //==============================================================
-void PinConnection::init(int32_t nodeId, int32_t index)
+void PinConnection::init(qint32 nodeId, qint32 index)
 {
     this->nodeId = nodeId;
     this->index = index;

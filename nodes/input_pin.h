@@ -51,9 +51,9 @@ public:
     // Получение размера данных
     std::size_t dataSize() const override;
     // Получение байта данных
-    uint8_t dataByte(std::size_t index) const override;
+    quint8 dataByte(std::size_t index) const override;
     // Получение блока данных
-    std::deque<uint8_t> dataBlock(std::size_t index,
+    ByteList dataBlock(std::size_t index,
         std::size_t count) const override;
     // Функция вызывается при изменении данных родительского узла
     void dataChanged() override;

@@ -56,10 +56,9 @@ public:
     // Получение размера данных
     std::size_t dataSize() const override;
     // Получение байта данных
-    uint8_t dataByte(std::size_t index) const override;
+    quint8 dataByte(std::size_t index) const override;
     // Получение блока данных
-    std::deque<uint8_t> dataBlock(std::size_t index,
-        std::size_t count) const override;
+    ByteList dataBlock(std::size_t index, std::size_t count) const override;
     // Функция вызывается при изменении данных
     void dataChanged() override;
 
@@ -97,10 +96,10 @@ private:
 
     // Перевод байтов в килобайты
     [[nodiscard]]
-    static double bytesToKilobytes(int32_t count);
+    static double bytesToKilobytes(qint32 count);
     // Перевод байтов в мегабайты
     [[nodiscard]]
-    static double bytesToMegabytes(int count);
+    static double bytesToMegabytes(qint32 count);
     // Получение размера данных в виде строки
     [[nodiscard]]
     QString dataSizeToStr() const;

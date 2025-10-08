@@ -3,6 +3,7 @@
 // Главный файл
 ////////////////////////////////////////////////////////////////
 #include "main_window.h"
+#include "type_defs.h"
 #include <QApplication>
 
 //==============================================================
@@ -11,6 +12,9 @@
 int main(int argc, char **argv)
 {
     QApplication a{argc, argv};
+
+    qRegisterMetaType<ByteList>("ByteList");
+
     MainWindow w{};
     w.showMaximized();
 

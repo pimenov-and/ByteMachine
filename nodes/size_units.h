@@ -35,10 +35,10 @@ QString sizeUnitToStr(SizeUnits unit);
 SizeUnits strToSizeUnit(const QString &str);
 // Конвертация единицы изменения в число
 [[nodiscard]]
-inline int32_t sizeUnitToInt(SizeUnits unit) noexcept { return static_cast<int32_t>(unit); }
+inline qint32 sizeUnitToInt(SizeUnits unit) noexcept { return static_cast<qint32>(unit); }
 // Конвертация числа в единицу измерения
 [[nodiscard]]
-SizeUnits intToSizeUnit(int32_t value) noexcept;
+SizeUnits intToSizeUnit(qint32 value) noexcept;
 // Получение признака SizeUnits::Unknown
 [[nodiscard]]
 inline bool isUnknown(SizeUnits unit) noexcept { return unit == SizeUnits::Unknown; }

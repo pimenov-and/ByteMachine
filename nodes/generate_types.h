@@ -108,7 +108,7 @@ QVector<GenerateTypes> getGenerateTypeValues();
 bool isCorrect(GenerateTypes type);
 // Получение количества типов генерации
 [[nodiscard]]
-int32_t getGenerateTypeValueCount();
+qint32 getGenerateTypeValueCount();
 
 //==============================================================
 #endif // GENERATE_TYPES_H

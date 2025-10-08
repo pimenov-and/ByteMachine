@@ -92,7 +92,7 @@ public:
     QVector<ShPtrConstBaseNode> nodes() const;
     // Получение количества узлов
     [[nodiscard]]
-    int32_t nodeCount() const { return nodes_.count(); }
+    qint32 nodeCount() const { return nodes_.count(); }
 
     //----------------------------------------------------------
     // Функции отмены
@@ -121,10 +121,10 @@ public:
     ShPtrConstBaseNode findNodeByName(const QString &name) const;
     // Поиск узла по идентификатору
     [[nodiscard]]
-    ShPtrBaseNode findNodeById(int32_t id);
+    ShPtrBaseNode findNodeById(qint32 id);
     // Поиск узла по идентификатору (константный вариант)
     [[nodiscard]]
-    ShPtrConstBaseNode findNodeById(int32_t id) const;
+    ShPtrConstBaseNode findNodeById(qint32 id) const;
     // Поиск узла по указателю
     [[nodiscard]]
     ShPtrBaseNode findNodeByPtr(BaseNode *node);

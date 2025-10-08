@@ -14,10 +14,10 @@
 #include <QSizeF>
 #include <QRect>
 #include <QRectF>
-#include <deque>
 #include <algorithm>
 #include <type_traits>
 #include <cstring>
+#include "type_defs.h"
 
 ////////////////////////////////////////////////////////////////
 // Прототипы функций
@@ -25,85 +25,85 @@
 // Конвертация значения в список байтов
 template<typename T>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList(const T &value);
+QVector<quint8> valueToByteList(const T &value);
 // Конвертации значения QString в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QString>(const QString &value);
+QVector<quint8> valueToByteList<QString>(const QString &value);
 // Конвертация значения QColor в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QColor>(const QColor &value);
+QVector<quint8> valueToByteList<QColor>(const QColor &value);
 // Конвертация значения QPoint в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QPoint>(const QPoint &value);
+QVector<quint8> valueToByteList<QPoint>(const QPoint &value);
 // Конвертация значения QPointF в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QPointF>(const QPointF &value);
+QVector<quint8> valueToByteList<QPointF>(const QPointF &value);
 // Конвертация значения QSize в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QSize>(const QSize &value);
+QVector<quint8> valueToByteList<QSize>(const QSize &value);
 // Конвертация значения QSizeF в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QSizeF>(const QSizeF &value);
+QVector<quint8> valueToByteList<QSizeF>(const QSizeF &value);
 // Конвертация значения QRect в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QRect>(const QRect &value);
+QVector<quint8> valueToByteList<QRect>(const QRect &value);
 // Конвертация значения QRectF в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueToByteList<QRectF>(const QRectF &value);
+QVector<quint8> valueToByteList<QRectF>(const QRectF &value);
 
 // Конвертация значения в список байтов (2 вариант)
 template<typename T>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2(const T &value);
+ByteList valueToByteList2(const T &value);
 // Конвертации значения QString в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QString>(const QString &value);
+ByteList valueToByteList2<QString>(const QString &value);
 // Конвертация значения QColor в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QColor>(const QColor &value);
+ByteList valueToByteList2<QColor>(const QColor &value);
 // Конвертация значения QPoint в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QPoint>(const QPoint &value);
+ByteList valueToByteList2<QPoint>(const QPoint &value);
 // Конвертация значения QPointF в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QPointF>(const QPointF &value);
+ByteList valueToByteList2<QPointF>(const QPointF &value);
 // Конвертация значения QSize в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QSize>(const QSize &value);
+ByteList valueToByteList2<QSize>(const QSize &value);
 // Конвертация значения QSizeF в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QSizeF>(const QSizeF &value);
+ByteList valueToByteList2<QSizeF>(const QSizeF &value);
 // Конвертация значения QRect в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QRect>(const QRect &value);
+ByteList valueToByteList2<QRect>(const QRect &value);
 // Конвертация значения QRectF в список байтов
 template<>
 [[nodiscard]]
-std::deque<uint8_t> valueToByteList2<QRectF>(const QRectF &value);
+ByteList valueToByteList2<QRectF>(const QRectF &value);
 
 // Конвертация списка значений в список байтов
 template<typename T>
 [[nodiscard]]
-QVector<uint8_t> valueListToByteList(const QVector<T> &valueList);
+QVector<quint8> valueListToByteList(const QVector<T> &valueList);
 // Конвертация списка значений QColor в список байтов
 template<>
 [[nodiscard]]
-QVector<uint8_t> valueListToByteList(const QVector<QColor> &valueList);
+QVector<quint8> valueListToByteList(const QVector<QColor> &valueList);
 
 // Получение размера данных по типу
 template<typename T>
@@ -209,12 +209,12 @@ std::size_t getValueByteSize<QRectF>(const QRectF&);
 // Конвертация значения в список байтов
 //==========================================================
 template<typename T>
-QVector<uint8_t> valueToByteList(const T &value)
+QVector<quint8> valueToByteList(const T &value)
 {
     static_assert(std::is_pod_v<T>);
 
     constexpr std::size_t typeByteSize = sizeof(T);
-    QVector<uint8_t> byteList(typeByteSize);
+    QVector<quint8> byteList(typeByteSize);
     std::memcpy(byteList.data(), &value, typeByteSize);
 
     return byteList;
@@ -224,12 +224,12 @@ QVector<uint8_t> valueToByteList(const T &value)
 // Конвертация списка значений в список байтов
 //==============================================================
 template<typename T>
-QVector<uint8_t> valueListToByteList(const QVector<T> &valueList)
+QVector<quint8> valueListToByteList(const QVector<T> &valueList)
 {
     static_assert(std::is_pod_v<T>);
 
     const std::size_t byteSize = valueList.size() * getTypeByteSize<T>();
-    QVector<uint8_t> byteList(byteSize);
+    QVector<quint8> byteList(byteSize);
     std::memcpy(byteList.data(), valueList.constData(), byteSize);
 
     return byteList;
@@ -239,13 +239,13 @@ QVector<uint8_t> valueListToByteList(const QVector<T> &valueList)
 // Конвертация значения в список байтов (2 вариант)
 //==============================================================
 template<typename T>
-std::deque<uint8_t> valueToByteList2(const T &value)
+ByteList valueToByteList2(const T &value)
 {
     static_assert(std::is_pod_v<T>);
 
-    const quint8 *const pValue = reinterpret_cast<const uint8_t*>(&value);
+    const quint8 *const pValue = reinterpret_cast<const quint8*>(&value);
     constexpr std::size_t typeByteSize = sizeof(T);
-    std::deque<uint8_t> byteList(typeByteSize);
+    ByteList byteList(typeByteSize);
     std::copy(pValue, pValue + typeByteSize, byteList.begin());
 
     return byteList;

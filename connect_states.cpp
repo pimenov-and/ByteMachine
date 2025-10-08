@@ -49,7 +49,7 @@ ConnectStates strToConnectState(const QString &str)
 //==============================================================
 // Конвертация числа в состояние подключения
 //==============================================================
-ConnectStates intToConnectState(int32_t value) noexcept
+ConnectStates intToConnectState(qint32 value) noexcept
 {
     const ConnectStates state = static_cast<ConnectStates>(value);
 
@@ -59,7 +59,7 @@ ConnectStates intToConnectState(int32_t value) noexcept
 //==============================================================
 // Конвертация состояния подключения в индекс
 //==============================================================
-int32_t connectStateToIndex(ConnectStates state) noexcept
+qint32 connectStateToIndex(ConnectStates state) noexcept
 {
     return connectStateToInt(state);
 }
@@ -67,7 +67,7 @@ int32_t connectStateToIndex(ConnectStates state) noexcept
 //==============================================================
 // Конвертация индекса в состояние подключения
 //==============================================================
-ConnectStates indexToConnectState(int32_t index)
+ConnectStates indexToConnectState(qint32 index)
 {
     return intToConnectState(index);
 }

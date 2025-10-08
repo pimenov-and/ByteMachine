@@ -11,7 +11,6 @@
 
 //==============================================================
 using std::size_t;
-using std::deque;
 
 //==============================================================
 // Конструктор с параметрами
@@ -158,7 +157,7 @@ size_t InputPin::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t InputPin::dataByte(size_t index) const
+quint8 InputPin::dataByte(size_t index) const
 {
     Q_ASSERT_X(index < dataSize(), "Check index",
         qPrintable(QString("index: %1, dataSize: %2").arg(index).arg(dataSize())));
@@ -169,7 +168,7 @@ uint8_t InputPin::dataByte(size_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-deque<uint8_t> InputPin::dataBlock(size_t index, size_t count) const
+ByteList InputPin::dataBlock(size_t index, size_t count) const
 {
     Q_ASSERT_X((count > dataSize()) || (index > dataSize() - count),
         "Check index and count", qPrintable(QString{"index: %1, count: %2, dataSize: %3"}.

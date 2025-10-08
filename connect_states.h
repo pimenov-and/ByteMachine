@@ -33,16 +33,16 @@ QString connectStateToStr(ConnectStates state);
 ConnectStates strToConnectState(const QString &str);
 // Конвертация состояния подключание в число
 [[nodiscard]]
-inline int32_t connectStateToInt(ConnectStates state) noexcept { return static_cast<int32_t>(state); }
+inline qint32 connectStateToInt(ConnectStates state) noexcept { return static_cast<qint32>(state); }
 // Конвертация числа в состояние подключения
 [[nodiscard]]
-ConnectStates intToConnectState(int32_t value) noexcept;
+ConnectStates intToConnectState(qint32 value) noexcept;
 // Конвертация состояния подключения в индекс
 [[nodiscard]]
-int32_t connectStateToIndex(ConnectStates state) noexcept;
+qint32 connectStateToIndex(ConnectStates state) noexcept;
 // Конвертация индекса в состояние подключения
 [[nodiscard]]
-ConnectStates indexToConnectState(int32_t index);
+ConnectStates indexToConnectState(qint32 index);
 // Получение признака ConnectStates::None
 [[nodiscard]]
 inline bool isUnknown(ConnectStates state) noexcept { return state == ConnectStates::Unknown; }
@@ -60,7 +60,7 @@ QVector<ConnectStates> connectStateValues();
 bool isCorrect(ConnectStates state);
 // Получение количества состояний подключения в виде строки
 [[nodiscard]]
-constexpr int32_t getConnectStateCount() noexcept { return 3; }
+constexpr qint32 getConnectStateCount() noexcept { return 3; }
 
 //==============================================================
 #endif // CONNECT_STATES_H

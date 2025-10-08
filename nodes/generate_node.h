@@ -17,17 +17,17 @@ class GenerateNode final : public BaseNode
 {
     Q_OBJECT
     Q_PROPERTY(GenerateTypes generateType READ generateType WRITE setGenerateType RESET resetGenerateType)
-    Q_PROPERTY(int32_t byteCount READ byteCount WRITE setByteCount RESET resetByteCount)
-    Q_PROPERTY(int32_t filledByte READ filledByte WRITE setFilledByte RESET resetFilledByte)
+    Q_PROPERTY(qint32 byteCount READ byteCount WRITE setByteCount RESET resetByteCount)
+    Q_PROPERTY(qint8 filledByte READ filledByte WRITE setFilledByte RESET resetFilledByte)
     Q_PROPERTY(bool boolValue READ boolValue WRITE setBoolValue RESET resetBoolValue)
-    Q_PROPERTY(int8_t int8Value READ int8Value WRITE setInt8Value RESET resetInt8Value)
-    Q_PROPERTY(uint8_t uint8Value READ uint8Value WRITE setUInt8Value RESET resetUInt8Value)
-    Q_PROPERTY(int16_t int16Value READ int16Value WRITE setInt16Value RESET resetInt16Value)
-    Q_PROPERTY(uint16_t uint16Value READ uint16Value WRITE setUInt16Value RESET resetUInt16Value)
-    Q_PROPERTY(int32_t int32Value READ int32Value WRITE setInt32Value RESET resetInt32Value)
-    Q_PROPERTY(uint32_t uint32Value READ uint32Value WRITE setUInt32Value RESET resetUInt32Value)
-    Q_PROPERTY(int64_t int64Value READ int64Value WRITE setInt64Value RESET resetInt64Value)
-    Q_PROPERTY(uint64_t uint64Value READ uint64Value WRITE setUInt64Value RESET resetUInt64Value)
+    Q_PROPERTY(qint8 int8Value READ int8Value WRITE setInt8Value RESET resetInt8Value)
+    Q_PROPERTY(quint8 uint8Value READ uint8Value WRITE setUInt8Value RESET resetUInt8Value)
+    Q_PROPERTY(qint16 int16Value READ int16Value WRITE setInt16Value RESET resetInt16Value)
+    Q_PROPERTY(quint16 uint16Value READ uint16Value WRITE setUInt16Value RESET resetUInt16Value)
+    Q_PROPERTY(qint32 int32Value READ int32Value WRITE setInt32Value RESET resetInt32Value)
+    Q_PROPERTY(quint32 uint32Value READ uint32Value WRITE setUInt32Value RESET resetUInt32Value)
+    Q_PROPERTY(qint64 int64Value READ int64Value WRITE setInt64Value RESET resetInt64Value)
+    Q_PROPERTY(quint64 uint64Value READ uint64Value WRITE setUInt64Value RESET resetUInt64Value)
     Q_PROPERTY(float floatValue READ floatValue WRITE setFloatValue RESET resetFloatValue)
     Q_PROPERTY(double doubleValue READ doubleValue WRITE setDoubleValue RESET resetDoubleValue)
     Q_PROPERTY(QString strValue READ strValue WRITE setStrValue RESET resetStrValue)
@@ -59,10 +59,9 @@ public:
     // Получение размера данных
     std::size_t dataSize() const override;
     // Получение байта данных
-    uint8_t dataByte(std::size_t index) const override;
+    quint8 dataByte(std::size_t index) const override;
     // Получение блока данных
-    std::deque<uint8_t> dataBlock(std::size_t index,
-        std::size_t count) const override;
+    ByteList dataBlock(std::size_t index, std::size_t count) const override;
     // Функция вызывается при изменении данных
     void dataChanged() override;
 
@@ -84,9 +83,9 @@ public:
 
     // Получение количества байтов
     [[nodiscard]]
-    int32_t byteCount() const { return byteCount_; }
+    qint32 byteCount() const { return byteCount_; }
     // Задание количества байтов
-    void setByteCount(int32_t count);
+    void setByteCount(qint32 count);
     // Сброс количества байтов
     void resetByteCount();
     // Получение признака изменения количества байтов
@@ -95,9 +94,9 @@ public:
 
     // Получение байта для заполнения
     [[nodiscard]]
-    uint8_t filledByte() const { return filledByte_; }
+    quint8 filledByte() const { return filledByte_; }
     // Задание байта для заполнения
-    void setFilledByte(uint8_t byte);
+    void setFilledByte(quint8 byte);
     // Сброс байта для заполнения
     void resetFilledByte();
     // Функция для проверки изменения байта заполнения
@@ -117,9 +116,9 @@ public:
 
     // Получение значения типа Int8
     [[nodiscard]]
-    int8_t int8Value() const { return int8Value_; }
+    qint8 int8Value() const { return int8Value_; }
     // Задание значения типа Int8
-    void setInt8Value(int8_t value);
+    void setInt8Value(qint8 value);
     // Сброс значения типа Int8
     void resetInt8Value();
     // Получение признака изменения значения типа Int8
@@ -128,9 +127,9 @@ public:
 
     // Получение значения типа UInt8
     [[nodiscard]]
-    uint8_t uint8Value() const { return uint8Value_; }
+    quint8 uint8Value() const { return uint8Value_; }
     // Задание значения типа UInt8
-    void setUInt8Value(uint8_t value);
+    void setUInt8Value(quint8 value);
     // Сброс значения типа UInt8
     void resetUInt8Value();
     // Получение признака изменения типа UInt8
@@ -139,9 +138,9 @@ public:
 
     // Получение значения типа Int16
     [[nodiscard]]
-    int16_t int16Value() const { return int16Value_; }
+    qint16 int16Value() const { return int16Value_; }
     // Задание значения типа Int16
-    void setInt16Value(int16_t value);
+    void setInt16Value(qint16 value);
     // Сброс значения типа Int16
     void resetInt16Value();
     // Получение признака изменения значения типа Int16
@@ -150,20 +149,20 @@ public:
 
     // Получение значения типа UInt16
     [[nodiscard]]
-    uint16_t uint16Value() const { return uint16Value_; }
+    quint16 uint16Value() const { return uint16Value_; }
     // Задание значения типа UInt16
-    void setUInt16Value(uint16_t value);
+    void setUInt16Value(quint16 value);
     // Сброс значения типа UInt16
     void resetUInt16Value();
     // Получение признака изменения значения UInt16
     [[nodiscard]]
     bool isUInt16ValueChanged() const { return uint16Value_ != 0; }
 
-    // Получение значения типа int32_t
+    // Получение значения типа Int32
     [[nodiscard]]
-    int32_t int32Value() const { return int32Value_; }
-    // Задание значения типа int32_t
-    void setInt32Value(int32_t value);
+    qint32 int32Value() const { return int32Value_; }
+    // Задание значения типа Int32
+    void setInt32Value(qint32 value);
     // Сброс значения типа Int32
     void resetInt32Value();
     // Получение признака изменения значения Int32
@@ -172,9 +171,9 @@ public:
 
     // Получение значения типа UInt32
     [[nodiscard]]
-    uint32_t uint32Value() const { return uint32Value_; }
+    quint32 uint32Value() const { return uint32Value_; }
     // Задание значения типа UInt32
-    void setUInt32Value(uint32_t value);
+    void setUInt32Value(quint32 value);
     // Сброс значения типа UInt32
     void resetUInt32Value();
     // Получение признака изменения типа UInt32
@@ -183,9 +182,9 @@ public:
 
     // Получение значения типа Int64
     [[nodiscard]]
-    int64_t int64Value() const { return uint64Value_; }
+    qint64 int64Value() const { return uint64Value_; }
     // Задание значения типа Int64
-    void setInt64Value(const int64_t &value);
+    void setInt64Value(const qint64 &value);
     // Сброс признака значения типа Int64
     void resetInt64Value();
     // Получение признака изменения значения типа Int64
@@ -194,7 +193,7 @@ public:
 
     // Получение значения типа UInt64
     [[nodiscard]]
-    uint64_t uint64Value() const { return uint64Value_; }
+    quint64 uint64Value() const { return uint64Value_; }
     // Задание значения типа UInt64
     void setUInt64Value(const quint64 &value);
     // Сброс значения типа UInt64
@@ -258,7 +257,7 @@ private:
     void createOutputPin();
     // Получение количества данных по типу
     [[nodiscard]]
-    int32_t byteCountForGenerateType() const;
+    qint32 byteCountForGenerateType() const;
     // Вывод комментариев
     void drawComments(QPainter *painter) const;
     // Получение строки со значением для текстовой подсказки
@@ -266,7 +265,7 @@ private:
     QString valueStrForTooltip() const;
     // Получение случайного значения по индексу
     [[nodiscard]]
-    static uint8_t randValue(int32_t index);
+    static quint8 randValue(std::size_t index);
     // Обновление состояния узла
     void updateStateInfo();
     // Получение строки со значением для комментария
@@ -287,34 +286,34 @@ private:
     int readByteCountFromXml(const QDomElement &elem) const;
     // Чтение байта для заполнения из XML
     [[nodiscard]]
-    uint8_t readFilledByteFromXml(const QDomElement &elem) const;
+    quint8 readFilledByteFromXml(const QDomElement &elem) const;
     // Чтение значения bool из XML
     [[nodiscard]]
     bool readBoolValueFromXml(const QDomElement &elem) const;
-    // Чтение значения int8_t из XML
+    // Чтение значения Int8 из XML
     [[nodiscard]]
-    int8_t readInt8ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения uint8_t из XML
+    qint8 readInt8ValueFromXml(const QDomElement &elem) const;
+    // Чтение значения UInt8 из XML
     [[nodiscard]]
-    uint8_t readUInt8ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения int16_t из XML
+    quint8 readUInt8ValueFromXml(const QDomElement &elem) const;
+    // Чтение значения Int16 из XML
     [[nodiscard]]
-    int16_t readInt16ValueFromXml(const QDomElement &elem) const;
+    qint16 readInt16ValueFromXml(const QDomElement &elem) const;
     // Чтение значения UInt16 из XML
     [[nodiscard]]
-    uint16_t readUInt16ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения int32_t из XML
+    quint16 readUInt16ValueFromXml(const QDomElement &elem) const;
+    // Чтение значения Int32 из XML
     [[nodiscard]]
-    int32_t readInt32ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения quint32 из XML
+    qint32 readInt32ValueFromXml(const QDomElement &elem) const;
+    // Чтение значения UInt32 из XML
     [[nodiscard]]
     quint32 readUInt32ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения int64_t из XML
+    // Чтение значения Int64 из XML
     [[nodiscard]]
-    int64_t readInt64ValueFromXml(const QDomElement &elem) const;
-    // Чтение значения uint64_t из XML
+    qint64 readInt64ValueFromXml(const QDomElement &elem) const;
+    // Чтение значения UInt64 из XML
     [[nodiscard]]
-    uint64_t readUInt64ValueFromXml(const QDomElement &elem) const;
+    quint64 readUInt64ValueFromXml(const QDomElement &elem) const;
     // Чтение значения float из XML
     [[nodiscard]]
     float readFloatValueFromXml(const QDomElement &elem) const;
@@ -377,21 +376,21 @@ private:
     // Значение типа Bool
     bool boolValue_{false};
     // Значение типа Int8
-    int8_t int8Value_{0};
+    qint8 int8Value_{0};
     // Значение типа UInt8
-    uint8_t uint8Value_{0};
+    quint8 uint8Value_{0};
     // Значение типа Int16
-    int16_t int16Value_{0};
+    qint16 int16Value_{0};
     // Значение типа UInt16
-    uint16_t uint16Value_{0};
+    quint16 uint16Value_{0};
     // Значение типа Int32
-    int32_t int32Value_{0};
+    qint32 int32Value_{0};
     // Значение типа UInt32
-    uint32_t uint32Value_{0};
+    quint32 uint32Value_{0};
     // Значение типа Int64
-    int64_t int64Value_{0};
+    qint64 int64Value_{0};
     // Значение типа UInt64
-    uint64_t uint64Value_{0};
+    quint64 uint64Value_{0};
     // Значение типа Float
     float floatValue_{0};
     // Значение типа Double
@@ -402,9 +401,9 @@ private:
     QColor colorValue_{Qt::black};
 
     // Количество генерируемых байт
-    int32_t byteCount_{0};
+    qint32 byteCount_{0};
     // Байт для заполнения
-    uint8_t filledByte_{0};
+    quint8 filledByte_{0};
     // Выходной пин
     ShPtrOutputPin outputPin_{nullptr};
 };

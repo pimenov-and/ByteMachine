@@ -79,10 +79,7 @@ void MainWindow::slotSaveProjectAs()
     const QString path = QFileDialog::getSaveFileName(this, caption, dir, filter);
     if (!path.isEmpty())
     {
-        QFile file{path};
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-        }
+        project()->saveToXml(path);
     }
 }
 
@@ -131,7 +128,7 @@ void MainWindow::slotShowAboutProg()
 //==============================================================
 // Функция вызывается при изменении страницы панели с узлами
 //==============================================================
-void MainWindow::slotNodesPageChanged(int32_t index)
+void MainWindow::slotNodesPageChanged(qint32 index)
 {
     if (index == -1)
     {

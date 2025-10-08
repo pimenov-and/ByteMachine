@@ -16,7 +16,6 @@
 
 //==============================================================
 using std::size_t;
-using std::deque;
 
 //==============================================================
 // Конструктор с параметром
@@ -48,10 +47,10 @@ void SizeNode::readFromXml(const QDomElement &elem)
     Q_ASSERT(!elem.isNull());
 
     const QString name = readNameFromXml(elem);
-    const int32_t left = readLeftFromXml(elem);
-    const int32_t top = readTopFromXml(elem);
-    const int32_t width = readWidthFromXml(elem);
-    // const int32_t height = readHeightFromXml(elem);
+    const qint32 left = readLeftFromXml(elem);
+    const qint32 top = readTopFromXml(elem);
+    const qint32 width = readWidthFromXml(elem);
+    // const qint32 height = readHeightFromXml(elem);
     const SizeUnits unit = readUnitFromXml(elem);
     const bool isBypass = readBypassFromXml(elem);
     const QString comment = readCommentFromXml(elem);
@@ -181,7 +180,7 @@ size_t SizeNode::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t SizeNode::dataByte(size_t index) const
+quint8 SizeNode::dataByte(size_t index) const
 {
     Q_UNUSED(index);
 
@@ -191,12 +190,12 @@ uint8_t SizeNode::dataByte(size_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-deque<uint8_t> SizeNode::dataBlock(size_t index, size_t count) const
+ByteList SizeNode::dataBlock(size_t index, size_t count) const
 {
     Q_UNUSED(index);
     Q_UNUSED(count);
 
-    return deque<uint8_t>{};
+    return ByteList{};
 }
 
 //==============================================================
@@ -286,8 +285,7 @@ QString SizeNode::getUiPropertyName(const QString &systemName)
         {"size", "Size"},
         {"comment", "Comment"},
         {"unit", "Unit"},
-        {"bypass", "Bypass"},
-        {"caching", "Caching"}
+        {"bypass", "Bypass"}
     };
 
     return map.value(systemName, "Unknown property");
@@ -361,7 +359,7 @@ void SizeNode::drawComments(QPainter *painter) const
 //==============================================================
 // Перевод байтов в килобайты
 //==============================================================
-double SizeNode::bytesToKilobytes(int32_t count)
+double SizeNode::bytesToKilobytes(qint32 count)
 {
     return count / 1024.0;
 }
@@ -369,7 +367,7 @@ double SizeNode::bytesToKilobytes(int32_t count)
 //==============================================================
 // Перевод байтов в мегабайты
 //==============================================================
-double SizeNode::bytesToMegabytes(int count)
+double SizeNode::bytesToMegabytes(qint32 count)
 {
     return count / 1024.0 / 1024;
 }

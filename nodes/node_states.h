@@ -34,16 +34,16 @@ QString nodeStateToStr(NodeStates state);
 NodeStates strToNodeState(const QString &str);
 // Конвертация состояния узла в число
 [[nodiscard]]
-inline int32_t nodeStateToInt(NodeStates state) noexcept { return static_cast<int32_t>(state); }
+inline qint32 nodeStateToInt(NodeStates state) noexcept { return static_cast<qint32>(state); }
 // Конвертация числа в состояние узла
 [[nodiscard]]
-NodeStates intToNodeState(int32_t value);
+NodeStates intToNodeState(qint32 value);
 // Конвертация состояния узла в индекс
 [[nodiscard]]
-int32_t nodeStateToIndex(NodeStates state);
+qint32 nodeStateToIndex(NodeStates state);
 // Конвертация индекса в состояние узла
 [[nodiscard]]
-NodeStates indexToNodeState(int32_t index);
+NodeStates indexToNodeState(qint32 index);
 // Является ли состояние узла None
 [[nodiscard]]
 inline bool isUnknown(NodeStates state) noexcept { return state == NodeStates::Unknown; }
@@ -64,7 +64,7 @@ QVector<NodeStates> getNodeStateValues();
 bool isCorrect(NodeStates state);
 // Получение количества состояний узла
 [[nodiscard]]
-constexpr int32_t getNodeStateCount() noexcept { return 4; }
+constexpr qint32 getNodeStateCount() noexcept { return 4; }
 
 //==============================================================
 #endif // NODE_STATES_H

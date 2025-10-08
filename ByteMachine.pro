@@ -6,8 +6,8 @@ CONFIG += c++17
 
 QMAKE_CXXFLAGS += -pedantic-errors -Werror
 
-DEFINES += APP_VERSION=\\\"0.072\\\" \
-    APP_BUILD_DATE=\\\"01.09.2025\\\"
+DEFINES += APP_VERSION=\\\"0.074\\\" \
+    APP_BUILD_DATE=\\\"05.09.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -20,6 +20,7 @@ SOURCES += main.cpp \
     dialog_about_prog.cpp \
     exceptions/base_exception.cpp \
     form_adv_color.cpp \
+    form_adv_spin_box.cpp \
     form_color.cpp \
     form_designer.cpp \
     form_project_settings.cpp \
@@ -63,6 +64,7 @@ HEADERS += main_window.h \
     dialog_about_prog.h \
     exceptions/base_exception.h \
     form_adv_color.h \
+    form_adv_spin_box.h \
     form_color.h \
     form_designer.h \
     form_project_settings.h \
@@ -95,6 +97,7 @@ HEADERS += main_window.h \
     qt_helper.h \
     standart_colors.h \
     status_bar.h \
+    type_defs.h \
     undo/undo_add_node.h \
     undo/undo_change_object_prop_value.h \
     undo/undo_forms/form_undo_view.h \

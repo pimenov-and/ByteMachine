@@ -17,10 +17,10 @@ struct PinConnection : IToStr
     // Конструктор по умолчанию
     PinConnection() = default;
     // Конструктор с параметрами
-    PinConnection(int32_t nodeId, int32_t index);
+    PinConnection(qint32 nodeId, qint32 index);
 
     // Функция инициализации
-    void init(int32_t nodeId, int32_t index);
+    void init(qint32 nodeId, qint32 index);
     // Очистка (устанавливает поля в -1)
     void clear();
     // Получение признака подключения
@@ -29,9 +29,9 @@ struct PinConnection : IToStr
     QString toStr() const override;
 
     // Идентификатор узла
-    int32_t nodeId{-1};
+    qint32 nodeId{-1};
     // Индекс пина
-    int32_t index{-1};
+    qint32 index{-1};
 };
 
 //==============================================================

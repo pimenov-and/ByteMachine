@@ -16,11 +16,10 @@
 
 //==============================================================
 using std::size_t;
-using std::deque;
 using std::optional;
 
 //==============================================================
-using UsualData = QPair<int, uint8_t>;
+using UsualData = QPair<int, quint8>;
 
 //==============================================================
 // Конструктор с параметром
@@ -163,7 +162,7 @@ size_t GenerateNode::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t GenerateNode::dataByte(size_t index) const
+quint8 GenerateNode::dataByte(size_t index) const
 {
     Q_ASSERT_X(index < dataSize(), "Check index",
         qPrintable(QString{"Index: %1, DataSize: %2"}.arg(index).arg(dataSize())));
@@ -180,11 +179,11 @@ uint8_t GenerateNode::dataByte(size_t index) const
         }
         case GenerateTypes::Bool:
         {
-            return static_cast<uint8_t>(boolValue_);
+            return static_cast<quint8>(boolValue_);
         }
         case GenerateTypes::Int8:
         {
-            return static_cast<uint8_t>(int8Value_);
+            return static_cast<quint8>(int8Value_);
         }
         case GenerateTypes::UInt8:
         {
@@ -240,7 +239,7 @@ uint8_t GenerateNode::dataByte(size_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-deque<uint8_t> GenerateNode::dataBlock(size_t index, size_t count) const
+ByteList GenerateNode::dataBlock(size_t index, size_t count) const
 {
     Q_ASSERT_X((count > dataSize()) || (index > dataSize() - count), "Check index and count",
         qPrintable(QString{"Index: %1, Count: %2, DataSize: %3"}.arg(index).arg(count).arg(dataSize())));
@@ -249,11 +248,11 @@ deque<uint8_t> GenerateNode::dataBlock(size_t index, size_t count) const
     {
         case GenerateTypes::Usual:
         {
-            return deque<uint8_t>(count, filledByte_);
+            return ByteList(count, filledByte_);
         }
         case GenerateTypes::Random:
         {
-            deque<uint8_t> block{};
+            ByteList block{};
             for (size_t i = index, j = 0; j < count; ++i, ++j)
             {
                 block.push_back(randValue(i));
@@ -262,72 +261,72 @@ deque<uint8_t> GenerateNode::dataBlock(size_t index, size_t count) const
         }
         case GenerateTypes::Bool:
         {
-            const deque<uint8_t> bl = valueToByteList2(boolValue_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(boolValue_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int8:
         {
-            const deque<uint8_t> bl = valueToByteList2(int8Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(int8Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt8:
         {
-            const deque<uint8_t> bl = valueToByteList2(uint8Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(uint8Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int16:
         {
-            const deque<uint8_t> bl = valueToByteList2(int16Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(int16Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt16:
         {
-            const deque<uint8_t> bl = valueToByteList2(uint16Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(uint16Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int32:
         {
-            const deque<uint8_t> bl = valueToByteList2(int32Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(int32Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt32:
         {
-            const deque<uint8_t> bl = valueToByteList2(uint32Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(uint32Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Int64:
         {
-            const deque<uint8_t> bl = valueToByteList2(int64Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(int64Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::UInt64:
         {
-            const deque<uint8_t> bl = valueToByteList2(uint64Value_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(uint64Value_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Float:
         {
-            const deque<uint8_t> bl = valueToByteList2(floatValue_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(floatValue_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Double:
         {
-            const deque<uint8_t> bl = valueToByteList2(doubleValue_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(doubleValue_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::String:
         {
-            const deque<uint8_t> bl = valueToByteList2(strValue_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(strValue_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         case GenerateTypes::Color:
         {
-            const deque<uint8_t> bl = valueToByteList2(colorValue_);
-            return deque<uint8_t>{bl.cbegin() + index, bl.cbegin() + index + count};
+            const ByteList bl = valueToByteList2(colorValue_);
+            return ByteList{bl.cbegin() + index, bl.cbegin() + index + count};
         }
         default:
         {
-            return deque<uint8_t>{};
+            return ByteList{};
         }
     }
 }
@@ -394,14 +393,14 @@ void GenerateNode::resetGenerateType()
 //==============================================================
 // Задание количества байтов
 //==============================================================
-void GenerateNode::setByteCount(int32_t count)
+void GenerateNode::setByteCount(qint32 count)
 {
     Q_ASSERT_X(count >= 0, "Check byte count",
         qPrintable(QString::number(count)));
 
     if (byteCount_ != count)
     {
-        const int32_t oldByteCount = byteCount_;
+        const qint32 oldByteCount = byteCount_;
         byteCount_ = count;
         const PropValue value{"byteCount", byteCount_};
         emit sigChangedProp(value);
@@ -429,11 +428,11 @@ void GenerateNode::resetByteCount()
 //==============================================================
 // Задание байта для заполнения
 //==============================================================
-void GenerateNode::setFilledByte(uint8_t byte)
+void GenerateNode::setFilledByte(quint8 byte)
 {
     if (filledByte_ != byte)
     {
-        const uint8_t oldFilledByte = byte;
+        const quint8 oldFilledByte = filledByte_;
         filledByte_ = byte;
         const PropValue value{"filledByte", filledByte_};
         emit sigChangedProp(value);
@@ -489,11 +488,11 @@ void GenerateNode::resetBoolValue()
 //==============================================================
 // Задание значения типа Int8
 //==============================================================
-void GenerateNode::setInt8Value(int8_t value)
+void GenerateNode::setInt8Value(qint8 value)
 {
     if (int8Value_ != value)
     {
-        const int8_t oldInt8Value = int8Value_;
+        const qint8 oldInt8Value = int8Value_;
         int8Value_ = value;
         const PropValue value{"int8Value", int8Value_};
         emit sigChangedProp(value);
@@ -519,11 +518,11 @@ void GenerateNode::resetInt8Value()
 //==============================================================
 // Задание значения типа UInt8
 //==============================================================
-void GenerateNode::setUInt8Value(uint8_t value)
+void GenerateNode::setUInt8Value(quint8 value)
 {
     if (uint8Value_ != value)
     {
-        const int8_t oldUInt8Value = uint8Value_;
+        const qint8 oldUInt8Value = uint8Value_;
         uint8Value_ = value;
         const PropValue value{"uint8Value", uint8Value_};
         emit sigChangedProp(value);
@@ -549,11 +548,11 @@ void GenerateNode::resetUInt8Value()
 //==============================================================
 // Задание значения типа Int16
 //==============================================================
-void GenerateNode::setInt16Value(int16_t value)
+void GenerateNode::setInt16Value(qint16 value)
 {
     if (int16Value_ != value)
     {
-        const int16_t oldInt16Value = int16Value_;
+        const qint16 oldInt16Value = int16Value_;
         int16Value_ = value;
         const PropValue value{"int16Value", int16Value_};
         emit sigChangedProp(value);
@@ -579,11 +578,11 @@ void GenerateNode::resetInt16Value()
 //==============================================================
 // Задание значения типа UInt16
 //==============================================================
-void GenerateNode::setUInt16Value(uint16_t value)
+void GenerateNode::setUInt16Value(quint16 value)
 {
     if (uint16Value_ != value)
     {
-        const uint16_t oldUInt16Value = uint16Value_;
+        const quint16 oldUInt16Value = uint16Value_;
         uint16Value_ = value;
         const PropValue value{"uint16Value", uint16Value_};
         emit sigChangedProp(value);
@@ -609,11 +608,11 @@ void GenerateNode::resetUInt16Value()
 //==============================================================
 // Задание значения типа Int32
 //==============================================================
-void GenerateNode::setInt32Value(int32_t value)
+void GenerateNode::setInt32Value(qint32 value)
 {
     if (int32Value_ != value)
     {
-        const int32_t oldInt32Value = int32Value_;
+        const qint32 oldInt32Value = int32Value_;
         int32Value_ = value;
         const PropValue value{"int32Value", int32Value_};
         emit sigChangedProp(value);
@@ -639,11 +638,11 @@ void GenerateNode::resetInt32Value()
 //==============================================================
 // Задание значения типа UInt32
 //==============================================================
-void GenerateNode::setUInt32Value(uint32_t value)
+void GenerateNode::setUInt32Value(quint32 value)
 {
     if (uint32Value_ != value)
     {
-        const uint32_t oldUInt32Value = uint32Value_;
+        const quint32 oldUInt32Value = uint32Value_;
         uint32Value_ = value;
         const PropValue value{"uint32Value", uint32Value_};
         emit sigChangedProp(value);
@@ -669,11 +668,11 @@ void GenerateNode::resetUInt32Value()
 //==============================================================
 // Задание значения типа Int64
 //==============================================================
-void GenerateNode::setInt64Value(const int64_t &value)
+void GenerateNode::setInt64Value(const qint64 &value)
 {
     if (int64Value_ != value)
     {
-        const int64_t oldInt64Value = int64Value_;
+        const qint64 oldInt64Value = int64Value_;
         int64Value_ = value;
         const PropValue value{"int64Value", int64Value_};
         emit sigChangedProp(value);
@@ -906,7 +905,7 @@ void GenerateNode::createOutputPin()
 //==============================================================
 // Получение количества данных по типу
 //==============================================================
-int32_t GenerateNode::byteCountForGenerateType() const
+qint32 GenerateNode::byteCountForGenerateType() const
 {
     switch (generateType_)
     {
@@ -936,7 +935,7 @@ int32_t GenerateNode::byteCountForGenerateType() const
         }
         case GenerateTypes::String:
         {
-            return static_cast<int32_t>(getValueByteSize(strValue_));
+            return static_cast<qint32>(getValueByteSize(strValue_));
         }
         default:
         {
@@ -1056,9 +1055,9 @@ QString GenerateNode::valueStrForTooltip() const
 //==============================================================
 // Получение случайного значения по индексу
 //==============================================================
-uint8_t GenerateNode::randValue(int32_t index)
+quint8 GenerateNode::randValue(size_t index)
 {
-    return static_cast<uint8_t>(qHash(index));
+    return static_cast<quint8>(qHash(index));
 }
 
 //==============================================================
@@ -1223,7 +1222,7 @@ QVariant GenerateNode::readValueFromXml(const QDomElement &elem) const
         case GenerateTypes::Usual:
         {
             const int count = readByteCountFromXml(elem);
-            const uint8_t filledByte = readFilledByteFromXml(elem);
+            const quint8 filledByte = readFilledByteFromXml(elem);
             const UsualData value{count, filledByte};
             return QVariant::fromValue(value);
         }
@@ -1239,27 +1238,27 @@ QVariant GenerateNode::readValueFromXml(const QDomElement &elem) const
         }
         case GenerateTypes::Int8:
         {
-            const int8_t value = readInt8ValueFromXml(elem);
+            const qint8 value = readInt8ValueFromXml(elem);
             return QVariant::fromValue(value);
         }
         case GenerateTypes::UInt8:
         {
-            const uint8_t value = readUInt8ValueFromXml(elem);
+            const quint8 value = readUInt8ValueFromXml(elem);
             return QVariant::fromValue(value);
         }
         case GenerateTypes::Int16:
         {
-            const int16_t value = readInt16ValueFromXml(elem);
+            const qint16 value = readInt16ValueFromXml(elem);
             return QVariant::fromValue(value);
         }
         case GenerateTypes::UInt16:
         {
-            const uint16_t value = readUInt16ValueFromXml(elem);
+            const quint16 value = readUInt16ValueFromXml(elem);
             return QVariant::fromValue(value);
         }
         case GenerateTypes::Int32:
         {
-            const int32_t value = readInt32ValueFromXml(elem);
+            const qint32 value = readInt32ValueFromXml(elem);
             return QVariant::fromValue(value);
         }
         case GenerateTypes::UInt32:
@@ -1269,7 +1268,7 @@ QVariant GenerateNode::readValueFromXml(const QDomElement &elem) const
         }
         case GenerateTypes::Int64:
         {
-            const int64_t value = readInt64ValueFromXml(elem);
+            const qint64 value = readInt64ValueFromXml(elem);
             return QVariant{value};
         }
         case GenerateTypes::UInt64:
@@ -1348,7 +1347,7 @@ int GenerateNode::readByteCountFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение байта для заполнения из XML
 //==============================================================
-uint8_t GenerateNode::readFilledByteFromXml(const QDomElement &elem) const
+quint8 GenerateNode::readFilledByteFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1374,7 +1373,7 @@ uint8_t GenerateNode::readFilledByteFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const uint8_t filledByte = static_cast<uint8_t>(strFilledByte.value().toUShort(&ok));
+    const quint8 filledByte = static_cast<quint8>(strFilledByte.value().toUShort(&ok));
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1425,9 +1424,9 @@ bool GenerateNode::readBoolValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения int8_t из XML
+// Чтение значения Int8 из XML
 //==============================================================
-int8_t GenerateNode::readInt8ValueFromXml(const QDomElement &elem) const
+qint8 GenerateNode::readInt8ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1453,7 +1452,7 @@ int8_t GenerateNode::readInt8ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const int8_t value = static_cast<int8_t>(strValue.value().toShort(&ok));
+    const qint8 value = static_cast<qint8>(strValue.value().toShort(&ok));
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1465,9 +1464,9 @@ int8_t GenerateNode::readInt8ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения uint8_t из XML
+// Чтение значения UInt8 из XML
 //==============================================================
-uint8_t GenerateNode::readUInt8ValueFromXml(const QDomElement &elem) const
+quint8 GenerateNode::readUInt8ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1493,7 +1492,7 @@ uint8_t GenerateNode::readUInt8ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const uint8_t value = static_cast<uint8_t>(strValue.value().toUShort(&ok));
+    const quint8 value = static_cast<quint8>(strValue.value().toUShort(&ok));
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1505,9 +1504,9 @@ uint8_t GenerateNode::readUInt8ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения int16_t из XML
+// Чтение значения Int16 из XML
 //==============================================================
-int16_t GenerateNode::readInt16ValueFromXml(const QDomElement &elem) const
+qint16 GenerateNode::readInt16ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1533,7 +1532,7 @@ int16_t GenerateNode::readInt16ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const int16_t value = strValue.value().toShort(&ok);
+    const qint16 value = strValue.value().toShort(&ok);
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1547,7 +1546,7 @@ int16_t GenerateNode::readInt16ValueFromXml(const QDomElement &elem) const
 //==============================================================
 // Чтение значения UInt16 из XML
 //==============================================================
-uint16_t GenerateNode::readUInt16ValueFromXml(const QDomElement &elem) const
+quint16 GenerateNode::readUInt16ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1573,7 +1572,7 @@ uint16_t GenerateNode::readUInt16ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const uint16_t value = strValue.value().toUShort(&ok);
+    const quint16 value = strValue.value().toUShort(&ok);
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1585,9 +1584,9 @@ uint16_t GenerateNode::readUInt16ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения int32_t из XML
+// Чтение значения Int32 из XML
 //==============================================================
-int32_t GenerateNode::readInt32ValueFromXml(const QDomElement &elem) const
+qint32 GenerateNode::readInt32ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1613,7 +1612,7 @@ int32_t GenerateNode::readInt32ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const int32_t value = strValue.value().toInt(&ok);
+    const qint32 value = strValue.value().toInt(&ok);
     if (!ok)
     {
         const QString msg = tr("Bad value of property \"%1\" of node %2 with id %3").
@@ -1625,7 +1624,7 @@ int32_t GenerateNode::readInt32ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения quint32 из XML
+// Чтение значения UInt32 из XML
 //==============================================================
 quint32 GenerateNode::readUInt32ValueFromXml(const QDomElement &elem) const
 {
@@ -1665,9 +1664,9 @@ quint32 GenerateNode::readUInt32ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения int64_t из XML
+// Чтение значения Int64 из XML
 //==============================================================
-int64_t GenerateNode::readInt64ValueFromXml(const QDomElement &elem) const
+qint64 GenerateNode::readInt64ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1693,7 +1692,7 @@ int64_t GenerateNode::readInt64ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const int64_t value = strValue.value().toLongLong(&ok);
+    const qint64 value = strValue.value().toLongLong(&ok);
     if (!ok)
     {
         const QString msg = QString{"Bad value of property \"%1\" of node %2 with id %3"}.
@@ -1705,9 +1704,9 @@ int64_t GenerateNode::readInt64ValueFromXml(const QDomElement &elem) const
 }
 
 //==============================================================
-// Чтение значения quint64 из XML
+// Чтение значения UInt64 из XML
 //==============================================================
-uint64_t GenerateNode::readUInt64ValueFromXml(const QDomElement &elem) const
+quint64 GenerateNode::readUInt64ValueFromXml(const QDomElement &elem) const
 {
     Q_ASSERT(!elem.isNull());
 
@@ -1733,7 +1732,7 @@ uint64_t GenerateNode::readUInt64ValueFromXml(const QDomElement &elem) const
 
     // Получение значения
     bool ok = false;
-    const uint64_t value = strValue.value().toULongLong(&ok);
+    const quint64 value = strValue.value().toULongLong(&ok);
     if (!ok)
     {
         const QString msg = QString{"Not read property \"%1\" of node %2 with id %3"}.
@@ -2057,7 +2056,7 @@ void GenerateNode::writeBoolValueToXml(QDomDocument &doc, QDomElement &elem) con
 }
 
 //==============================================================
-// Запись значения int8_t в XML
+// Запись значения Int8 в XML
 //==============================================================
 void GenerateNode::writeInt8ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {
@@ -2071,7 +2070,7 @@ void GenerateNode::writeInt8ValueToXml(QDomDocument &doc, QDomElement &elem) con
 }
 
 //==============================================================
-// Запись значения uint8_t в XML
+// Запись значения UInt8 в XML
 //==============================================================
 void GenerateNode::writeUInt8ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {
@@ -2085,7 +2084,7 @@ void GenerateNode::writeUInt8ValueToXml(QDomDocument &doc, QDomElement &elem) co
 }
 
 //==============================================================
-// Запись значения int16_t в XML
+// Запись значения Int16 в XML
 //==============================================================
 void GenerateNode::writeInt16ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {
@@ -2113,7 +2112,7 @@ void GenerateNode::writeUInt16ValueToXml(QDomDocument &doc, QDomElement &elem) c
 }
 
 //==============================================================
-// Запись значения int32_t в XML
+// Запись значения Int32 в XML
 //==============================================================
 void GenerateNode::writeInt32ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {
@@ -2141,7 +2140,7 @@ void GenerateNode::writeUInt32ValueToXml(QDomDocument &doc, QDomElement &elem) c
 }
 
 //==============================================================
-// Запись значения int64_t в XML
+// Запись значения Int64 в XML
 //==============================================================
 void GenerateNode::writeInt64ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {
@@ -2155,7 +2154,7 @@ void GenerateNode::writeInt64ValueToXml(QDomDocument &doc, QDomElement &elem) co
 }
 
 //==============================================================
-// Запись значения uint64_t в XML
+// Запись значения UInt64 в XML
 //==============================================================
 void GenerateNode::writeUInt64ValueToXml(QDomDocument &doc, QDomElement &elem) const
 {

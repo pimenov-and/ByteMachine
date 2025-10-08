@@ -56,7 +56,7 @@ SizeUnits strToSizeUnit(const QString &str)
 //===================================================================
 // Конвертация числа в единицу измерения
 //===================================================================
-SizeUnits intToSizeUnit(int32_t value) noexcept
+SizeUnits intToSizeUnit(qint32 value) noexcept
 {
     switch (value)
     {

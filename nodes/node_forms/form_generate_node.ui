@@ -155,7 +155,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -202,7 +202,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -242,7 +242,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -292,7 +292,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -338,7 +338,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -378,7 +378,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -421,7 +421,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -460,7 +460,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_17">
      <item>
-      <widget class="QSpinBox" name="spinBoxFilledByte_">
+      <widget class="FormAdvSpinBox" name="spinBoxFilledByte_">
        <property name="contextMenuPolicy">
         <enum>Qt::NoContextMenu</enum>
        </property>
@@ -499,7 +499,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -549,7 +549,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset resource="../../res.qrc">
          <normaloff>:/res_images/images/reset_value.png</normaloff>:/res_images/images/reset_value.png</iconset>
        </property>
       </widget>
@@ -637,9 +637,14 @@
    <header>form_adv_color.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>FormAdvSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>form_adv_spin_box.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../../res.qrc"/>
  </resources>
  <connections/>
 </ui>

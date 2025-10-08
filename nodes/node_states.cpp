@@ -58,7 +58,7 @@ NodeStates strToNodeState(const QString &str)
 //==============================================================
 // Конвертация числа в состояние узла
 //==============================================================
-NodeStates intToNodeState(int32_t value)
+NodeStates intToNodeState(qint32 value)
 {
     const NodeStates state = static_cast<NodeStates>(value);
 
@@ -68,7 +68,7 @@ NodeStates intToNodeState(int32_t value)
 //==============================================================
 // Конвертация состояния узла в индекс
 //==============================================================
-int32_t nodeStateToIndex(NodeStates state)
+qint32 nodeStateToIndex(NodeStates state)
 {
     return nodeStateToInt(state);
 }
@@ -76,7 +76,7 @@ int32_t nodeStateToIndex(NodeStates state)
 //==============================================================
 // Конвертация индекса в состояние узла
 //==============================================================
-NodeStates indexToNodeState(int32_t index)
+NodeStates indexToNodeState(qint32 index)
 {
     return intToNodeState(index);
 }

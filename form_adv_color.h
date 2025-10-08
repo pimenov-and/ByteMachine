@@ -76,21 +76,21 @@ private slots:
     // Функция вызывается при изменении цвета
     void slotChangedColor(QColor color);
     // Функция вызывается при изменении составляющей Red цвета через спин-бокс
-    void slotChangedSpinBoxRed(int32_t value);
+    void slotChangedSpinBoxRed(qint32 value);
     // Функция вызывается при изменении составляющей Green цвета через спин-бокс
-    void slotChangedSpinBoxGreen(int32_t value);
+    void slotChangedSpinBoxGreen(qint32 value);
     // Функция вызывается при изменении составляющей Blue цвета через спин-бокс
-    void slotChangedSpinBoxBlue(int32_t value);
+    void slotChangedSpinBoxBlue(qint32 value);
     // Функция вызывается при изменении составляющей Alpha цвета через спин-бокс
-    void slotChangedSpinBoxAlpha(int32_t value);
+    void slotChangedSpinBoxAlpha(qint32 value);
     // Функция вызывается при изменении составляющей Red цвета через слайдер
-    void slotChangedSliderRed(int32_t value);
+    void slotChangedSliderRed(qint32 value);
     // Функция вызывается при изменении составляющей Green цвета через слайдер
-    void slotChangedSliderGreen(int32_t value);
+    void slotChangedSliderGreen(qint32 value);
     // Функция вызывается при изменении составляющей Blue цвета через слайдер
-    void slotChangedSliderBlue(int32_t value);
+    void slotChangedSliderBlue(qint32 value);
     // Функция вызывается при изменении составляющей Alpha цвет через слайдер
-    void slotChangedSliderAlpha(int32_t value);
+    void slotChangedSliderAlpha(qint32 value);
 private:
     // Задание соединений
     void setConnections() noexcept;

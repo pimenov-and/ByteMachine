@@ -11,12 +11,11 @@
 
 //==============================================================
 using std::size_t;
-using std::deque;
 
 //==============================================================
 // Конструктор с параметром
 //==============================================================
-OutputPin::OutputPin(BaseNode *parentNode, int32_t index) :
+OutputPin::OutputPin(BaseNode *parentNode, qint32 index) :
     BasePin{parentNode, index}
 {
 }
@@ -52,7 +51,7 @@ void OutputPin::readFromXml(const QDomElement &elem)
         if (strNodeId.isEmpty())
             throw BaseException{"Bad node id"};
         bool ok = false;
-        const int32_t nodeId = strNodeId.toInt(&ok);
+        const qint32 nodeId = strNodeId.toInt(&ok);
         if (!ok)
         {
             throw BaseException{"Bad node id"};
@@ -64,7 +63,7 @@ void OutputPin::readFromXml(const QDomElement &elem)
         {
             throw BaseException{"Bad pin index"};
         }
-        const int32_t index = strIndex.toInt(&ok);
+        const qint32 index = strIndex.toInt(&ok);
         if (!ok)
         {
             throw BaseException{"Bad pin index"};
@@ -90,7 +89,7 @@ void OutputPin::writeToXml(QDomDocument &doc, QDomElement &elem) const
 QRect OutputPin::rect() const
 {
     const BaseNode *const node = parentNode();
-    const int32_t index = node->indexOfOutputPin(this);
+    const qint32 index = node->indexOfOutputPin(this);
     Q_ASSERT(index != -1);
 
     return node->outputPinRect(index);
@@ -129,7 +128,7 @@ QVector<ShPtrConstInputPin> OutputPin::inputPins() const
 //==============================================================
 // Получение количества подключенных входных пинов
 //==============================================================
-int32_t OutputPin::inputPinCount() const
+qint32 OutputPin::inputPinCount() const
 {
     return inputPins_.count();
 }
@@ -212,7 +211,7 @@ void OutputPin::removeInputPin(const InputPin *pin, bool isRaiseSignal)
             emit sigConnectChanged(ConnectStates::Disconnect, p);
         }
 
-        int32_t index = -1;
+        qint32 index = -1;
         for (int i = 0; i < inputPins_.count(); ++i)
         {
             if (inputPins_[i] == p)
@@ -237,7 +236,7 @@ std::size_t OutputPin::dataSize() const
 //==============================================================
 // Получение байта данных
 //==============================================================
-uint8_t OutputPin::dataByte(size_t index) const
+quint8 OutputPin::dataByte(size_t index) const
 {
     Q_ASSERT_X(index < dataSize(), "Check index",
         qPrintable(QString("index: %1, dataSize: %2").arg(index).arg(dataSize())));
@@ -248,7 +247,7 @@ uint8_t OutputPin::dataByte(size_t index) const
 //==============================================================
 // Получение блока данных
 //==============================================================
-deque<uint8_t> OutputPin::dataBlock(size_t index, size_t count) const
+ByteList OutputPin::dataBlock(size_t index, size_t count) const
 {
     Q_ASSERT_X((count > dataSize()) || (index > dataSize() - count), "Check index and count",
         qPrintable(QString("index: %1, count: %2, dataSize: %3").arg(index).arg(count).arg(dataSize())));
@@ -287,10 +286,10 @@ void OutputPin::writeInputPinsToXml(QDomDocument &doc, QDomElement &elem) const
     {
         QDomElement elemInputPin = doc.createElement("inputPin");
 
-        const int32_t nodeId = pin->parentNode()->id();
+        const qint32 nodeId = pin->parentNode()->id();
         elemInputPin.setAttribute("nodeId", nodeId);
 
-        const int32_t index = pin->index();
+        const qint32 index = pin->index();
         elemInputPin.setAttribute("index", index);
 
         elemInputPins.appendChild(elemInputPin);
