@@ -6,8 +6,8 @@ CONFIG += c++17
 
 QMAKE_CXXFLAGS += -pedantic-errors -Werror
 
-DEFINES += APP_VERSION=\\\"0.074\\\" \
-    APP_BUILD_DATE=\\\"05.09.2025\\\"
+DEFINES += APP_VERSION=\\\"0.079\\\" \
+    APP_BUILD_DATE=\\\"02.11.2025\\\"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -26,12 +26,14 @@ SOURCES += main.cpp \
     form_project_settings.cpp \
     icons.cpp \
     main_window.cpp \
+    math_helper.cpp \
     nodes/base_node.cpp \
     nodes/base_pin.cpp \
     nodes/generate_node.cpp \
     nodes/generate_types.cpp \
     nodes/input_pin.cpp \
     nodes/moving_node.cpp \
+    nodes/moving_node_connection.cpp \
     nodes/node_forms/form_generate_node.cpp \
     nodes/node_forms/form_node_panel_item.cpp \
     nodes/node_forms/form_size_node.cpp \
@@ -50,6 +52,7 @@ SOURCES += main.cpp \
     qt_helper.cpp \
     status_bar.cpp \
     undo/undo_add_node.cpp \
+    undo/undo_change_node_connection.cpp \
     undo/undo_change_object_prop_value.cpp \
     undo/undo_forms/form_undo_view.cpp \
     undo/undo_remove_node.cpp \
@@ -72,12 +75,14 @@ HEADERS += main_window.h \
     i_to_str.h \
     i_xml.h \
     icons.h \
+    math_helper.h \
     nodes/base_node.h \
     nodes/base_pin.h \
     nodes/generate_node.h \
     nodes/generate_types.h \
     nodes/input_pin.h \
     nodes/moving_node.h \
+    nodes/moving_node_connection.h \
     nodes/node_forms/form_generate_node.h \
     nodes/node_forms/form_node_panel_item.h \
     nodes/node_forms/form_size_node.h \
@@ -99,6 +104,7 @@ HEADERS += main_window.h \
     status_bar.h \
     type_defs.h \
     undo/undo_add_node.h \
+    undo/undo_change_node_connection.h \
     undo/undo_change_object_prop_value.h \
     undo/undo_forms/form_undo_view.h \
     undo/undo_remove_node.h \

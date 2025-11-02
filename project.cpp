@@ -7,6 +7,7 @@
 #include "undo_remove_node.h"
 #include "undo_change_object_prop_value.h"
 #include "undo_select_object.h"
+#include "undo_change_node_connection.h"
 #include "icons.h"
 #include <QAction>
 #include <QFile>
@@ -78,6 +79,8 @@ bool Project::addNode(const ShPtrBaseNode &node)
         this, &Project::slotChangedNodeProp);
     connect(node.get(), &BaseNode::sigChangedState,
         this, &Project::slotChangedNodeState);
+    connect(node.get(), &BaseNode::sigChangedConnect,
+        this, &Project::slotChangeNodeConnection);
 
     if (!isUndo_)
     {
@@ -412,7 +415,7 @@ ShPtrBaseNode Project::findNodeByPtr(BaseNode *node)
 //==============================================================
 // Поиск узла по указателю (константный вариант)
 //==============================================================
-ShPtrConstBaseNode Project::findNodeByPtr(BaseNode * const node) const
+ShPtrConstBaseNode Project::findNodeByPtr(BaseNode *const node) const
 {
     Q_ASSERT(node != nullptr);
 
@@ -634,6 +637,20 @@ QString Project::getUiPropertyName(const QString &systemName)
 }
 
 //==============================================================
+// Задание соедениния узлов
+//==============================================================
+void Project::setNodeConnection(const ShPtrOutputPin &sourceOutputPin,
+    const ShPtrInputPin &oldTargetInputPin, const ShPtrInputPin &newTargetInputPin)
+{
+    if (!isUndo_)
+    {
+        const auto undoCmd = new UndoChangeNodeConnection(sourceOutputPin,
+            oldTargetInputPin, newTargetInputPin);
+        undoStack_.push(undoCmd);
+    }
+}
+
+//==============================================================
 // Функция вызывается при изменении свойства узла
 //==============================================================
 void Project::slotChangedNodeProp(PropValue value)
@@ -659,6 +676,14 @@ void Project::slotChangedNodeState(NodeStateInfo state)
     Q_ASSERT(shPtrNode != nullptr);
 
     emit sigChangedNodeState(shPtrNode, state);
+}
+
+//==============================================================
+// Функция вызывается при изменении подключения узла
+//==============================================================
+void Project::slotChangeNodeConnection()
+{
+    emit sigChangeNodeConnection();
 }
 
 //==============================================================

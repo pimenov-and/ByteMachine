@@ -35,5 +35,12 @@ std::optional<QString> readFileAllLines(const QString &path);
 [[nodiscard]]
 QString capitalizeStr(const QString &str);
 
+// Проверка нажатия клавиши Alt
+[[nodiscard]]
+bool isAltKey(Qt::KeyboardModifiers modifier);
+// Проверка нажатия клавиши Control
+[[nodiscard]]
+bool isCtrlKey(Qt::KeyboardModifiers modifier);
+
 //==============================================================
 #endif // QT_HELPER_H

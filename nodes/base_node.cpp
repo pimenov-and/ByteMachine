@@ -788,6 +788,19 @@ void BaseNode::drawStateArea(QPainter *painter) const
 }
 
 //==============================================================
+// Рисование маркера изменения размера
+//==============================================================
+void BaseNode::drawResizebleMarker(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    const QColor color = currentBorderColor();
+    constexpr int halfSizeMarker = resizebleMarkerSize_ / 2;
+    painter->fillRect(right() - halfSizeMarker, bottom() - halfSizeMarker,
+        resizebleMarkerSize_, resizebleMarkerSize_, color);
+}
+
+//==============================================================
 // Получение текущего цвета границы
 //==============================================================
 QColor BaseNode::currentBorderColor() const
@@ -1263,3 +1276,31 @@ void BaseNode::writeCommentToXml(QDomDocument &doc, QDomElement &elem) const
 ////////////////////////////////////////////////////////////////
 // Реализация функций
 ////////////////////////////////////////////////////////////////
+
+//==============================================================
+// Функция подключения пинов
+//==============================================================
+void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin)
+{
+    Q_ASSERT(outPin != nullptr);
+    Q_ASSERT(inPin != nullptr);
+    Q_ASSERT(!outPin->containsInputPin(inPin));
+    Q_ASSERT(inPin->outputPin() == nullptr);
+
+    outPin->addInputPin(inPin);
+    inPin->setOutputPin(outPin);
+}
+
+//==============================================================
+// Функция отключения пинов
+//==============================================================
+void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin)
+{
+    Q_ASSERT(outPin != nullptr);
+    Q_ASSERT(inPin != nullptr);
+    Q_ASSERT(outPin->containsInputPin(inPin));
+    Q_ASSERT(inPin->outputPin() == outPin);
+
+    outPin->removeInputPin(inPin);
+    inPin->setOutputPin(nullptr);
+}

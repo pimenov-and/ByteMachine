@@ -29,6 +29,8 @@ SizeNode::SizeNode(QUndoStack *undoStack, QObject *parent) :
     createInputPin();
     createOutputPin();
 
+    BaseNode::setHeight(80);
+
     SizeNode::updateStateInfo();
 }
 
@@ -127,7 +129,7 @@ void SizeNode::draw(QPainter *painter) const
     drawInputPins(painter);
     drawOutputPins(painter);
     drawStateArea(painter);
-    // drawResizebleMarker(painter);
+    drawResizebleMarker(painter);
     drawComments(painter);
 }
 
@@ -292,6 +294,28 @@ QString SizeNode::getUiPropertyName(const QString &systemName)
 }
 
 //==============================================================
+// Функция вызывается при подключении входного пина
+//==============================================================
+void SizeNode::slotInputPinConnectChanged(ConnectStates state,
+    OutputPin *pin)
+{
+    Q_ASSERT(!isUnknown(state));
+    Q_UNUSED(pin)
+
+    dataChanged();
+}
+
+//==============================================================
+// Функция вызывается при подключении выходного пина
+//==============================================================
+void SizeNode::slotOutputPinConnectChanged(ConnectStates state,
+    InputPin *pin)
+{
+    Q_ASSERT(!isUnknown(state));
+    Q_ASSERT(pin != nullptr);
+}
+
+//==============================================================
 // Вывод основы
 //==============================================================
 void SizeNode::drawBody(QPainter *painter) const
@@ -404,6 +428,8 @@ QString SizeNode::dataSizeToStr() const
 void SizeNode::createInputPin()
 {
     inputPin_ = ShPtrInputPin::create(this, 0);
+    connect(inputPin_.get(), &InputPin::sigConnectChanged,
+        this, &SizeNode::slotInputPinConnectChanged);
 }
 
 //==============================================================

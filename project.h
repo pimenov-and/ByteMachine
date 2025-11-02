@@ -169,6 +169,10 @@ public:
     // Виртуальная функция получения имени свойства из графического
     // интерфейса по его системному имени
     QString getUiPropertyName(const QString &systemName);
+
+    // Задание соедениния узлов
+    void setNodeConnection(const ShPtrOutputPin &sourceOutputPin,
+        const ShPtrInputPin &oldTargetInputPin, const ShPtrInputPin &newTargetInputPin);
 signals:
     // Сигнал возникает при добавлении узла
     void sigAddNode(ShPtrBaseNode node);
@@ -182,11 +186,15 @@ signals:
     void sigChangedProp(PropValue value);
     // Сигнал возникает при изменении выделенного узла
     void sigChangeSelectedNode(ShPtrBaseNode node);
+    // Сигнал возникает при изменении подключения узла
+    void sigChangeNodeConnection();
 private slots:
     // Функция вызывается при изменении свойства узла
     void slotChangedNodeProp(PropValue value);
     // Функция вызывается при изменении состояния узла
     void slotChangedNodeState(NodeStateInfo state);
+    // Функция вызывается при изменении подключения узла
+    void slotChangeNodeConnection();
 private:
     // Конструктор с параметром
     explicit Project(QObject *parent = nullptr);

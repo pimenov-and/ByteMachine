@@ -6,6 +6,7 @@
 #include "project.h"
 #include "node_helper.h"
 #include "qt_helper.h"
+#include "math_helper.h"
 #include "colors.h"
 #include "icons.h"
 #include <QPainter>
@@ -128,7 +129,9 @@ void FormDesigner::paintEvent(QPaintEvent *event)
 
     fillBackgound(&painter, clipRect);
     drawGrid(&painter);
+    drawPinConnectedLines(&painter);
     drawNodes(&painter);
+    drawMoveConnection(&painter);
 }
 
 //==============================================================
@@ -143,37 +146,45 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         //------------------------------------------------------
         // Попытка проведения связи из выходного пина
         //------------------------------------------------------
-        if (const ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
+        if (ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
         {
+            // Выделение узла
             BaseNode *const node = pin->parentNode();
             Q_ASSERT(node != nullptr);
             const ShPtrBaseNode shPtrNode = project()->findNodeByPtr(node);
             Q_ASSERT(shPtrNode != nullptr);
             project()->setSelectedNode(shPtrNode);
+
+            // Задание параметров подключения
+            movingConnection_.outputPin = pin;
+            movingConnection_.beginPt = movingConnection_.endPt = pin->rect().center();
         }
         //------------------------------------------------------
-        // При нажатии на
+        // Попытка изменения связи из подключенного входного пина
         //------------------------------------------------------
-        else if (const ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos))
+        else if (ShPtrInputPin pin = project()->findNodeInputPinByPt(pos); (pin != nullptr) && pin->isConnected())
+        {
+            const ShPtrOutputPin connectOutputPin = pin->outputPin();
+
+            // Задание параметров подключения
+            movingConnection_.inputPin = pin;
+            movingConnection_.beginPt = connectOutputPin->rect().center();
+            movingConnection_.endPt = pin->rect().center();
+        }
+        //------------------------------------------------------
+        // При нажатии на область состояния
+        //------------------------------------------------------
+        else if (ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos); node != nullptr)
         {
             project()->setSelectedNode(node);
         }
         //------------------------------------------------------
         // Попытка захвата узла
         //------------------------------------------------------
-        else if (const ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
+        else if (ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
         {
-            // Если клавиша Ctrl не нажата, то перемещается захваченный узел
-            if ((event->modifiers() & Qt::ControlModifier) != Qt::ControlModifier)
-            {
-                movingNode_ = node;
-                project()->setSelectedNode(movingNode_);
-                const QPoint movingBeginPos = node->topLeft();
-                movingDragOffsetNode_ = pos - movingBeginPos;
-                project()->bringNodeToFront(movingNode_);
-            }
-            // Иначе создаётся копия узла и перещается уже она
-            else
+            // Если нажата клавиша Ctrl, то создаётся копия узла
+            if (isCtrlKey(event->modifiers()))
             {
                 const auto cloneNode = node->clone();
                 project()->addNode(cloneNode);
@@ -182,6 +193,26 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
                 const QPoint movingBeginPos = cloneNode->topLeft();
                 project()->setSelectedNode(movingNode_);
                 movingDragOffsetNode_ = pos - movingBeginPos;
+            }
+            // Если нажата клавиша Alt и есть выходные пины, то задаётся связь
+            else if (isAltKey(event->modifiers()) && node->isOutputPins())
+            {
+                // Выделение узла
+                project()->setSelectedNode(node);
+
+                // Задание параметром связи
+                const ShPtrOutputPin pin = node->outputPin(0);
+                movingConnection_.outputPin = pin;
+                movingConnection_.beginPt = movingConnection_.endPt = pin->rect().center();
+            }
+            // Иначе узел перетаскивается
+            else
+            {                
+                movingNode_ = node;
+                project()->setSelectedNode(movingNode_);
+                const QPoint movingBeginPos = node->topLeft();
+                movingDragOffsetNode_ = pos - movingBeginPos;
+                project()->bringNodeToFront(movingNode_);
             }
         }
         //------------------------------------------------------
@@ -227,19 +258,57 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
             update();
         }
     }
-    //---------------------------------------------------------------
+    //----------------------------------------------------------
+    // Перетягивание связи узла
+    //----------------------------------------------------------
+    else if (movingConnection_.isMove())
+    {
+        if (movingConnection_.outputPin != nullptr)
+        {
+            // Если это попадание во входной пин элемента
+            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(pos);
+            const BaseNode *const connectNode = movingConnection_.outputPin->parentNode();
+            if ((inputPin != nullptr) && (connectNode != inputPin->parentNode()))
+            {
+                const QPoint inputPinCenter = inputPin->rect().center();
+                movingConnection_.endPt = inputPinCenter;
+            }
+            else
+            {
+                movingConnection_.endPt = pos;
+            }
+        }
+        else
+        {
+            // Если это попадание во входной пин элемента
+            const ShPtrInputPin targetInputPin = project()->findNodeInputPinByPt(pos);
+            const BaseNode *const connectNode = movingConnection_.inputPin->outputPin()->parentNode();
+            if ((targetInputPin != nullptr) && (connectNode != targetInputPin->parentNode()))
+            {
+                const QPoint targetInputPinCenter = targetInputPin->rect().center();
+                movingConnection_.endPt = targetInputPinCenter;
+            }
+            else
+            {
+                movingConnection_.endPt = pos;
+            }
+        }
+
+        update();
+    }
+    //----------------------------------------------------------
     // Если курсов находится на области состояния узла, показать подсказку
     // состояния
-    //---------------------------------------------------------------
-    else if (const ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos))
+    //----------------------------------------------------------
+    else if (ShPtrBaseNode node = project()->findStateAreaNodeByPt(pos); node != nullptr)
     {
         setToolTip(node->stateInfo().toStr());
 
         setCursor(Qt::ArrowCursor);
     }
-    //---------------------------------------------------------------
+    //----------------------------------------------------------
     // Изменение вида курсора при наведении на маркер изменения размера узла
-    //---------------------------------------------------------------
+    //----------------------------------------------------------
     // else if (project()->findResizebleAreaNodeFromCurrentByPt(pos) != nullptr)
     // {
     //     setCursor(Qt::SizeFDiagCursor);
@@ -247,7 +316,7 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
     //----------------------------------------------------------
     // Если курсор находится на узле, показать подсказку
     //----------------------------------------------------------
-    else if (const ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
+    else if (ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
     {
         setToolTip(node->tooltipText());
 
@@ -273,9 +342,38 @@ void FormDesigner::mouseReleaseEvent(QMouseEvent *event)
     const QPoint pos = event->pos();
 
     //----------------------------------------------------------
+    // Отпускание проведение связи из выходного пина
+    //----------------------------------------------------------
+    if (movingConnection_.isMove())
+    {
+        if (movingConnection_.outputPin != nullptr)
+        {
+            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(pos);
+            if (inputPin != nullptr)
+            {
+                project()->setNodeConnection(movingConnection_.outputPin, nullptr,
+                    inputPin);
+            }
+        }
+        else
+        {
+            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(pos);
+            if (inputPin != movingConnection_.inputPin)
+            {
+                const ShPtrInputPin connectInputPin = movingConnection_.inputPin;
+                const ShPtrOutputPin sourceOutputPin = connectInputPin->outputPin();
+                project()->setNodeConnection(sourceOutputPin, connectInputPin,
+                    inputPin);
+            }
+        }
+
+        movingConnection_.reset();
+        update();
+    }
+    //----------------------------------------------------------
     // Отпускание захваченного узла
     //----------------------------------------------------------
-    if (movingNode_ != nullptr)
+    else if (movingNode_ != nullptr)
     {
         const QPoint topLeft = pos - movingDragOffsetNode_;
         movingNode_->endMove(topLeft);
@@ -321,6 +419,8 @@ void FormDesigner::setConnections()
         this, [this]() { this->update(); });
     connect(project(), &Project::sigChangedNodeState,
         this, [this]() { this->update(); });
+    connect(project(), &Project::sigChangeNodeConnection,
+        this, [this]() { this->update(); });
 }
 
 //==============================================================
@@ -365,6 +465,89 @@ void FormDesigner::drawNodes(QPainter *painter) const
     {
         node->draw(painter);
     }
+}
+
+//==============================================================
+// Вывод перемещаемого соединения
+//==============================================================
+void FormDesigner::drawMoveConnection(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    if (movingConnection_.isMove())
+    {
+        painter->save();
+
+        painter->setRenderHint(QPainter::Antialiasing);
+        QPen pen{Qt::blue, 2.0, Qt::CustomDashLine, Qt::RoundCap};
+        pen.setDashPattern({1, 3});
+        painter->setPen(pen);
+        const QPoint &pt1 = movingConnection_.beginPt;
+        const QPoint &pt2 = movingConnection_.endPt;
+        painter->drawLine(pt1, pt2);
+
+        painter->restore();
+    }
+}
+
+//==============================================================
+// Рисование соединений пинов
+//==============================================================
+void FormDesigner::drawPinConnectedLines(QPainter *painter) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    const QVector<ShPtrBaseNode> &nodes = project()->nodes();
+    for (const ShPtrBaseNode &node: nodes)
+    {
+        const QVector<ShPtrOutputPin> outPins = node->outputPins();
+        for (const ShPtrOutputPin &outPin: outPins)
+        {
+            const QVector<ShPtrInputPin> inputPins = outPin->inputPins();
+            for (const ShPtrInputPin &inputPin: inputPins)
+            {
+                const QPoint pt1 = outPin->rect().center();
+                const QPoint pt2 = inputPin->rect().center();
+                const QColor color = Colors::nodeBorder();
+                drawLineWithArraw(painter, color, pt1, pt2);
+            }
+        }
+    }
+}
+
+//==============================================================
+// Вывод линии со стрелкой
+//==============================================================
+void FormDesigner::drawLineWithArraw(QPainter *painter, const QColor &color,
+                                     const QPoint &pt1, const QPoint &pt2) const
+{
+    Q_ASSERT(painter != nullptr);
+
+    painter->save();
+
+    // Рисование линии
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setPen({color, 2});
+    painter->drawLine(pt1, pt2);
+
+    // Рисование стрелки
+    const QPointF vector = pt2 - pt1;
+    const double halfLen = sqrt(vector.x() * vector.x() + vector.y() * vector.y()) / 2;
+    const double rad = calcAngle(pt1, pt2);
+    const QPointF arrowPt1 = pt1 + QPointF{(halfLen + 5) * cos(rad),
+                                           (halfLen + 5) * sin(rad)};
+    const double rad1_ = rad + qDegreesToRadians(150.0);
+    const QPointF arrowPt2{arrowPt1.x() + cos(rad1_) * 8,
+                           arrowPt1.y() + sin(rad1_) * 8};
+    const double rad2_ = rad - qDegreesToRadians(150.0);
+    const QPointF arrowPt3{arrowPt1.x() + cos(rad2_) * 8,
+                           arrowPt1.y() + sin(rad2_) * 8};
+    const QPolygonF polygon = QPolygonF{} << arrowPt2 << arrowPt1 << arrowPt3;
+    painter->setPen(color);
+    painter->setBrush(color);
+    painter->drawPolygon(polygon);
+
+    painter->restore();
 }
 
 //==============================================================

@@ -9,6 +9,7 @@
 #include <QtWidgets>
 #include <QPoint>
 #include "base_node.h"
+#include "moving_node_connection.h"
 #include "ui_form_designer.h"
 
 //==============================================================
@@ -63,6 +64,13 @@ private:
     void drawGrid(QPainter *painter) const;
     // Вывод узлов
     void drawNodes(QPainter *painter) const;
+    // Вывод перемещаемого соединения
+    void drawMoveConnection(QPainter *painter) const;
+    // Рисование соединений пинов
+    void drawPinConnectedLines(QPainter *painter) const;
+    // Вывод линии со стрелкой
+    void drawLineWithArraw(QPainter *painter, const QColor &color,
+        const QPoint &pt1, const QPoint &pt2) const;
     // Задание размера символа
     void setCharSize(QPainter *painter);
 
@@ -91,12 +99,12 @@ private:
     ShPtrBaseNode movingNode_{};
     // Смещение при захвате перетаскиваемого узла
     QPoint movingDragOffsetNode_{};
-    // Признак начала перемещения узла
-    // bool isMovingDragNode_{false};
     // Видимость сетки
     bool isGridVisible_{true};
     // Положение меню
     QPoint menuPos_{};
+    // Перетаскиваемое соединение узла
+    MovingNodeConnection movingConnection_{};
 
     // Признак перетаскивания узла
     bool isDragNode_{false};

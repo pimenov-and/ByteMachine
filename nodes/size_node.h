@@ -88,6 +88,10 @@ public:
     // интерфейса по его системному имени
     QString getUiPropertyName(const QString &systemName) override;
 private slots:
+    // Функция вызывается при подключении входного пина
+    void slotInputPinConnectChanged(ConnectStates state, OutputPin *pin);
+    // Функция вызывается при подключении выходного пина
+    void slotOutputPinConnectChanged(ConnectStates state, InputPin *pin);
 private:
     // Вывод основы
     void drawBody(QPainter *painter) const;

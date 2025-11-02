@@ -193,6 +193,10 @@ public:
     virtual int indexOfInputPin(const ShPtrInputPin &pin) const;
     // Получение индекса входного пина (сырой указатель)
     virtual int indexOfInputPin(const InputPin *pin) const;
+    // Получение признака наличия входных пинов
+    bool isInputPins() const { return inputPinCount() > 0; }
+    // Получение признака отсутствия входных пинов
+    bool isNotInputPins() const { return !isInputPins(); }
 
     //----------------------------------------------------------
     // Интерфейс выходных пинов
@@ -219,6 +223,10 @@ public:
     virtual int indexOfOutputPin(const ShPtrOutputPin &pin) const;
     // Получение индекса выходного пина (сырой указатель)
     virtual int indexOfOutputPin(const OutputPin *pin) const;
+    // Получение признака наличия выходных пинов
+    bool isOutputPins() const { return outputPinCount() > 0; }
+    // Получение признак отсутствия выходных пинов
+    bool isNotOutputPins() const { return !isOutputPins(); }
 
     //----------------------------------------------------------
     // Выделение
@@ -270,6 +278,9 @@ signals:
     void sigChangedProp(PropValue value);
     // Сигнал возникает при изменении состояния
     void sigChangedState(NodeStateInfo state);
+    // Сигнал возникает при изменении соединения
+    void sigChangedConnect(int outputPinIndex, int connectNodeId,
+        int connectInputPinIndex, bool isConnect);
 protected:
     // Рисование примитивной основы
     void drawSimpleBody(QPainter *painter) const;
@@ -279,6 +290,8 @@ protected:
     void drawOutputPins(QPainter *painter) const;
     // Рисование области состояния
     void drawStateArea(QPainter *painter) const;
+    // Рисование маркера изменения размера
+    void drawResizebleMarker(QPainter *painter) const;
 
     //----------------------------------------------------------
     // Чтение из XML
@@ -387,6 +400,10 @@ using ShPtrConstBaseNode = QSharedPointer<const BaseNode>;
 //==============================================================
 // Прототипы функций
 //==============================================================
+// Функция подключения пинов
+void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin);
+// Функция отключения пинов
+void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin);
 
 //==============================================================
 #endif // BASE_NODE_H

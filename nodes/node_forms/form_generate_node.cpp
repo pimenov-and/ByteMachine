@@ -1287,7 +1287,7 @@ void FormGenerateNode::setNode(GenerateNode *node)
     // Задание количества байтов
     const int count = node_->byteCount();
     ui_.spinBoxByteCount_->setValue(count);
-    // highlightByteCountWidget();
+    highlightByteCountWidget();
 
     // Задание заполняющего байта
     const quint8 filledByte = node_->filledByte();

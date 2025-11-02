@@ -79,3 +79,19 @@ QSize strSize(QPainter &painter, const QString &str)
 
     return QSize{boundingRect.width(), boundingRect.height()};
 }
+
+//==============================================================
+// Проверка нажатия клавиши Alt
+//==============================================================
+bool isAltKey(Qt::KeyboardModifiers modifier)
+{
+    return (modifier & Qt::AltModifier) == Qt::AltModifier;
+}
+
+//==============================================================
+// Проверка нажатия клавиши Control
+//==============================================================
+bool isCtrlKey(Qt::KeyboardModifiers modifier)
+{
+    return (modifier & Qt::ControlModifier) == Qt::ControlModifier;
+}

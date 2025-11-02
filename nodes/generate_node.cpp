@@ -336,7 +336,7 @@ ByteList GenerateNode::dataBlock(size_t index, size_t count) const
 //==============================================================
 void GenerateNode::dataChanged()
 {
-    // updateStateInfo();
+    updateStateInfo();
 
     outputPin_->dataChanged();
 }
@@ -413,7 +413,7 @@ void GenerateNode::setByteCount(qint32 count)
             undoStack_->push(undoCmd);
         }
 
-        updateStateInfo();
+        dataChanged();
     }
 }
 
@@ -890,6 +890,11 @@ void GenerateNode::slotOutputPinConnectChanged(ConnectStates state,
 {
     Q_ASSERT(!isUnknown(state));
     Q_ASSERT(pin != nullptr);
+
+    const int conNodeId = pin->parentNode()->id();
+    const int conPinIndex = pin->parentNode()->indexOfInputPin(pin);
+    const bool isCon = ::isConnect(state);
+    emit sigChangedConnect(0, conNodeId, conPinIndex, isCon);
 }
 
 //==============================================================
@@ -898,8 +903,8 @@ void GenerateNode::slotOutputPinConnectChanged(ConnectStates state,
 void GenerateNode::createOutputPin()
 {
     outputPin_ = ShPtrOutputPin::create(this, 0);
-    // connect(outputPin_.get(), &OutputPin::sigConnectChanged,
-    //     this, &GenerateNode::slotOutputPinConnectChanged);
+    connect(outputPin_.get(), &OutputPin::sigConnectChanged,
+        this, &GenerateNode::slotOutputPinConnectChanged);
 }
 
 //==============================================================

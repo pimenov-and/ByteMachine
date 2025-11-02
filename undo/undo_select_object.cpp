@@ -19,7 +19,6 @@ UndoSelectObject::UndoSelectObject(Project *project,
     node1_ = node1;
     node2_ = node2;
 
-    // Задание наименования отмены
     if (node1 != nullptr)
     {
         setText(QString{"Select node \"%1\""}.arg(node1->name()));
