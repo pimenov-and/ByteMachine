@@ -98,6 +98,9 @@ private:
     // Вывод комментариев
     void drawComments(QPainter *painter) const;
 
+    // Корректировка высоты узла
+    void correctHeight();
+
     // Перевод байтов в килобайты
     [[nodiscard]]
     static double bytesToKilobytes(qint32 count);
@@ -127,6 +130,13 @@ private:
 
     // Обновление состояния узла
     void updateStateInfo();
+
+    // Получение максимальной ширины
+    int maxWidth() const override { return gridSize() * 9; }
+    // Получение минимальной высоты
+    int minHeight() const override { return gridSize() * 4; }
+    // Получение максимальной высоты
+    int maxHeight() const override { return minHeight(); }
 
     // Входной пин
     ShPtrInputPin inputPin_{};

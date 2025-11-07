@@ -105,6 +105,8 @@ private:
     QPoint menuPos_{};
     // Перетаскиваемое соединение узла
     MovingNodeConnection movingConnection_{};
+    // Узел, для которого изменяются размеры
+    ShPtrBaseNode resizebleNode_{};
 
     // Признак перетаскивания узла
     bool isDragNode_{false};

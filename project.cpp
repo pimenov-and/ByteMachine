@@ -533,6 +533,61 @@ ShPtrConstBaseNode Project::findStateAreaNodeByPt(const QPoint &pt) const
 }
 
 //==============================================================
+// Получение узла, в маркер изменения размера которого попала точка
+//==============================================================
+ShPtrBaseNode Project::findResizebleAreaNodeFromCurrentByPt(const QPoint &pt)
+{
+    for (auto it = nodes_.rbegin(); it != nodes_.rend(); ++it)
+    {
+        const ShPtrBaseNode &node = *it;
+        if (node->isResizeble())
+        {
+            const QRect markerRect = node->resizebleMarkerRect();
+            if (markerRect.contains(pt))
+            {
+                return node;
+            }
+        }
+
+        // Проверка попадания в узел
+        if (node->rect().contains(pt))
+        {
+            return nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
+//==============================================================
+// Получение узла, в маркер изменения размера которого попала точка
+// (константный вариант)
+//==============================================================
+ShPtrConstBaseNode Project::findResizebleAreaNodeFromCurrentByPt(const QPoint &pt) const
+{
+    for (auto it = nodes_.rbegin(); it != nodes_.rend(); ++it)
+    {
+        const ShPtrConstBaseNode &node = *it;
+        if (node->isResizeble())
+        {
+            const QRect markerRect = node->resizebleMarkerRect();
+            if (markerRect.contains(pt))
+            {
+                return node;
+            }
+        }
+
+        // Проверка попадания в узел
+        if (node->rect().contains(pt))
+        {
+            return nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
+//==============================================================
 // Поиск входного пина узла по координате
 //==============================================================
 ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)

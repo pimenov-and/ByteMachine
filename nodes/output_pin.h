@@ -47,10 +47,10 @@ public:
     // Проверка наличия подключенного входного пина (2 вариант)
     bool containsInputPin(const InputPin *pin) const;
     // Добавление входного пина
-    void addInputPin(const QSharedPointer<InputPin> &pin);
+    void addInputPin(const QSharedPointer<InputPin> &pin, bool isRaiseSignal = true);
     // Удаление входного пина
     void removeInputPin(const QSharedPointer<const InputPin> &pin,
-                        bool isRaiseSignal = true);
+        bool isRaiseSignal = true);
     // Удаление входного пина (сырые указатели)
     void removeInputPin(const InputPin *pin, bool isRaiseSignal = true);
 

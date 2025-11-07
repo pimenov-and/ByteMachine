@@ -29,7 +29,7 @@ SizeNode::SizeNode(QUndoStack *undoStack, QObject *parent) :
     createInputPin();
     createOutputPin();
 
-    BaseNode::setHeight(80);
+    correctHeight();
 
     SizeNode::updateStateInfo();
 }
@@ -301,8 +301,6 @@ void SizeNode::slotInputPinConnectChanged(ConnectStates state,
 {
     Q_ASSERT(!isUnknown(state));
     Q_UNUSED(pin)
-
-    dataChanged();
 }
 
 //==============================================================
@@ -313,6 +311,13 @@ void SizeNode::slotOutputPinConnectChanged(ConnectStates state,
 {
     Q_ASSERT(!isUnknown(state));
     Q_ASSERT(pin != nullptr);
+
+    dataChanged();
+
+    const int conNodeId = pin->parentNode()->id();
+    const int conPinIndex = pin->parentNode()->indexOfInputPin(pin);
+    const bool isCon = ::isConnect(state);
+    emit sigChangedConnect(0, conNodeId, conPinIndex, isCon);
 }
 
 //==============================================================
@@ -333,14 +338,28 @@ void SizeNode::drawBody(QPainter *painter) const
     painter->setPen(currentBorderColor());
     painter->drawLine(left() + 1, top() + headerHeight(), right() - 2, top() + headerHeight());
 
-    // Вывод названия
+    // Вывод названия (в режиме пропуска оно выводится перечёркнутым)
     painter->setPen(Colors::nodeText());
-    painter->drawText(left(), top(), width(), headerHeight(), Qt::AlignCenter, strType());
+    if (!isBypass())
+    {
+        painter->drawText(left(), top(), width(), headerHeight(), Qt::AlignCenter, strType());
+    }
+    else
+    {
+        QFont font = painter->font();
+        font.setStrikeOut(true);
+        painter->setFont(font);
+
+        painter->drawText(left(), top(), width(), headerHeight(), Qt::AlignCenter, strType());
+
+        font.setStrikeOut(false);
+        painter->setFont(font);
+    }
 
     // Вывод размера данных
     if (!stateInfo().isError())
     {
-        const QString text = dataSizeToStr();
+        const QString text = !isBypass() ? dataSizeToStr() : "Bypass";
         painter->drawText(left(), top() + headerHeight(), width(),
             height() - headerHeight(), Qt::AlignCenter, text);
     }
@@ -381,11 +400,21 @@ void SizeNode::drawComments(QPainter *painter) const
 }
 
 //==============================================================
+// Корректировка высоты узла
+//==============================================================
+void SizeNode::correctHeight()
+{
+    setUndo(true);
+    BaseNode::setHeight(80);
+    setUndo(false);
+}
+
+//==============================================================
 // Перевод байтов в килобайты
 //==============================================================
 double SizeNode::bytesToKilobytes(qint32 count)
 {
-    return count / 1024.0;
+    return count / 1000.0;
 }
 
 //==============================================================
@@ -393,7 +422,7 @@ double SizeNode::bytesToKilobytes(qint32 count)
 //==============================================================
 double SizeNode::bytesToMegabytes(qint32 count)
 {
-    return count / 1024.0 / 1024;
+    return count / 1000.0 / 1000;
 }
 
 //==============================================================
@@ -428,8 +457,6 @@ QString SizeNode::dataSizeToStr() const
 void SizeNode::createInputPin()
 {
     inputPin_ = ShPtrInputPin::create(this, 0);
-    connect(inputPin_.get(), &InputPin::sigConnectChanged,
-        this, &SizeNode::slotInputPinConnectChanged);
 }
 
 //==============================================================
@@ -438,6 +465,8 @@ void SizeNode::createInputPin()
 void SizeNode::createOutputPin()
 {
     outputPin_ = ShPtrOutputPin::create(this, 0);
+    connect(outputPin_.get(), &OutputPin::sigConnectChanged,
+        this, &SizeNode::slotOutputPinConnectChanged);
 }
 
 //==============================================================

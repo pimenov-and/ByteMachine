@@ -168,6 +168,16 @@ public:
     // Завершение перемещения
     void endMove(const QPoint &topLeft);
 
+    // Получение признака изменения размеров узла
+    [[nodiscard]]
+    bool isResizing() const { return isResizing_; }
+    // Начало изменения размера
+    void beginResize();
+    // Функця вызывается при изменении размера
+    void resizing(const QSize &size);
+    // Завершение изменения размера
+    void endResize(const QSize &size);
+
     //----------------------------------------------------------
     // Интерфейс входных пинов
     //----------------------------------------------------------
@@ -238,6 +248,22 @@ public:
     void setSelected(bool selected);
     // Сброс признака выделения
     void resetSelected();
+
+    //----------------------------------------------------------
+    // Минимальные и максимальные размеры
+    //----------------------------------------------------------
+    // Получение минимальной ширины
+    [[nodiscard]]
+    virtual int minWidth() const { return gridSize() * 5; }
+    // Получение максимальной ширины
+    [[nodiscard]]
+    virtual int maxWidth() const { return maxWidth_; }
+    // Получение минимальной высоты
+    [[nodiscard]]
+    virtual int minHeight() const { return gridSize() * 2; }
+    // Получение максимальной высоты
+    [[nodiscard]]
+    virtual int maxHeight() const { return maxHeight_; }
 
     // Получение размера сетки
     [[nodiscard]]
@@ -361,6 +387,11 @@ private:
     // Рисование состояния предупреждения
     void drawWarningStateArea(QPainter *painter) const;
 
+    // Корректировка ширины
+    int correctWidth(int width) const;
+    // Корректировка высоты
+    int correctHeight(int height) const;
+
     // Идентификатор
     qint32 id_{0};
     // Смещение слева
@@ -380,6 +411,11 @@ private:
     bool isMoving_{false};
     // Положение при начале перетаскивания узла
     QPoint movingBeginPos_{};
+
+    // Признак изменения размера узла
+    bool isResizing_{false};
+    // Старый размер
+    QSize oldSize_{};
 
     // Максимальная ширина
     static const int maxWidth_{500};
@@ -401,9 +437,11 @@ using ShPtrConstBaseNode = QSharedPointer<const BaseNode>;
 // Прототипы функций
 //==============================================================
 // Функция подключения пинов
-void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin);
+void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin,
+    bool isRaiseSignal = true);
 // Функция отключения пинов
-void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin);
+void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin,
+    bool isRaiseSignal = true);
 
 //==============================================================
 #endif // BASE_NODE_H

@@ -168,13 +168,16 @@ bool OutputPin::containsInputPin(const InputPin *pin) const
 //==============================================================
 // Добавление подключенного входного пина
 //==============================================================
-void OutputPin::addInputPin(const ShPtrInputPin &pin)
+void OutputPin::addInputPin(const ShPtrInputPin &pin, bool isRaiseSignal)
 {
     if (!containsInputPin(pin))
     {
         inputPins_ << pin;
 
-        emit sigConnectChanged(ConnectStates::Connect, pin.get());
+        if (isRaiseSignal)
+        {
+            emit sigConnectChanged(ConnectStates::Connect, pin.get());
+        }
     }
 }
 

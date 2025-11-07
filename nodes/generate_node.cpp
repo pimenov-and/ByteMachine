@@ -794,6 +794,7 @@ void GenerateNode::setStrValue(const QString &value)
     {
         const QString oldStrValue = strValue_;
         strValue_ = value;
+        byteCount_ = byteCountForGenerateType();
         const PropValue value{"strValue", strValue_};
         emit sigChangedProp(value);
 
@@ -804,6 +805,8 @@ void GenerateNode::setStrValue(const QString &value)
                 "strValue", strValue_, oldStrValue};
             undoStack_->push(undoCmd);
         }
+
+        dataChanged();
     }
 }
 
@@ -890,6 +893,8 @@ void GenerateNode::slotOutputPinConnectChanged(ConnectStates state,
 {
     Q_ASSERT(!isUnknown(state));
     Q_ASSERT(pin != nullptr);
+
+    dataChanged();
 
     const int conNodeId = pin->parentNode()->id();
     const int conPinIndex = pin->parentNode()->indexOfInputPin(pin);

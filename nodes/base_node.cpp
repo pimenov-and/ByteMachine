@@ -214,6 +214,7 @@ void BaseNode::setTop(qint32 top) noexcept
 //==============================================================
 void BaseNode::setWidth(qint32 width)
 {
+    width = correctWidth(width);
     if (width_ != width)
     {
         const qint32 oldWidth = width_;
@@ -236,6 +237,7 @@ void BaseNode::setWidth(qint32 width)
 //==============================================================
 void BaseNode::setHeight(qint32 height)
 {
+    height = correctHeight(height);
     if (height_ != height)
     {
         const int oldHeight = height_;
@@ -301,19 +303,24 @@ void BaseNode::setTopLeft(QPoint topLeft)
 //==============================================================
 void BaseNode::setSize(const QSize &size)
 {
-    if (this->size() != size)
+    const int w = correctWidth(size.width());
+    const int h = correctHeight(size.height());
+    if ((w != width()) || (h != height()))
     {
         const int oldWidth = width_;
         const int oldHeight = height_;
-        width_ = size.width();
-        height_ = size.height();
+        width_ = w;
+        height_ = h;
+
+        const PropValue value{"size", QSize{width_, height_}};
+        emit sigChangedProp(value);
 
         if (!isUndo_)
         {
             Q_ASSERT(undoStack_ != nullptr);
             const auto undoCmd = new UndoChangeObjectPropValue{this,
-                "size", QPoint{width_, height_},
-                QPoint{oldWidth, oldHeight}};
+                "size", QSize{width_, height_},
+                QSize{oldWidth, oldHeight}};
             undoStack_->push(undoCmd);
         }
     }
@@ -357,6 +364,50 @@ void BaseNode::endMove(const QPoint &topLeft)
 
         isMoving_ = false;
         movingBeginPos_ = QPoint{};
+    }
+}
+
+//==============================================================
+// Начало изменения размера
+//==============================================================
+void BaseNode::beginResize()
+{
+    isResizing_ = true;
+    oldSize_ = size();
+}
+
+//==============================================================
+// Функця вызывается при изменении размера
+//==============================================================
+void BaseNode::resizing(const QSize &size)
+{
+    if (isResizing_)
+    {
+        setUndo(true);
+        setSize(size);
+        setUndo(false);
+    }
+}
+
+//==============================================================
+// Завершение изменения размера
+//==============================================================
+void BaseNode::endResize(const QSize &size)
+{
+    if (isResizing_)
+    {
+        width_ = correctWidth(size.width());
+        height_ = correctHeight(size.height());
+        if (QSize{width_, height_} != oldSize_)
+        {
+            // Формирование операции отмены
+            Q_ASSERT(undoStack_ != nullptr);
+            const auto undoCmd = new UndoChangeObjectPropValue{this,
+                "size", QSize{width_, height_}, oldSize_};
+            undoStack_->push(undoCmd);
+        }
+
+        isResizing_ = false;
     }
 }
 
@@ -883,6 +934,44 @@ void BaseNode::drawWarningStateArea(QPainter *painter) const
 }
 
 //==============================================================
+// Корректировка ширины
+//==============================================================
+int BaseNode::correctWidth(int width) const
+{
+    if (width < minWidth())
+    {
+        return minWidth();
+    }
+    else if (width > maxWidth())
+    {
+        return maxWidth();
+    }
+    else
+    {
+        return width;
+    }
+}
+
+//==============================================================
+// Корректировка высоты
+//==============================================================
+int BaseNode::correctHeight(int height) const
+{
+    if (height < minHeight())
+    {
+        return minHeight();
+    }
+    else if (height > maxHeight())
+    {
+        return maxHeight();
+    }
+    else
+    {
+        return height;
+    }
+}
+
+//==============================================================
 // Чтение имени из XML
 //==============================================================
 QString BaseNode::readNameFromXml(const QDomElement &elem) const
@@ -1280,27 +1369,29 @@ void BaseNode::writeCommentToXml(QDomDocument &doc, QDomElement &elem) const
 //==============================================================
 // Функция подключения пинов
 //==============================================================
-void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin)
+void connectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin,
+    bool isRaiseSignal)
 {
     Q_ASSERT(outPin != nullptr);
     Q_ASSERT(inPin != nullptr);
     Q_ASSERT(!outPin->containsInputPin(inPin));
     Q_ASSERT(inPin->outputPin() == nullptr);
 
-    outPin->addInputPin(inPin);
-    inPin->setOutputPin(outPin);
+    inPin->setOutputPin(outPin, isRaiseSignal);
+    outPin->addInputPin(inPin, isRaiseSignal);
 }
 
 //==============================================================
 // Функция отключения пинов
 //==============================================================
-void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin)
+void disconnectPins(ShPtrOutputPin &outPin, ShPtrInputPin &inPin,
+    bool isRaiseSignal)
 {
     Q_ASSERT(outPin != nullptr);
     Q_ASSERT(inPin != nullptr);
     Q_ASSERT(outPin->containsInputPin(inPin));
     Q_ASSERT(inPin->outputPin() == outPin);
 
-    outPin->removeInputPin(inPin);
-    inPin->setOutputPin(nullptr);
+    inPin->setOutputPin(nullptr, isRaiseSignal);
+    outPin->removeInputPin(inPin, isRaiseSignal);
 }

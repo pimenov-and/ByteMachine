@@ -8,6 +8,8 @@
 //==============================================================
 #include <QUndoCommand>
 #include "base_node.h"
+#include "input_pin.h"
+#include "output_pin.h"
 
 //==============================================================
 class Project;
@@ -19,7 +21,7 @@ class UndoRemoveNode : public QUndoCommand
 {
 public:
     // Конструктор с параметрами
-    explicit UndoRemoveNode(Project *project, const ShPtrBaseNode &node);
+    UndoRemoveNode(Project *project, const ShPtrBaseNode &node);
     // Деструктор
     ~UndoRemoveNode() override;
 
@@ -28,10 +30,25 @@ public:
     // Функция восстановления
     void redo() override;
 private:
+    // Инициализация подключенных к узлу пинов
+    void initOtherPins();
+    // Отключение входных пинов
+    void disconnectInPins();
+    // Отключение выходных пинов
+    void disconnectOutPins();
+    // Подключение входных пинов
+    void connectInPins();
+    // Подлючение выходных пинов
+    void connectOutPins();
+
     // Проект
     Project *project_{nullptr};
     // Узел
     ShPtrBaseNode node_{nullptr};
+    // Подключенные ко входным пинам выходные узлы
+    ShPtrOutputPin connectOtherOutPins_[2];
+    // Подключенные к выходному пину
+    QVector<ShPtrInputPin> connectOtherInPins_{};
 };
 
 //==============================================================

@@ -179,6 +179,16 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
             project()->setSelectedNode(node);
         }
         //------------------------------------------------------
+        // Проверка изменения размера узла
+        //------------------------------------------------------
+        else if (ShPtrBaseNode node = project()->findResizebleAreaNodeFromCurrentByPt(pos))
+        {
+            project()->setSelectedNode(node);
+
+            resizebleNode_ = node;
+            resizebleNode_->beginResize();
+        }
+        //------------------------------------------------------
         // Попытка захвата узла
         //------------------------------------------------------
         else if (ShPtrBaseNode node = project()->findNodeByPt(pos); node != nullptr)
@@ -309,10 +319,24 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
     //----------------------------------------------------------
     // Изменение вида курсора при наведении на маркер изменения размера узла
     //----------------------------------------------------------
-    // else if (project()->findResizebleAreaNodeFromCurrentByPt(pos) != nullptr)
-    // {
-    //     setCursor(Qt::SizeFDiagCursor);
-    // }
+    else if (resizebleNode_ != nullptr)
+    {
+        setCursor(Qt::SizeFDiagCursor);
+
+        const QPoint topLeft = resizebleNode_->topLeft();
+        const int width = pos.x() - topLeft.x();
+        const int height = pos.y() - topLeft.y();
+        resizebleNode_->resizing(QSize{width, height});
+
+        update();
+    }
+    //---------------------------------------------------------------
+    // Изменение вида курсора при наведении на маркер изменения размера узла
+    //---------------------------------------------------------------
+    else if (project()->findResizebleAreaNodeFromCurrentByPt(pos) != nullptr)
+    {
+        setCursor(Qt::SizeFDiagCursor);
+    }
     //----------------------------------------------------------
     // Если курсор находится на узле, показать подсказку
     //----------------------------------------------------------
@@ -380,6 +404,18 @@ void FormDesigner::mouseReleaseEvent(QMouseEvent *event)
 
         movingNode_ = nullptr;
         movingDragOffsetNode_ = QPoint{};
+    }
+    //----------------------------------------------------------
+    // Изменение размеров узла
+    //----------------------------------------------------------
+    else if (resizebleNode_ != nullptr)
+    {
+        const QPoint topLeft = resizebleNode_->topLeft();
+        const int width = pos.x() - topLeft.x();
+        const int height = pos.y() - topLeft.y();
+        resizebleNode_->endResize(QSize{width, height});
+
+        resizebleNode_ = nullptr;
     }
 }
 
@@ -518,8 +554,8 @@ void FormDesigner::drawPinConnectedLines(QPainter *painter) const
 //==============================================================
 // Вывод линии со стрелкой
 //==============================================================
-void FormDesigner::drawLineWithArraw(QPainter *painter, const QColor &color,
-                                     const QPoint &pt1, const QPoint &pt2) const
+void FormDesigner::drawLineWithArraw(QPainter *painter,
+    const QColor &color, const QPoint &pt1, const QPoint &pt2) const
 {
     Q_ASSERT(painter != nullptr);
 

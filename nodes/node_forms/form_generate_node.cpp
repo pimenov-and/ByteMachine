@@ -181,11 +181,11 @@ void FormGenerateNode::slotChangedNodeProp(PropValue value)
             ui_.plainTextEditStrValue_->setPlainText(v);
         }
 
+        const int byteCount = node_->byteCount();
+        ui_.spinBoxByteCount_->setValue(byteCount);
+
         const bool isValueChanged = node_->isStrValueChanged();
         ui_.pushBtnResetStrValue_->setEnabled(isValueChanged);
-
-        // const int valueByteCount = getValueByteSize(v);
-        // ui_.spinBoxByteCount_->setValue(valueByteCount);
     }
     // Значение цвета
     else if (value.name == "colorValue")
@@ -321,7 +321,7 @@ void FormGenerateNode::slotChangedGenerateType(int index)
             break;
         }
     }
-    highlightByteCountWidget();
+    // highlightByteCountWidget();
 }
 
 //==============================================================
@@ -340,7 +340,7 @@ void FormGenerateNode::slotResetGenerateType()
 void FormGenerateNode::slotChangedByteCount(int count)
 {
     node_->setByteCount(count);
-    highlightByteCountWidget();
+    // highlightByteCountWidget();
 }
 
 //==============================================================
@@ -717,7 +717,6 @@ void FormGenerateNode::setGenerateTypeUsual()
     ui_.spinBoxByteCount_->setEnabled(true);
     ui_.spinBoxByteCount_->setMinimum(0);
     ui_.spinBoxByteCount_->setMaximum(numeric_limits<qint32>::max());
-    ui_.spinBoxByteCount_->setStyleSheet(QString{});
     const bool isByteCountChanged = node_->isByteCountChanged();
     ui_.pushBtnResetByteCount_->setEnabled(isByteCountChanged);
     ui_.labelFilledByte_->show();
@@ -750,7 +749,6 @@ void FormGenerateNode::setGenerateTypeRandom()
     ui_.spinBoxByteCount_->setEnabled(true);
     ui_.spinBoxByteCount_->setMinimum(0);
     ui_.spinBoxByteCount_->setMaximum(numeric_limits<qint32>::max());
-    ui_.spinBoxByteCount_->setStyleSheet(QString{});
     const bool isByteCountChanged = node_->isByteCountChanged();
     ui_.pushBtnResetByteCount_->setEnabled(isByteCountChanged);
 
@@ -788,7 +786,6 @@ void FormGenerateNode::setGenerateTypeBool()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -826,7 +823,6 @@ void FormGenerateNode::setGenerateTypeInt8()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -855,7 +851,6 @@ void FormGenerateNode::setGenerateTypeUInt8()
     ui_.spinBoxIntValue_->show();
     ui_.spinBoxIntValue_->setMinimum(numeric_limits<quint8>::min());
     ui_.spinBoxIntValue_->setMaximum(numeric_limits<quint8>::max());
-    ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
     const quint8 value = node_->uint8Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isUInt8ValueChanged();
@@ -863,7 +858,6 @@ void FormGenerateNode::setGenerateTypeUInt8()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -892,7 +886,6 @@ void FormGenerateNode::setGenerateTypeInt16()
     ui_.spinBoxIntValue_->show();
     ui_.spinBoxIntValue_->setMinimum(numeric_limits<qint16>::min());
     ui_.spinBoxIntValue_->setMaximum(numeric_limits<qint16>::max());
-    ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
     const qint16 value = node_->int16Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isInt16ValueChanged();
@@ -900,7 +893,6 @@ void FormGenerateNode::setGenerateTypeInt16()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -929,7 +921,6 @@ void FormGenerateNode::setGenerateTypeUInt16()
     ui_.spinBoxIntValue_->show();
     ui_.spinBoxIntValue_->setMinimum(numeric_limits<quint16>::min());
     ui_.spinBoxIntValue_->setMaximum(numeric_limits<quint16>::max());
-    ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(235, 235, 235);");
     const quint16 value = node_->uint16Value();
     ui_.spinBoxIntValue_->setValue(value);
     const bool isValueChanged = node_->isUInt16ValueChanged();
@@ -937,7 +928,6 @@ void FormGenerateNode::setGenerateTypeUInt16()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -973,7 +963,6 @@ void FormGenerateNode::setGenerateTypeInt32()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1009,7 +998,6 @@ void FormGenerateNode::setGenerateTypeUInt32()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1045,7 +1033,6 @@ void FormGenerateNode::setGenerateTypeInt64()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1082,7 +1069,6 @@ void FormGenerateNode::setGenerateTypeUInt64()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1119,7 +1105,6 @@ void FormGenerateNode::setGenerateTypeFloat()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1156,7 +1141,6 @@ void FormGenerateNode::setGenerateTypeDouble()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(sizeof(value));
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1192,7 +1176,6 @@ void FormGenerateNode::setGenerateTypeStr()
     ui_.spinBoxByteCount_->setEnabled(false);
     const int valueByteCount = getValueByteSize(value);
     ui_.spinBoxByteCount_->setValue(valueByteCount);
-    // ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1227,7 +1210,6 @@ void FormGenerateNode::setGenerateTypeColor()
     ui_.spinBoxByteCount_->blockSignals(true);
     ui_.spinBoxByteCount_->setEnabled(false);
     ui_.spinBoxByteCount_->setValue(4);
-    ui_.spinBoxByteCount_->setStyleSheet("color: palette(text);");
     ui_.pushBtnResetByteCount_->setEnabled(false);
 
     // Скрытие виджетов
@@ -1253,11 +1235,21 @@ void FormGenerateNode::highlightByteCountWidget()
 {
     if (ui_.spinBoxByteCount_->value() > 0)
     {
-        ui_.spinBoxByteCount_->setStyleSheet("");
+        // ui_.spinBoxByteCount_->setStyleSheet(QString{});
+
+        // QPalette palette = ui_.spinBoxByteCount_->palette();
+        // palette.setColor(QPalette::Base, QColor(255, 255, 255)); // Фон
+        ui_.spinBoxByteCount_->setPalette(QPalette{});
+        ui_.spinBoxByteCount_->update();
     }
     else
     {
-        ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(255, 240, 168);");
+        // ui_.spinBoxByteCount_->setStyleSheet("background-color: rgb(255, 240, 168);");
+
+        QPalette palette = ui_.spinBoxByteCount_->palette();
+        palette.setColor(QPalette::Base, QColor(255, 240, 168)); // Фон
+        ui_.spinBoxByteCount_->setPalette(palette);
+        ui_.spinBoxByteCount_->update();
     }
 }
 
@@ -1287,7 +1279,7 @@ void FormGenerateNode::setNode(GenerateNode *node)
     // Задание количества байтов
     const int count = node_->byteCount();
     ui_.spinBoxByteCount_->setValue(count);
-    highlightByteCountWidget();
+    // highlightByteCountWidget();
 
     // Задание заполняющего байта
     const quint8 filledByte = node_->filledByte();

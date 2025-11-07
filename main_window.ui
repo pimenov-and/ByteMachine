@@ -241,8 +241,8 @@ color: rgb(160, 160, 160);
           <widget class="FormDesigner" name="widgetDesigner_" native="true">
            <property name="minimumSize">
             <size>
-             <width>5001</width>
-             <height>5001</height>
+             <width>5000</width>
+             <height>5000</height>
             </size>
            </property>
            <property name="mouseTracking">
