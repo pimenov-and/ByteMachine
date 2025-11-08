@@ -166,16 +166,18 @@ public:
     //----------------------------------------------------------
     // Поиск входного пина узла по координате
     [[nodiscard]]
-    ShPtrInputPin findNodeInputPinByPt(const QPoint &pt);
+    ShPtrInputPin findNodeInputPinByPt(const QPoint &pt, int pinMargin = 0);
     // Поиск входного пина узла по координате (константный вариант)
     [[nodiscard]]
-    ShPtrConstInputPin findNodeInputPinByPt(const QPoint &pt) const;
+    ShPtrConstInputPin findNodeInputPinByPt(const QPoint &pt,
+        int pinMargin = 0) const;
     // Поиск выходного пина узла по координате
     [[nodiscard]]
-    ShPtrOutputPin findNodeOutputPinByPt(const QPoint &pt);
+    ShPtrOutputPin findNodeOutputPinByPt(const QPoint &pt, int pinMargin = 0);
     // Поиск выходного пина узла по координате (константный вариант)
     [[nodiscard]]
-    ShPtrConstOutputPin findNodeOutputPinByPt(const QPoint &pt) const;
+    ShPtrConstOutputPin findNodeOutputPinByPt(const QPoint &pt,
+        int pinMargin = 0) const;
 
     // Виртуальная функция получения имени свойства из графического
     // интерфейса по его системному имени

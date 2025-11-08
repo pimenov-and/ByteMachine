@@ -590,7 +590,8 @@ ShPtrConstBaseNode Project::findResizebleAreaNodeFromCurrentByPt(const QPoint &p
 //==============================================================
 // Поиск входного пина узла по координате
 //==============================================================
-ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)
+ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt,
+    int pinMargin)
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -598,7 +599,8 @@ ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)
         const QVector<ShPtrInputPin> pins = node->inputPins();
         for (const ShPtrInputPin &pin: pins)
         {
-            if (pin->rect().contains(pt))
+            const QRect pinRect = pin->rect().adjusted(-pinMargin, -pinMargin, pinMargin, pinMargin);
+            if (pinRect.contains(pt))
             {
                 return pin;
             }
@@ -611,7 +613,8 @@ ShPtrInputPin Project::findNodeInputPinByPt(const QPoint &pt)
 //==============================================================
 // Поиск входного пина узла по координате (константный вариант)
 //==============================================================
-ShPtrConstInputPin Project::findNodeInputPinByPt(const QPoint &pt) const
+ShPtrConstInputPin Project::findNodeInputPinByPt(const QPoint &pt,
+    int pinMargin) const
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -619,7 +622,8 @@ ShPtrConstInputPin Project::findNodeInputPinByPt(const QPoint &pt) const
         const QVector<ShPtrInputPin> pins = node->inputPins();
         for (const ShPtrInputPin &pin: pins)
         {
-            if (pin->rect().contains(pt))
+            const QRect pinRect = pin->rect().adjusted(-pinMargin, -pinMargin, pinMargin, pinMargin);
+            if (pinRect.contains(pt))
             {
                 return pin;
             }
@@ -632,7 +636,8 @@ ShPtrConstInputPin Project::findNodeInputPinByPt(const QPoint &pt) const
 //==============================================================
 // Поиск выходного пина узла по координате
 //==============================================================
-ShPtrOutputPin Project::findNodeOutputPinByPt(const QPoint &pt)
+ShPtrOutputPin Project::findNodeOutputPinByPt(const QPoint &pt,
+    int pinMargin)
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -640,7 +645,8 @@ ShPtrOutputPin Project::findNodeOutputPinByPt(const QPoint &pt)
         const QVector<ShPtrOutputPin> pins = node->outputPins();
         for (const ShPtrOutputPin &pin: pins)
         {
-            if (pin->rect().contains(pt))
+            const QRect pinRect = pin->rect().adjusted(-pinMargin, -pinMargin, pinMargin, pinMargin);
+            if (pinRect.contains(pt))
             {
                 return pin;
             }
@@ -653,7 +659,8 @@ ShPtrOutputPin Project::findNodeOutputPinByPt(const QPoint &pt)
 //==============================================================
 // Поиск выходного пина узла по координате (константный вариант)
 //==============================================================
-ShPtrConstOutputPin Project::findNodeOutputPinByPt(const QPoint &pt) const
+ShPtrConstOutputPin Project::findNodeOutputPinByPt(const QPoint &pt,
+    int pinMargin) const
 {
     for (auto it = nodes_.crbegin(); it != nodes_.crend(); ++it)
     {
@@ -661,7 +668,8 @@ ShPtrConstOutputPin Project::findNodeOutputPinByPt(const QPoint &pt) const
         const QVector<ShPtrOutputPin> pins = node->outputPins();
         for (const ShPtrOutputPin &pin: pins)
         {
-            if (pin->rect().contains(pt))
+            const QRect pinRect = pin->rect().adjusted(-pinMargin, -pinMargin, pinMargin, pinMargin);
+            if (pinRect.contains(pt))
             {
                 return pin;
             }

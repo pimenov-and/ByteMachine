@@ -146,7 +146,7 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         //------------------------------------------------------
         // Попытка проведения связи из выходного пина
         //------------------------------------------------------
-        if (ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos); pin != nullptr)
+        if (ShPtrOutputPin pin = project()->findNodeOutputPinByPt(pos, 5); pin != nullptr)
         {
             // Выделение узла
             BaseNode *const node = pin->parentNode();
@@ -162,7 +162,7 @@ void FormDesigner::mousePressEvent(QMouseEvent *event)
         //------------------------------------------------------
         // Попытка изменения связи из подключенного входного пина
         //------------------------------------------------------
-        else if (ShPtrInputPin pin = project()->findNodeInputPinByPt(pos); (pin != nullptr) && pin->isConnected())
+        else if (ShPtrInputPin pin = project()->findNodeInputPinByPt(pos, 5); (pin != nullptr) && pin->isConnected())
         {
             const ShPtrOutputPin connectOutputPin = pin->outputPin();
 
@@ -269,18 +269,24 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
         }
     }
     //----------------------------------------------------------
-    // Перетягивание связи узла
+    // Перетаскивание связи узла
     //----------------------------------------------------------
     else if (movingConnection_.isMove())
     {
         if (movingConnection_.outputPin != nullptr)
         {
             // Если это попадание во входной пин элемента
-            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(pos);
-            const BaseNode *const connectNode = movingConnection_.outputPin->parentNode();
-            if ((inputPin != nullptr) && (connectNode != inputPin->parentNode()))
+            const BaseNode *const sourceNode = movingConnection_.outputPin->parentNode();
+            const ShPtrInputPin targetPin = project()->findNodeInputPinByPt(pos, 5);
+            const ShPtrBaseNode targetNode = project()->findNodeByPt(pos);
+            if ((targetPin != nullptr) && (sourceNode != targetPin->parentNode()))
             {
-                const QPoint inputPinCenter = inputPin->rect().center();
+                const QPoint inputPinCenter = targetPin->rect().center();
+                movingConnection_.endPt = inputPinCenter;
+            }
+            else if ((targetNode != nullptr) && targetNode->isInputPins() && (sourceNode != targetNode) && isAltKey(event->modifiers()))
+            {
+                const QPoint inputPinCenter = targetNode->inputPin(0)->rect().center();
                 movingConnection_.endPt = inputPinCenter;
             }
             else
@@ -291,9 +297,9 @@ void FormDesigner::mouseMoveEvent(QMouseEvent *event)
         else
         {
             // Если это попадание во входной пин элемента
-            const ShPtrInputPin targetInputPin = project()->findNodeInputPinByPt(pos);
-            const BaseNode *const connectNode = movingConnection_.inputPin->outputPin()->parentNode();
-            if ((targetInputPin != nullptr) && (connectNode != targetInputPin->parentNode()))
+            const ShPtrInputPin targetInputPin = project()->findNodeInputPinByPt(pos, 5);
+            const BaseNode *const sourceNode = movingConnection_.inputPin->outputPin()->parentNode();
+            if ((targetInputPin != nullptr) && (sourceNode != targetInputPin->parentNode()))
             {
                 const QPoint targetInputPinCenter = targetInputPin->rect().center();
                 movingConnection_.endPt = targetInputPinCenter;
@@ -372,7 +378,7 @@ void FormDesigner::mouseReleaseEvent(QMouseEvent *event)
     {
         if (movingConnection_.outputPin != nullptr)
         {
-            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(pos);
+            const ShPtrInputPin inputPin = project()->findNodeInputPinByPt(movingConnection_.endPt);
             if (inputPin != nullptr)
             {
                 project()->setNodeConnection(movingConnection_.outputPin, nullptr,
